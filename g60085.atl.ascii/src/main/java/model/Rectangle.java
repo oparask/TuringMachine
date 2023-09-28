@@ -1,32 +1,33 @@
 package model;
 
-public class Rectangle extends ColoredShape{
+public class Rectangle extends ColoredShape {
 
-    private Point bl; //bottom left corner
-    private Point ur; //upper right corner
+    private Point upperLeft;
+    private double width;
+    private double height;
 
-    public Rectangle(Point bottomLeft, Point upperRight, char color) {
+    public Rectangle(Point upperLeft, double width, double height, char color) {
         super(color);
-        if (bottomLeft.getX() >= upperRight.getX() || bottomLeft.getY() >= upperRight.getY())
-            throw new IllegalArgumentException(
-                    "bottomLeft must be below and on the left of upperRight, received (bottomLeft - upperRight): "
-                            + bottomLeft + "-" + upperRight);
-        this.bl = new Point(bottomLeft);
-        this.ur = new Point(upperRight);
+        if (width <= 0 || height <= 0) {
+            throw new IllegalArgumentException("Invalid width or height");
+        }
+        this.upperLeft = new Point(upperLeft);
+        this.width = width;
+        this.height = height;
     }
 
     @Override
-    public boolean IsInside(Point p){
-
+    public boolean isInside(Point p) {
+        if (p.getX() < this.upperLeft.getX() || p.getX() > (this.upperLeft.getX() + width)
+                || p.getY() > this.upperLeft.getY() || p.getY() < this.upperLeft.getY() - height) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public void move(double dx, double dy) {
-        bl.move(dx, dy);
-        ur.move(dx, dy);
+        this.upperLeft.move(dx, dy);
     }
-
-
-
 
 }

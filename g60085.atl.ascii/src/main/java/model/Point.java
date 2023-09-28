@@ -14,6 +14,16 @@ public class Point {
     }
 
 
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+
+
     public void move(double dx, double dy) {
         x += dx;
         y += dy;

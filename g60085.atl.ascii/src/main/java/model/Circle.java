@@ -18,6 +18,8 @@ public class Circle extends ColoredShape {
     public boolean isInside(Point p){
         return p.distanceTo(this.center)<=this.radius;
     }
+
+    @Override
     public void move(double dx, double dy){
         center.move(dx, dy);
     }
