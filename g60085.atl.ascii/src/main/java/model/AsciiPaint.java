@@ -14,6 +14,11 @@ public class AsciiPaint {
         drawing = new Drawing(width, height);
     }
 
+    //je l'ai rajuté moi
+    public Drawing getDrawing() {
+        return drawing;
+    }
+
     public void newCircle(int x, int y, double radius, char color) {
         drawing.addShape(new Circle(new Point(x, y), radius, color));
     }
@@ -41,4 +46,5 @@ public class AsciiPaint {
         }
         return colorShapes;
     }
+
 }

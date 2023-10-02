@@ -33,11 +33,18 @@ public class Drawing {
         return null;
     }
 
-    int getHeight() {
+    //rajout du public
+    public int getHeight() {
         return this.height;
     }
 
-    int getWidth() {
+    public int getWidth() {
         return this.width;
+    }
+
+    //ajout
+
+    public List<Shape> getShapes() {
+        return shapes;
     }
 }
