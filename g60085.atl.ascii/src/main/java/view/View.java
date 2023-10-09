@@ -1,12 +1,16 @@
 package view;
 
-import model.AsciiPaint;
+import model.Shape;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class View {
 
 
     public static void displayTitle() {
         System.out.println("Welcome to ASCII PAINT");
+        System.out.println();
     }
 
     public static void displayHelp() {
@@ -23,21 +27,31 @@ public class View {
                 + "                    square     --> upperLeftPoint.x upperLeftPoint.y side\n"
                 + " - i : index in list of shapes\n"
                 + " - color :  a letter\n");
+        System.out.println();
     }
 
-    public static void displayDrawing(AsciiPaint paint) {
-        String colorString = paint.asASCII();
-        int i = 0;
-        for (int height = 0; height < paint.getDrawing().getHeight(); height++) {
-            for (int width = 0; width < paint.getDrawing().getWidth(); width++) {
-                if (colorString.charAt(i) == ' ') {
+    public static void displayDrawing(String colorString, int height, int width) {
+        int indexString = 0;
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (colorString.charAt(indexString) == ' ') {
                     System.out.print(' ');
                 } else {
-                    System.out.print(colorString.charAt(i));
+                    System.out.print(colorString.charAt(indexString));
                 }
-                i++;
+                indexString++;
             }
+            System.out.println();
         }
+        System.out.println();
+    }
+
+    public static void displayShapeList(List<Shape> shapeList) {
+        for (int i = 0; i < shapeList.size(); i++) {
+            System.out.print(shapeList.get(i) + "-" + i + "  ");
+        }
+        System.out.println();
+
     }
 
 
@@ -65,7 +79,12 @@ public class View {
      * Prints a prompt symbol (> ) and expects something after.
      */
     public static void displayEntrancePrompt() {
-        System.out.print("> ");
+        System.out.print("Enter a command: \n " +
+                "> ");
+    }
+
+    public static void displayEnd() {
+        System.out.print("Bye, see you next time for an another drawing :) ");
     }
 
 

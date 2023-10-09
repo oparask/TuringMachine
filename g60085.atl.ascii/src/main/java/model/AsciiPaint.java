@@ -31,20 +31,18 @@ public class AsciiPaint {
         drawing.addShape(new Square(new Point(x, y), side, color));
     }
 
-    public String asASCII(){
-        String colorShapes ="";
-        for(int i = 0; i< drawing.getHeight(); i++){
-            for(int j = 0; j< drawing.getWidth(); j++){
-                Shape shape = drawing.getShapeAt(new Point(i, j));
-                if(shape != null){
+    public String asASCII() {
+        String colorShapes = "";
+        for (int y = 0; y < drawing.getHeight(); y++) { // Parcourir la hauteur (verticale)
+            for (int x = 0; x < drawing.getWidth(); x++) { // Parcourir la largeur (horizontale)
+                Shape shape = drawing.getShapeAt(new Point(x, y));
+                if (shape != null) {
                     colorShapes += shape.getColor();
                 } else {
                     colorShapes += " ";
                 }
-
             }
         }
         return colorShapes;
     }
-
 }

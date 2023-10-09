@@ -1,7 +1,6 @@
 package model;
 
 public class Circle extends ColoredShape {
-
     private double radius;
     private Point center;
 
@@ -11,17 +10,24 @@ public class Circle extends ColoredShape {
             throw new IllegalArgumentException("radius must be positive, received: " + radius);
         }
 
+        this.radius = radius; // Initialisation du rayon
+
         this.center = new Point(center); //copie défensiveplus elegante
     }
 
     @Override
-    public boolean isInside(Point p){
-        return p.distanceTo(this.center)<=this.radius;
+    public boolean isInside(Point p) {
+        return this.center.distanceTo(p) <= this.radius;
     }
 
     @Override
-    public void move(double dx, double dy){
+    public void move(double dx, double dy) {
         center.move(dx, dy);
+    }
+
+    @Override
+    public String toString() {
+        return "circle";
     }
 
 }
