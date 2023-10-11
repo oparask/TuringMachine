@@ -1,16 +1,39 @@
 package model;
 
-//L’interface Shape représente une forme et définit les comportements attendus par toute
-//forme
+/**
+ * The Shape interface represents a geometric shape and defines the expected behaviors for all shapes.
+ */
 public interface Shape {
-    void move(double dx, double dy); //permettant de déplacer une forme ;
 
-    boolean isInside(Point p); //retournant vrai si le point donné se trouve à l’intérieur de la forme et faux sinon
+    /**
+     * Moves the shape by the specified horizontal and vertical distances.
+     *
+     * @param dx The horizontal distance to move the shape.
+     * @param dy The vertical distance to move the shape.
+     */
+    void move(double dx, double dy);
 
-    char getColor(); //retournant un caractère d’affichage, par exemple le caractère ’c’
+    /**
+     * Checks whether a given point is inside the shape.
+     *
+     * @param p The Point object to be checked.
+     * @return true if the point is inside the shape, false otherwise.
+     */
+    boolean isInside(Point p);
 
-    void setColor(char color); // modifiant la couleur de la forme ;
+    /**
+     * Retrieves the color representation of the shape.
+     *
+     * @return A character representing the color of the shape, e.g., 'c'.
+     */
+    char getColor();
 
-
+    /**
+     * Sets the color of the shape to the specified character.
+     *
+     * @param color The character to set as the color of the shape.
+     */
+    void setColor(char color);
 }
+
 

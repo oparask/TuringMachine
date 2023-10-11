@@ -1,33 +1,60 @@
 package model;
 
+/**
+ * The Circle class represents a colored circle and extends the ColoredShape class.
+ */
 public class Circle extends ColoredShape {
     private double radius;
     private Point center;
 
+    /**
+     * Constructs a Circle with the specified center, radius, and color.
+     *
+     * @param center The center Point of the circle.
+     * @param radius The radius of the circle (must be positive).
+     * @param color The character representing the color of the circle, e.g., 'c'.
+     * @throws IllegalArgumentException if the radius is not positive.
+     */
     public Circle(Point center, double radius, char color) {
         super(color);
+
         if (radius <= 0) {
-            throw new IllegalArgumentException("radius must be positive, received: " + radius);
+            throw new IllegalArgumentException("Radius must be positive, received: " + radius);
         }
 
-        this.radius = radius; // Initialisation du rayon
-
-        this.center = new Point(center); //copie défensiveplus elegante
+        this.radius = radius;
+        this.center = new Point(center); // Using defensive copying
     }
 
+    /**
+     * Checks whether a given Point is inside the circle.
+     *
+     * @param p The Point to be checked.
+     * @return true if the Point is inside the circle, false otherwise.
+     */
     @Override
     public boolean isInside(Point p) {
         return this.center.distanceTo(p) <= this.radius;
     }
 
+    /**
+     * Moves the circle by the specified horizontal and vertical distances.
+     *
+     * @param dx The horizontal distance to move the circle.
+     * @param dy The vertical distance to move the circle.
+     */
     @Override
     public void move(double dx, double dy) {
         center.move(dx, dy);
     }
 
+    /**
+     * Returns a string representation of the circle.
+     *
+     * @return The string "circle".
+     */
     @Override
     public String toString() {
         return "circle";
     }
-
 }

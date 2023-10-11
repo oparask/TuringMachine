@@ -7,9 +7,16 @@ import java.util.Scanner;
 
 import static view.View.*;
 
+/**
+ * The Application class represents the main controller for the ASCII Paint application.
+ * It handles user input, manages the drawing, and controls the interaction with the user.
+ */
 public class Application {
     private AsciiPaint paint;
 
+    /**
+     * Start the ASCII Paint application.
+     */
     public void start() {
         displayTitle();
         displayHelp();
@@ -24,31 +31,36 @@ public class Application {
 
     private void drawingInitialization() {
         Scanner keyboard = new Scanner(System.in);
-        String errorMessage = "Dimensions must be positive, greater than 10, and lower than 50. Try again: ";
-        String regex = "\\d+\\s+\\d+"; // Utilisez deux backslashes pour échapper le '\'
+        String errorMessage = "Dimensions must be positive, greater than 10, and lower than 100. Try again: ";
+        String regex = "\\d+\\s+\\d+"; // Use double backslashes to escape the '\'
 
         int width, height;
 
-        while (true) {
-            System.out.print("Enter the width and the height of the drawing: ");
-            String input = keyboard.nextLine().trim();
+        if(choseSize()){
+            while (true) {
+                System.out.print("Enter the width and the height of the drawing: ");
+                String input = keyboard.nextLine().trim();
 
-            if (input.matches(regex)) {
-                String[] detailInput = input.split("\\s+");
-                width = Integer.parseInt(detailInput[0]);
-                height = Integer.parseInt(detailInput[1]);
+                if (input.matches(regex)) {
+                    String[] detailInput = input.split("\\s+");
+                    width = Integer.parseInt(detailInput[0]);
+                    height = Integer.parseInt(detailInput[1]);
 
-                if (width > 10 && height > 10 && width < 50 && height < 50) {
-                    System.out.println("The drawing size is valid.");
-                    paint = new AsciiPaint(width, height);
-                    break;
+                    if (width > 10 && height > 10 && width <= 100 && height <= 100) {
+                        validDrawing();
+                        paint = new AsciiPaint(width, height);
+                        break;
+                    } else {
+                        System.out.println(errorMessage);
+                    }
                 } else {
                     System.out.println(errorMessage);
                 }
-            } else {
-                System.out.println(errorMessage);
             }
+        } else {
+            paint = new AsciiPaint();
         }
+
     }
 
     private boolean processCommand() {
@@ -66,12 +78,12 @@ public class Application {
             if (!commandType.matches(validCommandsRegex)) {
                 displayInvalidInput("Invalid command! Try again.");
                 checkForHelp();
-                continue; // Revenir au début de la boucle en cas de commande invalide
+                continue; // Go back to the beginning of the loop for invalid commands
             }
 
             if (input.equalsIgnoreCase("q")) {
                 displayEnd();
-                return false; // L'utilisateur veut quitter
+                return false; // User wants to quit
             }
 
             String invalidInputMessage = "Invalid input! Try again!";
@@ -81,26 +93,30 @@ public class Application {
                     if (!addShape(input)) {
                         displayInvalidInput(invalidInputMessage);
                         checkForHelp();
+                    } else {
+                        validCommandAdd();
                     }
                     break;
                 case "show":
                     displayDrawing(paint.asASCII(), paint.getDrawing().getHeight(), paint.getDrawing().getWidth());
-                    checkForHelp();
                     break;
                 case "list":
                     displayShapeList(paint.getDrawing().getShapes());
-                    checkForHelp();
                     break;
                 case "move":
                     if (!moveShape(input)) {
                         displayInvalidInput(invalidInputMessage);
                         checkForHelp();
+                    } else {
+                        validCommandMove();
                     }
                     break;
                 case "color":
                     if (!changeColor(input)) {
                         displayInvalidInput(invalidInputMessage);
                         checkForHelp();
+                    } else {
+                        validCommandColor();
                     }
                     break;
                 default:
@@ -112,7 +128,6 @@ public class Application {
             return true;
         }
     }
-
 
     private boolean addShape(String input) {
         String circleRegex = "add\\s+circle\\s+\\d+\\s+\\d+\\s+\\d+(\\.\\d+)?\\s+[a-zA-Z]";
@@ -162,11 +177,11 @@ public class Application {
                 System.out.println("Invalid shape type. Please use 'circle', 'rectangle', or 'square'.");
                 break;
         }
-        return false; // La commande n'était pas valide
+        return false;
     }
 
 
-    public boolean moveShape(String input) {
+    private boolean moveShape(String input) {
         // move <i> <horizontally> <vertically>
         String regex = "move\\s+(\\d+)\\s+(-?\\d+\\.?\\d*)\\s+(-?\\d+\\.?\\d*)";
 
@@ -187,7 +202,7 @@ public class Application {
         return false;
     }
 
-    public boolean changeColor(String input) {
+    private boolean changeColor(String input) {
         String regex = "color\\s+\\d+\\s+[a-zA-Z]";
         String[] detailInput = input.split("\\s+");
 
@@ -207,7 +222,7 @@ public class Application {
         displayMessage(message);
 
         String input = keyboard.nextLine();
-        while (input.trim().isEmpty() || !input.matches(regex)) { //Ensures that the user cannot enter only whitespace as a valid input.
+        while (input.trim().isEmpty() || !input.trim().matches(regex)) { //Ensures that the user cannot enter only whitespace as a valid input.
             displayInvalidInput("Invalid input! Try again. " + message);
             input = keyboard.nextLine();
         }
@@ -215,17 +230,24 @@ public class Application {
         return input;
 
     }
+
+    private boolean choseSize(){
+        return stringRobustReading("Do you want to chose the size of the drawing? (y or n)", "(?i)[yn]").equalsIgnoreCase("y");
+    }
+
     private void checkForHelp() {
         if (stringRobustReading("Do you need help (y or n)? : ", "(?i)[yn]").equalsIgnoreCase("y")) {
             displayHelp();
         }
     }
 
-
+    /**
+     * The main entry point for the ASCII Paint application.
+     *
+     * @param args The command-line arguments (not used in this application).
+     */
     public static void main(String[] args) {
         Application applicationASCIIPaint = new Application();
         applicationASCIIPaint.start();
     }
-
-
 }
