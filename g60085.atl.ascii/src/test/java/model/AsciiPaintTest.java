@@ -1,11 +1,9 @@
 package model;
 
 import org.junit.Before;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class AsciiPaintTest {
@@ -64,7 +62,7 @@ class AsciiPaintTest {
     }
 
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testNewCircleWithZeroRadius() {
         setUp();
         // Test adding a circle with a zero radius
@@ -96,17 +94,68 @@ class AsciiPaintTest {
         assertEquals(0, asciiPaint.getDrawing().getShapes().size());
     }
 
-
-
-    @org.junit.jupiter.api.Test
-    void newRectangle() {
+    @Test
+    public void testNewRectangleWithValidParameters() {
+       setUp();
+        assertDoesNotThrow(() -> asciiPaint.newRectangle(10, 10, 20, 15, 'R'));
+        // Test adding a rectangle with valid parameters
+        assertEquals(1, asciiPaint.getDrawing().getShapes().size());
     }
 
-    @org.junit.jupiter.api.Test
-    void newSquare() {
+    @Test
+    public void testNewRectangleWithInvalidCoordinates() {
+        setUp();
+        // Test adding a rectangle with invalid coordinates
+        assertThrows(IllegalArgumentException.class, () -> asciiPaint.newRectangle(0, 10, 20, 15, 'R'));
+        assertEquals(0, asciiPaint.getDrawing().getShapes().size());
     }
 
-    @org.junit.jupiter.api.Test
-    void asASCII() {
+    @Test
+    public void testNewRectangleWithInvalidDimensions() {
+        setUp();
+        // Test adding a rectangle with invalid dimensions
+        assertThrows(IllegalArgumentException.class, () -> asciiPaint.newRectangle(10, 10, 30, 15, 'R'));
+        assertEquals(0, asciiPaint.getDrawing().getShapes().size());
     }
+
+    @Test
+    public void testNewRectangleWithInvalidColor() {
+        setUp();
+        // Test adding a rectangle with an invalid color
+        assertThrows(InvalidColorException.class, () -> asciiPaint.newRectangle(10, 10, 20, 15, '1'));
+        assertEquals(0, asciiPaint.getDrawing().getShapes().size());
+    }
+
+    @Test
+    public void testNewSquareWithValidParameters() {
+        setUp();
+        // Test adding a square with valid parameters
+        assertDoesNotThrow(() ->  asciiPaint.newSquare(10, 10, 15, 'S'));
+        assertEquals(1, asciiPaint.getDrawing().getShapes().size());
+    }
+
+    @Test
+    public void testNewSquareWithInvalidCoordinates() {
+        setUp();
+        // Test adding a square with invalid coordinates
+        assertThrows(IllegalArgumentException.class, () -> asciiPaint.newSquare(0, 10, 15, 'S'));
+        assertEquals(0, asciiPaint.getDrawing().getShapes().size());
+    }
+
+    @Test
+    public void testNewSquareWithInvalidSideLength() {
+        setUp();
+        // Test adding a square with an invalid side length
+        assertThrows(IllegalArgumentException.class, () -> asciiPaint.newSquare(10, 10, 30, 'S'));
+        assertEquals(0, asciiPaint.getDrawing().getShapes().size());
+    }
+
+    @Test
+    public void testNewSquareWithInvalidColor() {
+        setUp();
+        // Test adding a square with an invalid color
+        assertThrows(InvalidColorException.class, () -> asciiPaint.newSquare(10, 10, 15, '1'));
+        assertEquals(0, asciiPaint.getDrawing().getShapes().size());
+    }
+
 }

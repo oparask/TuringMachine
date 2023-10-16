@@ -15,15 +15,9 @@ public class Rectangle extends ColoredShape {
      * @param width     The width of the rectangle (must be positive).
      * @param height    The height of the rectangle (must be positive).
      * @param color     The character representing the color of the rectangle, e.g., 'c'.
-     * @throws IllegalArgumentException if the width or height is not positive.
      */
     public Rectangle(Point upperLeft, double width, double height, char color) {
         super(color);
-
-        if (width <= 0 || height <= 0) {
-            throw new IllegalArgumentException("Invalid width or height");
-        }
-
         this.upperLeft = new Point(upperLeft);
         this.width = width;
         this.height = height;
