@@ -12,12 +12,17 @@ public class Rectangle extends ColoredShape {
      * Constructs a Rectangle with the specified upper-left point, width, height, and color.
      *
      * @param upperLeft The upper-left Point of the rectangle.
-     * @param width     The width of the rectangle (must be positive).
-     * @param height    The height of the rectangle (must be positive).
+     * @param width     The width of the rectangle (must be a positive value).
+     * @param height    The height of the rectangle (must be a positive value).
      * @param color     The character representing the color of the rectangle, e.g., 'c'.
+     * @throws IllegalArgumentException if the width or height is not positive.
      */
-    public Rectangle(Point upperLeft, double width, double height, char color) {
+    public Rectangle(Point upperLeft, double width, double height, char color) throws IllegalArgumentException {
         super(color);
+        if (width <= 0 || height <= 0) {
+            throw new IllegalArgumentException("The width and height must be positive values.");
+        }
+
         this.upperLeft = new Point(upperLeft);
         this.width = width;
         this.height = height;

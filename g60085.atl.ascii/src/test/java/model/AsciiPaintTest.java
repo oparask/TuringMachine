@@ -90,7 +90,7 @@ class AsciiPaintTest {
     @Test
     public void testNewCircleWithValidColor() {
         setUp();
-        assertThrows(InvalidColorException.class, () -> asciiPaint.newCircle(5, 5, 10, '0'));
+        assertThrows(IllegalArgumentException.class, () -> asciiPaint.newCircle(5, 5, 10, '0'));
         assertEquals(0, asciiPaint.getDrawing().getShapes().size());
     }
 
@@ -122,7 +122,7 @@ class AsciiPaintTest {
     public void testNewRectangleWithInvalidColor() {
         setUp();
         // Test adding a rectangle with an invalid color
-        assertThrows(InvalidColorException.class, () -> asciiPaint.newRectangle(10, 10, 20, 15, '1'));
+        assertThrows(IllegalArgumentException.class, () -> asciiPaint.newRectangle(10, 10, 20, 15, '1'));
         assertEquals(0, asciiPaint.getDrawing().getShapes().size());
     }
 
@@ -154,7 +154,7 @@ class AsciiPaintTest {
     public void testNewSquareWithInvalidColor() {
         setUp();
         // Test adding a square with an invalid color
-        assertThrows(InvalidColorException.class, () -> asciiPaint.newSquare(10, 10, 15, '1'));
+        assertThrows(IllegalArgumentException.class, () -> asciiPaint.newSquare(10, 10, 15, '1'));
         assertEquals(0, asciiPaint.getDrawing().getShapes().size());
     }
 

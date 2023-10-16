@@ -31,7 +31,6 @@ public class AsciiPaint {
         drawing = new Drawing(width, height);
     }
 
-
     /**
      * Retrieves the current drawing instance.
      *
@@ -52,7 +51,9 @@ public class AsciiPaint {
      */
     public void newCircle(int x, int y, double radius, char color) throws IllegalArgumentException {
         validateCoordinates(x, y);
-        validateRadius(radius);
+        if (radius <= 0 || radius >= 25) {
+            throw new IllegalArgumentException("Radius must be positive and below 25, received: " + radius);
+        }
         validateColor(color);
 
         drawing.addShape(new Circle(new Point(x, y), radius, color));
@@ -70,7 +71,9 @@ public class AsciiPaint {
      */
     public void newRectangle(int x, int y, double width, double height, char color) throws IllegalArgumentException {
         validateCoordinates(x, y);
-        validateDimensions(width, height);
+        if (width <= 0 || width > 25 || height <= 0 || height > 25) {
+            throw new IllegalArgumentException("The dimensions must be positive and below 25.");
+        }
         validateColor(color);
 
         drawing.addShape(new Rectangle(new Point(x, y), width, height, color));
@@ -87,39 +90,36 @@ public class AsciiPaint {
      */
     public void newSquare(int x, int y, double side, char color) throws IllegalArgumentException {
         validateCoordinates(x, y);
-        validateSideLength(side);
+        if (side <= 0 || side > 25) {
+            throw new IllegalArgumentException("The side length of the square must be positive and below 25.");
+        }
         validateColor(color);
 
         drawing.addShape(new Square(new Point(x, y), side, color));
     }
 
-    private void validateCoordinates(int x, int y) {
+    /**
+     * Validates the provided coordinates to ensure they are within the bounds of the drawing area.
+     *
+     * @param x The X-coordinate to be validated.
+     * @param y The Y-coordinate to be validated.
+     * @throws IllegalArgumentException if the coordinates are not positive or are outside the bounds of the drawing area.
+     */
+    private void validateCoordinates(int x, int y) throws IllegalArgumentException {
         if (x <= 0 || y <= 0 || x >= drawing.getWidth() || y >= drawing.getHeight()) {
             throw new IllegalArgumentException("The coordinates must be positive and within the bounds of the drawing.");
         }
     }
 
-    private void validateRadius(double radius) {
-        if (radius <= 0 || radius >= 25) {
-            throw new IllegalArgumentException("Radius must be positive and below 25, received: " + radius);
-        }
-    }
-
-    private void validateDimensions(double width, double height) {
-        if (width <= 0 || width > 25 || height <= 0 || height > 25) {
-            throw new IllegalArgumentException("The dimensions must be positive and below 25.");
-        }
-    }
-
-    private void validateSideLength(double side) {
-        if (side <= 0 || side > 25) {
-            throw new IllegalArgumentException("The side length of the square must be positive and below 25.");
-        }
-    }
-
-    private void validateColor(char color) {
+    /**
+     * Validates the provided color to ensure it is a valid color identifier.
+     *
+     * @param color The character representing the color to be validated (e.g., 'c').
+     * @throws IllegalArgumentException if the color is not a valid letter of the alphabet.
+     */
+    private void validateColor(char color) throws IllegalArgumentException {
         if (!Character.isLetter(color)) {
-            throw new InvalidColorException();
+            throw new IllegalArgumentException("Invalid color. The color must be a letter of the alphabet.");
         }
     }
 

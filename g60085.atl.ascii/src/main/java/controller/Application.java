@@ -29,6 +29,15 @@ public class Application {
         }
     }
 
+
+    /**
+     * Initializes the drawing by prompting the user to specify the width and height of the drawing area
+     * and creating an AsciiPaint object based on the user's input. If the user chooses not to specify the size,
+     * a default AsciiPaint object is created.
+     * <p>
+     * The method repeatedly prompts the user until valid input is provided for the drawing size or until
+     * the user chooses not to specify the size.
+     */
     private void drawingInitialization() {
         Scanner keyboard = new Scanner(System.in);
 
@@ -58,6 +67,14 @@ public class Application {
 
     }
 
+
+    /**
+     * Processes user commands for interacting with the drawing application. The user is prompted to enter commands
+     * for adding shapes, displaying the drawing, listing shapes, moving shapes, changing colors, and quitting the application.
+     * The method continuously prompts the user for input and processes the commands until the user chooses to quit (by entering "q").
+     *
+     * @return true if the user wants to continue interacting with the application, false if the user chooses to quit.
+     */
     private boolean processCommand() {
         Scanner keyboard = new Scanner(System.in);
 
@@ -127,6 +144,13 @@ public class Application {
 
     }
 
+
+    /**
+     * Parses and adds a shape to the drawing based on the provided input.
+     *
+     * @param input The user input representing the shape to be added.
+     * @return true if the shape is successfully added to the drawing, false otherwise.
+     */
     private boolean addShape(String input) {
         String circleRegex = "add\\s+circle\\s+\\d+\\s+\\d+\\s+\\d+(\\.\\d+)?\\s+[a-zA-Z]";
         String rectangleRegex = "add\\s+rectangle\\s+\\d+\\s+\\d+\\s+\\d+(\\.\\d+)?\\s+\\d+(\\.\\d+)?\\s+[a-zA-Z]";
@@ -179,6 +203,12 @@ public class Application {
     }
 
 
+    /**
+     * Moves a shape in the drawing based on the provided input.
+     *
+     * @param input The user input representing the shape index and the amount to move horizontally and vertically.
+     * @return true if the shape is successfully moved, false otherwise.
+     */
     private boolean moveShape(String input) {
         // move <i> <horizontally> <vertically>
         String regex = "move\\s+(\\d+)\\s+(-?\\d+\\.?\\d*)\\s+(-?\\d+\\.?\\d*)";
@@ -200,6 +230,12 @@ public class Application {
         return false;
     }
 
+    /**
+     * Changes the color of a shape in the drawing based on the provided input.
+     *
+     * @param input The user input representing the shape index and the new color character.
+     * @return true if the shape's color is successfully changed, false otherwise.
+     */
     private boolean changeColor(String input) {
         String regex = "color\\s+\\d+\\s+[a-zA-Z]";
         String[] detailInput = input.split("\\s+");
@@ -215,6 +251,13 @@ public class Application {
         }
     }
 
+    /**
+     * Reads and validates a string input from the user based on a regular expression pattern.
+     *
+     * @param message The message to display to the user as a prompt.
+     * @param regex   The regular expression pattern for validating the input.
+     * @return The validated user input as a string.
+     */
     private static String stringRobustReading(String message, String regex) {
         Scanner keyboard = new Scanner(System.in);
         displayMessage(message);
@@ -226,14 +269,21 @@ public class Application {
         }
 
         return input;
-
     }
 
+    /**
+     * Asks the user if they want to choose the size of the drawing and validates their response.
+     *
+     * @return true if the user wants to choose the size, false otherwise.
+     */
     private boolean choseSize() {
         return stringRobustReading("Do you want to chose the size of the drawing?" +
                 " (y or n)", "(?i)[yn]").equalsIgnoreCase("y");
     }
 
+    /**
+     * Asks the user if they need help and displays help information if the user requests it.
+     */
     private void checkForHelp() {
         if (stringRobustReading("Do you need help (y or n)? : ", "(?i)[yn]").equalsIgnoreCase("y")) {
             displayHelp();

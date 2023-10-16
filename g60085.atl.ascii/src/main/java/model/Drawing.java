@@ -19,12 +19,16 @@ public class Drawing {
     }
 
     /**
-     * Constructs a Drawing with the specified width and height.
+     * Constructs a Drawing with the specified width and height for the drawing area.
      *
-     * @param width  The width of the drawing area.
-     * @param height The height of the drawing area.
+     * @param width  The width of the drawing area (must be between 10 and 100, inclusive).
+     * @param height The height of the drawing area (must be between 10 and 100, inclusive).
+     * @throws IllegalArgumentException if the width or height is outside the valid range.
      */
-    public Drawing(int width, int height) {
+    public Drawing(int width, int height) throws IllegalArgumentException {
+        if (width < 10 || height < 10 || width > 100 || height > 100) {
+            throw new IllegalArgumentException("The width and height must be between 10 and 100, inclusive.");
+        }
         this.shapes = new ArrayList<>();
         this.height = height;
         this.width = width;

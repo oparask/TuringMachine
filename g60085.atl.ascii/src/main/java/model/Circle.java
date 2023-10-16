@@ -11,11 +11,15 @@ public class Circle extends ColoredShape {
      * Constructs a Circle with the specified center, radius, and color.
      *
      * @param center The center Point of the circle.
-     * @param radius The radius of the circle (must be positive).
-     * @param color The character representing the color of the circle, e.g., 'c'.
+     * @param radius The radius of the circle (must be positive and less than 25).
+     * @param color  The character representing the color of the circle, e.g., 'c'.
+     * @throws IllegalArgumentException if the radius is not within the valid range.
      */
-    public Circle(Point center, double radius, char color) {
+    public Circle(Point center, double radius, char color) throws IllegalArgumentException {
         super(color);
+        if (radius <= 0 || radius >= 25) {
+            throw new IllegalArgumentException("Radius must be positive and below 25, received: " + radius);
+        }
         this.radius = radius;
         this.center = new Point(center); // Using defensive copying
     }

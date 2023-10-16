@@ -13,7 +13,7 @@ public class Square extends Rectangle {
      * @param color The character representing the color of the square, e.g., 'c'.
      * @throws IllegalArgumentException if the side length is not positive.
      */
-    public Square(Point upperLeft, double side, char color) {
+    public Square(Point upperLeft, double side, char color) throws IllegalArgumentException{
         super(upperLeft, side, side, color);
     }
 

@@ -10,9 +10,14 @@ public abstract class ColoredShape implements Shape {
     /**
      * Constructs a ColoredShape object with the specified color.
      *
-     * @param color The character representing the color of the shape, e.g., 'c'.
+     * @param color The character representing the color of the shape (e.g., 'c').
+     * @throws IllegalArgumentException if the provided character is not a valid color identifier.
      */
-    public ColoredShape(char color) {
+    public ColoredShape(char color) throws IllegalArgumentException {
+        if (!Character.isLetter(color)) {
+            throw new IllegalArgumentException("Invalid color. The color must be a letter of the alphabet.");
+        }
+
         this.color = color;
     }
 
