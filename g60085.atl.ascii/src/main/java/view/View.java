@@ -152,7 +152,7 @@ public class View {
      * @param message The message to display.
      */
     public static void displayInvalidInput(String message) {
-        System.out.println(message);
+        System.out.println(ANSI_ORANGE + message + ANSI_RESET);
         System.out.println();
     }
 

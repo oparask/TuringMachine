@@ -14,16 +14,22 @@ public class AsciiPaint {
     public AsciiPaint() {
         drawing = new Drawing();
     }
-
     /**
      * Constructs an AsciiPaint instance with a custom drawing size specified by width and height.
      *
      * @param width  The width of the drawing.
      * @param height The height of the drawing.
+     * @throws IllegalArgumentException If the provided width or height is outside the valid range
+     *                                  (width and height must be between 10 and 100, inclusive).
      */
-    public AsciiPaint(int width, int height) {
+    public AsciiPaint(int width, int height) throws IllegalArgumentException {
+        if (width < 10 || height < 10 || width > 100 || height > 100) {
+            throw new IllegalArgumentException("The width and height must be between 10 and 100, inclusive.");
+        }
+
         drawing = new Drawing(width, height);
     }
+
 
     /**
      * Retrieves the current drawing instance.
@@ -41,10 +47,27 @@ public class AsciiPaint {
      * @param y      The y-coordinate of the circle's center.
      * @param radius The radius of the circle.
      * @param color  The color character for the circle.
+     * @throws IllegalArgumentException If the provided radius is not within the valid range (positive and below 25),
+     *                                  or if the coordinates of the circle's center are outside the bounds of the drawing.
      */
-    public void newCircle(int x, int y, double radius, char color) {
+    public void newCircle(int x, int y, double radius, char color) throws IllegalArgumentException, InvalidColorException{
+        if (radius <= 0 || radius >= 25) {
+            throw new IllegalArgumentException("Radius must be positive and below 25, received: " + radius);
+        }
+
+        if (x <= 0 || y <= 0 || x >= this.getDrawing().getWidth() || y >= this.getDrawing().getHeight()) {
+            throw new IllegalArgumentException("The coordinates of the circle's center must be positive " +
+                    "and within the bounds of the drawing " +
+                    "(width: " + this.getDrawing().getWidth() + ", height: " + this.getDrawing().getHeight() + ")");
+        }
+
+        if (!Character.isLetter(color)) {
+            throw new InvalidColorException();
+        }
+
         drawing.addShape(new Circle(new Point(x, y), radius, color));
     }
+
 
     /**
      * Adds a new rectangle shape to the drawing.
@@ -80,7 +103,7 @@ public class AsciiPaint {
         StringBuilder colorShapes = new StringBuilder();
         for (int y = 0; y < drawing.getHeight(); y++) { // Traverse the height (vertical)
             for (int x = 0; x < drawing.getWidth(); x++) { // Traverse the width (horizontal)
-                Shape shape = drawing.getShapeAt(new Point(x, drawing.getHeight()- y));
+                Shape shape = drawing.getShapeAt(new Point(x, drawing.getHeight() - y));
                 if (shape != null) {
                     colorShapes.append(shape.getColor());
                 } else {

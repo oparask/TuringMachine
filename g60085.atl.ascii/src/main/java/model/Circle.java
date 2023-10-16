@@ -13,15 +13,9 @@ public class Circle extends ColoredShape {
      * @param center The center Point of the circle.
      * @param radius The radius of the circle (must be positive).
      * @param color The character representing the color of the circle, e.g., 'c'.
-     * @throws IllegalArgumentException if the radius is not positive.
      */
     public Circle(Point center, double radius, char color) {
         super(color);
-
-        if (radius <= 0) {
-            throw new IllegalArgumentException("Radius must be positive, received: " + radius);
-        }
-
         this.radius = radius;
         this.center = new Point(center); // Using defensive copying
     }

@@ -31,34 +31,29 @@ public class Application {
 
     private void drawingInitialization() {
         Scanner keyboard = new Scanner(System.in);
-        String errorMessage = "Dimensions must be positive, greater than 10, and lower than 100. Try again: ";
-        String regex = "\\d+\\s+\\d+"; // Use double backslashes to escape the '\'
 
         int width, height;
 
-        if(choseSize()){
-            while (true) {
-                System.out.print("Enter the width and the height of the drawing: ");
-                String input = keyboard.nextLine().trim();
-
-                if (input.matches(regex)) {
+        while (true) {
+            if (choseSize()) {
+                try {
+                    displayMessage("Enter the width and the height of the drawing: ");
+                    String input = keyboard.nextLine().trim();
                     String[] detailInput = input.split("\\s+");
                     width = Integer.parseInt(detailInput[0]);
                     height = Integer.parseInt(detailInput[1]);
 
-                    if (width > 10 && height > 10 && width <= 100 && height <= 100) {
-                        validDrawing();
-                        paint = new AsciiPaint(width, height);
-                        break;
-                    } else {
-                        System.out.println(errorMessage);
-                    }
-                } else {
-                    System.out.println(errorMessage);
+                    validDrawing();
+                    paint = new AsciiPaint(width, height);
+                    break;
+
+                } catch (Exception e) {
+                    displayInvalidInput(e.getMessage());
                 }
+            } else {
+                paint = new AsciiPaint();
+                break;
             }
-        } else {
-            paint = new AsciiPaint();
         }
 
     }
@@ -75,58 +70,61 @@ public class Application {
             String[] detailInput = input.split("\\s+");
             String commandType = detailInput[0];
 
-            if (!commandType.matches(validCommandsRegex)) {
-                displayInvalidInput("Invalid command! Try again.");
-                checkForHelp();
-                continue; // Go back to the beginning of the loop for invalid commands
-            }
-
-            if (input.equalsIgnoreCase("q")) {
-                displayEnd();
-                return false; // User wants to quit
-            }
-
-            String invalidInputMessage = "Invalid input! Try again!";
-
-            switch (commandType.toLowerCase()) {
-                case "add":
-                    if (!addShape(input)) {
-                        displayInvalidInput(invalidInputMessage);
-                        checkForHelp();
-                    } else {
-                        validCommandAdd();
-                    }
-                    break;
-                case "show":
-                    displayDrawing(paint.asASCII(), paint.getDrawing().getHeight(), paint.getDrawing().getWidth());
-                    break;
-                case "list":
-                    displayShapeList(paint.getDrawing().getShapes());
-                    break;
-                case "move":
-                    if (!moveShape(input)) {
-                        displayInvalidInput(invalidInputMessage);
-                        checkForHelp();
-                    } else {
-                        validCommandMove();
-                    }
-                    break;
-                case "color":
-                    if (!changeColor(input)) {
-                        displayInvalidInput(invalidInputMessage);
-                        checkForHelp();
-                    } else {
-                        validCommandColor();
-                    }
-                    break;
-                default:
-                    displayInvalidInput(invalidInputMessage);
+            try {
+                if (!commandType.matches(validCommandsRegex)) {
+                    displayInvalidInput("Invalid command! Try again.");
                     checkForHelp();
-                    break;
-            }
+                    continue; // Go back to the beginning of the loop for invalid commands
+                }
 
-            return true;
+                if (input.equalsIgnoreCase("q")) {
+                    displayEnd();
+                    return false; // User wants to quit
+                }
+
+                String invalidInputMessage = "Invalid input! Try again!";
+
+                switch (commandType.toLowerCase()) {
+                    case "add":
+                        if (!addShape(input)) {
+                            displayInvalidInput(invalidInputMessage);
+                            checkForHelp();
+                        } else {
+                            validCommandAdd();
+                        }
+                        break;
+                    case "show":
+                        displayDrawing(paint.asASCII(), paint.getDrawing().getHeight(), paint.getDrawing().getWidth());
+                        break;
+                    case "list":
+                        displayShapeList(paint.getDrawing().getShapes());
+                        break;
+                    case "move":
+                        if (!moveShape(input)) {
+                            displayInvalidInput(invalidInputMessage);
+                            checkForHelp();
+                        } else {
+                            validCommandMove();
+                        }
+                        break;
+                    case "color":
+                        if (!changeColor(input)) {
+                            displayInvalidInput(invalidInputMessage);
+                            checkForHelp();
+                        } else {
+                            validCommandColor();
+                        }
+                        break;
+                    default:
+                        displayInvalidInput(invalidInputMessage);
+                        checkForHelp();
+                        break;
+                }
+            } catch (Exception e) {
+                displayInvalidInput(e.getMessage());
+            }
         }
+
     }
 
     private boolean addShape(String input) {
@@ -231,8 +229,9 @@ public class Application {
 
     }
 
-    private boolean choseSize(){
-        return stringRobustReading("Do you want to chose the size of the drawing? (y or n)", "(?i)[yn]").equalsIgnoreCase("y");
+    private boolean choseSize() {
+        return stringRobustReading("Do you want to chose the size of the drawing?" +
+                " (y or n)", "(?i)[yn]").equalsIgnoreCase("y");
     }
 
     private void checkForHelp() {
