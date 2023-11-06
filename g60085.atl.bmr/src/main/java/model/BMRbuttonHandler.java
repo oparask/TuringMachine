@@ -2,12 +2,10 @@ package model;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import view.GridPane1;
 import view.GridPane2;
 
-import model.CalculBMR;
+import static view.DisplayAlertError.showError;
 
 /**
  * This class handles the action when the "Calcul du BMR" button is clicked, which calculates BMR and related information.
@@ -83,24 +81,24 @@ public class BMRbuttonHandler implements EventHandler<ActionEvent> {
 
             } catch (NumberFormatException e) {
                 // Handle invalid input values and display an error message
-                showError("Valeurs incorrectes",
+                showError(gridPane2, "Valeurs incorrectes",
                         "La taille, le poids et l'âge doivent être supérieurs à zéro.");
             }
 
             if (heightValue == 0) {
                 // Handle zero height value and display an error message
                 gridPane1.setHeightErrorLabel("Taille invalide!");
-                showError("Valeur de la taille erronée", "La taille doit être supérieure à zéro.");
+                showError(gridPane2,"Valeur de la taille erronée", "La taille doit être supérieure à zéro.");
             }
             if (weightValue == 0) {
                 // Handle zero weight value and display an error message
                 gridPane1.setWeightErrorLabel("Poids invalide!");
-                showError("Valeur du poids erronée", "Le poids doit être supérieur à zéro.");
+                showError(gridPane2,"Valeur du poids erronée", "Le poids doit être supérieur à zéro.");
             }
             if (ageValue == 0) {
                 // Handle zero age value and display an error message
                 gridPane1.setAgeErrorLabel("Age invalide!");
-                showError("Valeur de l'âge erronée", "L'âge doit être supérieur à zéro.");
+                showError(gridPane2,"Valeur de l'âge erronée", "L'âge doit être supérieur à zéro.");
             }
 
             sexValue = gridPane1.getFemaleRadioButton().isSelected() ? "Femme" : "Homme";
@@ -118,26 +116,6 @@ public class BMRbuttonHandler implements EventHandler<ActionEvent> {
                 calculBMR.calculateBmr(heightValue, weightValue,ageValue, sexValue, activityLevelValue);
             }
         }
-    }
-
-    /**
-     * Displays an error dialog box with custom title, header, and content,
-     * while also modifying the style of result fields in the user interface.
-     *
-     * @param headerText  The header of the error dialog box.
-     * @param contentText The content of the error dialog box.
-     */
-    private void showError(String headerText, String contentText) {
-        gridPane2.getResultBMRField().setStyle("-fx-text-fill: red;");
-        gridPane2.setResultBMRField("Failed!");
-        gridPane2.getCaloriesField().setStyle("-fx-text-fill: red;");
-        gridPane2.setCaloriesField("Failed!");
-
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
-        alert.setHeaderText(headerText);
-        alert.setContentText(contentText);
-        alert.showAndWait();
     }
 }
 

@@ -29,6 +29,7 @@ public class GridPane2 extends GridPane {
         resultBMR = new Label("BMR");
         resultBMRField = new TextField();
         resultBMRField.setPromptText("Résultat du BMR");
+        resultBMRField.setEditable(false);
         this.add(resultBMR, 0, 1);
         this.add(resultBMRField, 1, 1);
 
@@ -36,6 +37,7 @@ public class GridPane2 extends GridPane {
         calories = new Label("Calories");
         caloriesField = new TextField();
         caloriesField.setPromptText("Dépense en calories");
+        caloriesField.setEditable(false);
         this.add(calories, 0, 2);
         this.add(caloriesField, 1, 2);
     }

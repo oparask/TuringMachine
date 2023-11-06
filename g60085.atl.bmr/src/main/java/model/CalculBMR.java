@@ -40,6 +40,15 @@ public class CalculBMR { //MyObservable
     }
 
     /**
+     * Gets the current calories value, representing the number of calories required for the individual's daily needs.
+     *
+     * @return The current calories value in calories per day.
+     */
+    public double getCalories() {
+        return calories;
+    }
+
+    /**
      * Sets the new BMR and calories values and notifies observers of the change.
      *
      * @param newBmr      The new BMR value.

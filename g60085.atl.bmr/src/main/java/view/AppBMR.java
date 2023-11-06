@@ -62,9 +62,8 @@ public class AppBMR extends Application {
         GridPane1 gridPane1 = new GridPane1();
         GridPane2 gridPane2 = new GridPane2();
 
-
-        CalculBMR calculBMR = new CalculBMR(); //l'observé
-        DisplayResultBMR DisplayResultBMR = new DisplayResultBMR(calculBMR, gridPane2);
+        CalculBMR calculBMR = new CalculBMR(); //Observable
+        DisplayResultBMR DisplayResultBMR = new DisplayResultBMR(calculBMR, gridPane2); //Observer
 
         // Create and define behavior when button is clicked
         Button bmrButton = new Button("Calcul du BMR");
