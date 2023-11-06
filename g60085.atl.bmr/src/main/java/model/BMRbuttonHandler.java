@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
 import view.GridPane1;
 import view.GridPane2;
 
-import static model.CalculBMR.bmr;
+import model.CalculBMR;
 
 /**
  * This class handles the action when the "Calcul du BMR" button is clicked, which calculates BMR and related information.
@@ -15,6 +15,7 @@ import static model.CalculBMR.bmr;
 public class BMRbuttonHandler implements EventHandler<ActionEvent> {
     private GridPane1 gridPane1;
     private GridPane2 gridPane2;
+    private CalculBMR calculBMR;
 
 
     /**
@@ -23,9 +24,11 @@ public class BMRbuttonHandler implements EventHandler<ActionEvent> {
      * @param gridPane1 The GridPane1 object containing user input data.
      * @param gridPane2 The GridPane2 object for displaying BMR and calories.
      */
-    public BMRbuttonHandler(GridPane1 gridPane1, GridPane2 gridPane2) {
+    public BMRbuttonHandler(GridPane1 gridPane1, GridPane2 gridPane2, CalculBMR calculBMR) {
         this.gridPane1 = gridPane1;
         this.gridPane2 = gridPane2;
+        this.calculBMR = calculBMR;
+
     }
 
     /**
@@ -112,16 +115,7 @@ public class BMRbuttonHandler implements EventHandler<ActionEvent> {
 
             // Call the function to calculate BMR and related information
             if (heightValue > 0 && weightValue > 0 && ageValue > 0) {
-                gridPane2.getResultBMRField().setStyle(null);
-                gridPane2.getCaloriesField().setStyle(null);
-
-                double resultBMR = bmr(heightValue, weightValue, ageValue, sexValue);
-                double roundedResultBMR = Math.round(resultBMR * 100.0) / 100.0;
-                gridPane2.setResultBMRField("" + roundedResultBMR);
-
-                double calories = resultBMR * activityLevelValue.getFactor();
-                double roundedResultCalories = Math.round(calories * 100.0) / 100.0;
-                gridPane2.setCaloriesField("" + roundedResultCalories);
+                calculBMR.calculateBmr(heightValue, weightValue,ageValue, sexValue, activityLevelValue);
             }
         }
     }

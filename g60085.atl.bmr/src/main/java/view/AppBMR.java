@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.BMRbuttonHandler;
 import javafx.scene.input.KeyEvent;
+import model.CalculBMR;
 
 /**
  * A JavaFX application for calculating Basal Metabolic Rate (BMR).
@@ -61,9 +62,13 @@ public class AppBMR extends Application {
         GridPane1 gridPane1 = new GridPane1();
         GridPane2 gridPane2 = new GridPane2();
 
+
+        CalculBMR calculBMR = new CalculBMR(); //l'observé
+        DisplayResultBMR DisplayResultBMR = new DisplayResultBMR(calculBMR, gridPane2);
+
         // Create and define behavior when button is clicked
         Button bmrButton = new Button("Calcul du BMR");
-        bmrButton.setOnAction(new BMRbuttonHandler(gridPane1, gridPane2));
+        bmrButton.setOnAction(new BMRbuttonHandler(gridPane1, gridPane2, calculBMR));
 
         Button clearButton = new Button("Clear");
         clearButton.setOnAction(event -> {
