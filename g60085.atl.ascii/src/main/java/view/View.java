@@ -42,6 +42,7 @@ public class View {
                         \u001B[36m characteristics:\u001B[0m circle     --> center.x center.y radius
                                           rectangle  --> upperLeftPoint.x upperLeftPoint.y width height
                                           square     --> upperLeftPoint.x upperLeftPoint.y side
+                                          line       --> a.X a.Y b.X b.Y
                         \u001B[93m i:\u001B[0m index in the list of shapes
                         \u001B[32m color:\u001B[0m a letter
                 """ + ANSI_RESET);

@@ -78,7 +78,7 @@ public class Application {
     private boolean processCommand() {
         Scanner keyboard = new Scanner(System.in);
 
-        String validCommandsRegex = "(?i)(add|show|list|move|color|q)";
+        String validCommandsRegex = "(?i)(add|show|list|move|color|delete|q)";
 
         while (true) {
             displayEntrancePrompt();
@@ -87,7 +87,7 @@ public class Application {
             String[] detailInput = input.split("\\s+");
             String commandType = detailInput[0];
 
-            try {
+            //try {
                 if (!commandType.matches(validCommandsRegex)) {
                     displayInvalidInput("Invalid command! Try again.");
                     checkForHelp();
@@ -132,14 +132,17 @@ public class Application {
                             validCommandColor();
                         }
                         break;
+                    case "delete":
+                        deleteShape(input);
+
                     default:
                         displayInvalidInput(invalidInputMessage);
                         checkForHelp();
                         break;
                 }
-            } catch (Exception e) {
+            /*} catch (Exception e) {
                 displayInvalidInput(e.getMessage());
-            }
+            }*/
         }
 
     }
@@ -155,6 +158,7 @@ public class Application {
         String circleRegex = "add\\s+circle\\s+\\d+\\s+\\d+\\s+\\d+(\\.\\d+)?\\s+[a-zA-Z]";
         String rectangleRegex = "add\\s+rectangle\\s+\\d+\\s+\\d+\\s+\\d+(\\.\\d+)?\\s+\\d+(\\.\\d+)?\\s+[a-zA-Z]";
         String squareRegex = "add\\s+square\\s+\\d+\\s+\\d+\\s+\\d+(\\.\\d+)?\\s+[a-zA-Z]";
+        String lineRegex = "add\\s+line\\s+\\d+\\s+\\d+\\s+\\d+\\s+\\d+\\s+[a-zA-Z]";
 
         String[] detailInput = input.split("\\s+");
         if (detailInput.length < 2) {
@@ -195,11 +199,32 @@ public class Application {
                     return true;
                 }
                 break;
+            case "line":
+                if (input.matches(lineRegex)) {
+                    double aX = Double.parseDouble(detailInput[2]);
+                    double aY= Double.parseDouble(detailInput[3]);
+                    double bX = Double.parseDouble(detailInput[4]);
+                    double bY= Double.parseDouble(detailInput[5]);
+                    char color = detailInput[6].charAt(0);
+                    paint.newLine(aX, aY, bX, bY, color);
+                    return true;
+                }
+                break;
+
             default:
-                System.out.println("Invalid shape type. Please use 'circle', 'rectangle', or 'square'.");
+                System.out.println("Invalid shape type. Please use 'circle', 'rectangle', 'square' or 'line'.");
                 break;
         }
         return false;
+    }
+
+    public boolean deleteShape(String input){
+        String[] detailInput = input.split("\\s+");
+        if (detailInput.length < 2) {
+            return false;
+        }
+        paint.deleteShape(Integer.parseInt(detailInput[1]));
+        return true;
     }
 
 
@@ -240,11 +265,10 @@ public class Application {
         String regex = "color\\s+\\d+\\s+[a-zA-Z]";
         String[] detailInput = input.split("\\s+");
 
-        var list = paint.getDrawing().getShapes();
-
         if (input.matches(regex)) {
-            Shape shape = list.get(Integer.parseInt(detailInput[1]));
-            shape.setColor(detailInput[2].charAt(0));
+            int indexShape = Integer.parseInt(detailInput[1]);
+            char color = detailInput[2].charAt(0);
+            this.paint.setColor(indexShape, color);
             return true;
         } else {
             return false;

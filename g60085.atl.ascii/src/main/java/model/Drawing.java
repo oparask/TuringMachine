@@ -43,6 +43,10 @@ public class Drawing {
         shapes.add(shape);
     }
 
+    public void deleteShape(int shapeIndex){
+        shapes.remove(shapeIndex);
+    }
+
     /**
      * Retrieves the shape at the specified point, if any.
      *

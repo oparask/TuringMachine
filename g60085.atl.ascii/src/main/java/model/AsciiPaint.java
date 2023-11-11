@@ -1,5 +1,7 @@
 package model;
 
+import java.util.*;
+
 /**
  * The AsciiPaint class serves as the model's facade and contains methods for modifying the model,
  * including adding shapes, moving shapes, and changing colors. The facade also provides methods for
@@ -49,7 +51,7 @@ public class AsciiPaint {
      * @param color  The color character for the circle.
      * @throws IllegalArgumentException If any of the provided parameters are invalid.
      */
-    public void newCircle(int x, int y, double radius, char color) throws IllegalArgumentException {
+    public void newCircle(double x, double y, double radius, char color) throws IllegalArgumentException {
         validateCoordinates(x, y);
         if (radius <= 0 || radius >= 25) {
             throw new IllegalArgumentException("Radius must be positive and below 25, received: " + radius);
@@ -69,7 +71,7 @@ public class AsciiPaint {
      * @param color  The color character for the rectangle.
      * @throws IllegalArgumentException If any of the provided parameters are invalid.
      */
-    public void newRectangle(int x, int y, double width, double height, char color) throws IllegalArgumentException {
+    public void newRectangle(double x, double y, double width, double height, char color) throws IllegalArgumentException {
         validateCoordinates(x, y);
         if (width <= 0 || width > 25 || height <= 0 || height > 25) {
             throw new IllegalArgumentException("The dimensions must be positive and below 25.");
@@ -88,7 +90,7 @@ public class AsciiPaint {
      * @param color The color character for the square.
      * @throws IllegalArgumentException If any of the provided parameters are invalid.
      */
-    public void newSquare(int x, int y, double side, char color) throws IllegalArgumentException {
+    public void newSquare(double x, double y, double side, char color) throws IllegalArgumentException {
         validateCoordinates(x, y);
         if (side <= 0 || side > 25) {
             throw new IllegalArgumentException("The side length of the square must be positive and below 25.");
@@ -98,6 +100,49 @@ public class AsciiPaint {
         drawing.addShape(new Square(new Point(x, y), side, color));
     }
 
+    public void newLine(double aX, double aY, double bX, double bY, char color) throws IllegalArgumentException {
+        validateCoordinates(aX, aY);
+        validateCoordinates(bX, bY);
+        validateColor(color);
+        drawing.addShape(new Line(new Point(aX, aY), new Point(bX, bY), color));
+    }
+
+    public void newGroup(List<Integer> shapeIndex, char color) throws IllegalArgumentException{
+        Collections.sort(shapeIndex);
+        for(int i = 0; i<shapeIndex.size() - 1; i++){
+            if(Objects.equals(shapeIndex.get(i), shapeIndex.get(i + 1))){
+                shapeIndex.remove(i+1);
+                i--;
+            }
+        }
+        for(int i : shapeIndex){
+            if(i<0 || i>= drawing.getShapes().size()){
+                throw new IllegalArgumentException("Invalid shape index.");
+            }
+        }
+        List<Shape> groupShapes = new ArrayList<>();
+        for(Integer i : shapeIndex){
+            groupShapes.add(drawing.getShapes().get(i));
+        }
+
+        Group group = new Group(color);
+        group.addShapes(groupShapes);
+
+        drawing.addShape(group);
+
+    }
+
+    public void setColor(int indexShape, char color){
+        this.drawing.getShapes().get(indexShape).setColor(color);
+    }
+
+    public void deleteShape(int shapeIndex){
+        if(shapeIndex<0 || shapeIndex>= drawing.getShapes().size()){
+            throw new IllegalArgumentException("Invalid shape index.");
+        }
+        drawing.deleteShape(shapeIndex);
+    }
+
     /**
      * Validates the provided coordinates to ensure they are within the bounds of the drawing area.
      *
@@ -105,7 +150,7 @@ public class AsciiPaint {
      * @param y The Y-coordinate to be validated.
      * @throws IllegalArgumentException if the coordinates are not positive or are outside the bounds of the drawing area.
      */
-    private void validateCoordinates(int x, int y) throws IllegalArgumentException {
+    private void validateCoordinates(double x, double y) throws IllegalArgumentException {
         if (x <= 0 || y <= 0 || x >= drawing.getWidth() || y >= drawing.getHeight()) {
             throw new IllegalArgumentException("The coordinates must be positive and within the bounds of the drawing.");
         }

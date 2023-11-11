@@ -15,7 +15,7 @@ public class Point {
      * @throws IllegalArgumentException if either x or y is not positive.
      */
     public Point(double x, double y) throws IllegalArgumentException {
-        if (x <= 0 || y <= 0) {
+        if (x < 0 || y < 0) {
             throw new IllegalArgumentException("Coordinates must be positive.");
         }
 
