@@ -1,7 +1,6 @@
 package controller;
 
 import model.AsciiPaint;
-import model.Shape;
 
 import java.util.Scanner;
 
@@ -64,9 +63,7 @@ public class Application {
                 break;
             }
         }
-
     }
-
 
     /**
      * Processes user commands for interacting with the drawing application. The user is prompted to enter commands
@@ -77,74 +74,39 @@ public class Application {
      */
     private boolean processCommand() {
         Scanner keyboard = new Scanner(System.in);
-
-        String validCommandsRegex = "(?i)(add|show|list|move|color|delete|q)";
+        String invalidInputMessage = "Invalid input! Try again!";
 
         while (true) {
-            displayEntrancePrompt();
+            try {
+                displayEntrancePrompt();
 
-            String input = keyboard.nextLine().trim();
-            String[] detailInput = input.split("\\s+");
-            String commandType = detailInput[0];
-
-            //try {
-                if (!commandType.matches(validCommandsRegex)) {
-                    displayInvalidInput("Invalid command! Try again.");
-                    checkForHelp();
-                    continue; // Go back to the beginning of the loop for invalid commands
-                }
-
-                if (input.equalsIgnoreCase("q")) {
-                    displayEnd();
-                    return false; // User wants to quit
-                }
-
-                String invalidInputMessage = "Invalid input! Try again!";
+                String input = keyboard.nextLine().trim();
+                String[] detailInput = input.split("\\s+");
+                String commandType = detailInput[0];
 
                 switch (commandType.toLowerCase()) {
-                    case "add":
-                        if (!addShape(input)) {
-                            displayInvalidInput(invalidInputMessage);
-                            checkForHelp();
-                        } else {
-                            validCommandAdd();
-                        }
-                        break;
-                    case "show":
-                        displayDrawing(paint.asASCII(), paint.getDrawing().getHeight(), paint.getDrawing().getWidth());
-                        break;
-                    case "list":
-                        displayShapeList(paint.getDrawing().getShapes());
-                        break;
-                    case "move":
-                        if (!moveShape(input)) {
-                            displayInvalidInput(invalidInputMessage);
-                            checkForHelp();
-                        } else {
-                            validCommandMove();
-                        }
-                        break;
-                    case "color":
-                        if (!changeColor(input)) {
-                            displayInvalidInput(invalidInputMessage);
-                            checkForHelp();
-                        } else {
-                            validCommandColor();
-                        }
-                        break;
-                    case "delete":
-                        deleteShape(input);
-
-                    default:
+                    case "add" -> addShape(input);
+                    case "show" ->
+                            displayDrawing(paint.asASCII(), paint.getDrawing().getHeight(), paint.getDrawing().getWidth());
+                    case "list" -> displayShapeList(paint.getDrawing().getShapes());
+                    case "move" -> moveShape(input);
+                    case "color" -> changeColorShape(input);
+                    case "delete" -> deleteShape(input);
+                    case "exit" -> {
+                        displayEnd();
+                        return false;
+                    }
+                    default -> {
                         displayInvalidInput(invalidInputMessage);
                         checkForHelp();
-                        break;
+                    }
                 }
-            /*} catch (Exception e) {
-                displayInvalidInput(e.getMessage());
-            }*/
-        }
 
+            } catch (Exception e) {
+                displayInvalidInput(e.getMessage());
+                checkForHelp();
+            }
+        }
     }
 
 
@@ -152,79 +114,84 @@ public class Application {
      * Parses and adds a shape to the drawing based on the provided input.
      *
      * @param input The user input representing the shape to be added.
-     * @return true if the shape is successfully added to the drawing, false otherwise.
      */
-    private boolean addShape(String input) {
-        String circleRegex = "add\\s+circle\\s+\\d+\\s+\\d+\\s+\\d+(\\.\\d+)?\\s+[a-zA-Z]";
-        String rectangleRegex = "add\\s+rectangle\\s+\\d+\\s+\\d+\\s+\\d+(\\.\\d+)?\\s+\\d+(\\.\\d+)?\\s+[a-zA-Z]";
-        String squareRegex = "add\\s+square\\s+\\d+\\s+\\d+\\s+\\d+(\\.\\d+)?\\s+[a-zA-Z]";
-        String lineRegex = "add\\s+line\\s+\\d+\\s+\\d+\\s+\\d+\\s+\\d+\\s+[a-zA-Z]";
+    private void addShape(String input) throws IllegalArgumentException {
+        String circleRegex = "add\\s+circle\\s+(\\d+\\.?\\d*)\\s+(\\d+\\.?\\d*)\\s+(\\d+\\.?\\d*)\\s+[a-zA-Z]";
+        String rectangleRegex = "add\\s+rectangle\\s+(\\d+\\.?\\d*)\\s+(\\d+\\.?\\d*)\\s+\\d+(\\.\\d+)?\\s+\\d+(\\.\\d+)?\\s+[a-zA-Z]";
+        String squareRegex = "add\\s+square\\s+(\\d+\\.?\\d*)\\s+(\\d+\\.?\\d*)\\s+\\d+(\\.\\d+)?\\s+[a-zA-Z]";
+        String lineRegex = "add\\s+line\\s+(\\d+\\.?\\d*)\\s+(\\d+\\.?\\d*)\\s+(\\d+\\.?\\d*)\\s+(\\d+\\.?\\d*)\\s+[a-zA-Z]";
 
         String[] detailInput = input.split("\\s+");
-        if (detailInput.length < 2) {
-            return false;
+
+        if (detailInput.length == 1) {
+            throw new IllegalArgumentException("You must enter the shape you want to add and its characteristics.");
         }
+        String shape = detailInput[1];
 
-        String shape = detailInput[1].toLowerCase();
-
-        switch (shape) {
+        switch (shape.toLowerCase()) {
             case "circle":
-                if (input.matches(circleRegex)) {
-                    int x = Integer.parseInt(detailInput[2]);
-                    int y = Integer.parseInt(detailInput[3]);
+                if (!input.toLowerCase().matches(circleRegex)) {
+                    throw new IllegalArgumentException("Use the correct command to add a circle.");
+                } else {
+                    double x = Double.parseDouble(detailInput[2]);
+                    double y = Double.parseDouble(detailInput[3]);
                     double radius = Double.parseDouble(detailInput[4]);
                     char color = detailInput[5].charAt(0);
                     paint.newCircle(x, y, radius, color);
-                    return true;
                 }
                 break;
             case "rectangle":
-                if (input.matches(rectangleRegex)) {
-                    int x = Integer.parseInt(detailInput[2]);
-                    int y = Integer.parseInt(detailInput[3]);
+                if (!input.toLowerCase().matches(rectangleRegex)) {
+                    throw new IllegalArgumentException("Use the correct command to add a rectangle.");
+                } else {
+                    double x = Double.parseDouble(detailInput[2]);
+                    double y = Double.parseDouble(detailInput[3]);
                     double width = Double.parseDouble(detailInput[4]);
                     double height = Double.parseDouble(detailInput[5]);
                     char color = detailInput[6].charAt(0);
                     paint.newRectangle(x, y, width, height, color);
-                    return true;
                 }
                 break;
             case "square":
-                if (input.matches(squareRegex)) {
+                if (!input.toLowerCase().matches(squareRegex)) {
+                    throw new IllegalArgumentException("Use the correct command to add a square.");
+                } else {
                     int x = Integer.parseInt(detailInput[2]);
                     int y = Integer.parseInt(detailInput[3]);
                     double side = Double.parseDouble(detailInput[4]);
                     char color = detailInput[5].charAt(0);
                     paint.newSquare(x, y, side, color);
-                    return true;
                 }
                 break;
             case "line":
-                if (input.matches(lineRegex)) {
+                if (!input.toLowerCase().matches(lineRegex)) {
+                    throw new IllegalArgumentException("Use the correct command to add a line.");
+                } else {
                     double aX = Double.parseDouble(detailInput[2]);
-                    double aY= Double.parseDouble(detailInput[3]);
+                    double aY = Double.parseDouble(detailInput[3]);
                     double bX = Double.parseDouble(detailInput[4]);
-                    double bY= Double.parseDouble(detailInput[5]);
+                    double bY = Double.parseDouble(detailInput[5]);
                     char color = detailInput[6].charAt(0);
                     paint.newLine(aX, aY, bX, bY, color);
-                    return true;
                 }
                 break;
-
             default:
-                System.out.println("Invalid shape type. Please use 'circle', 'rectangle', 'square' or 'line'.");
+                displayInvalidInput("Invalid shape type. " +
+                        "Please use 'circle', 'rectangle', 'square' or 'line' in your add command.");
                 break;
         }
-        return false;
+        validCommandAdd();
     }
 
-    public boolean deleteShape(String input){
-        String[] detailInput = input.split("\\s+");
-        if (detailInput.length < 2) {
-            return false;
+    public void deleteShape(String input) throws IllegalArgumentException {
+        String regex = "delete\\s+\\d+";
+
+        if (!input.toLowerCase().matches(regex)) {
+            throw new IllegalArgumentException("You must specify an index from the shape list.");
         }
+        String[] detailInput = input.split("\\s+");
         paint.deleteShape(Integer.parseInt(detailInput[1]));
-        return true;
+        validCommandDelete();
     }
 
 
@@ -232,27 +199,21 @@ public class Application {
      * Moves a shape in the drawing based on the provided input.
      *
      * @param input The user input representing the shape index and the amount to move horizontally and vertically.
-     * @return true if the shape is successfully moved, false otherwise.
      */
-    private boolean moveShape(String input) {
-        // move <i> <horizontally> <vertically>
+    private void moveShape(String input) throws IllegalArgumentException {
         String regex = "move\\s+(\\d+)\\s+(-?\\d+\\.?\\d*)\\s+(-?\\d+\\.?\\d*)";
-
-
         String[] detailInput = input.split("\\s+");
 
-        var list = paint.getDrawing().getShapes();
-
-        if (input.matches(regex)) {
-            int index = Integer.parseInt(detailInput[1]);
-
-            if (index >= 0 && index < list.size()) { // Vérifiez si l'index est valide
-                Shape shape = list.get(index);
-                shape.move(Double.parseDouble(detailInput[2]), Double.parseDouble(detailInput[3]));
-                return true;
-            }
+        if (!input.toLowerCase().matches(regex)) {
+            throw new IllegalArgumentException("You must specify an index from the shape list, delta x and delta y.");
         }
-        return false;
+
+        int shapeIndex = Integer.parseInt(detailInput[1]);
+        double dx = Double.parseDouble(detailInput[2]);
+        double dy = Double.parseDouble(detailInput[3]);
+
+        paint.moveShape(shapeIndex, dx, dy);
+        validCommandMove();
     }
 
     /**
@@ -261,18 +222,19 @@ public class Application {
      * @param input The user input representing the shape index and the new color character.
      * @return true if the shape's color is successfully changed, false otherwise.
      */
-    private boolean changeColor(String input) {
+    private void changeColorShape(String input) throws IllegalArgumentException {
         String regex = "color\\s+\\d+\\s+[a-zA-Z]";
         String[] detailInput = input.split("\\s+");
 
-        if (input.matches(regex)) {
-            int indexShape = Integer.parseInt(detailInput[1]);
-            char color = detailInput[2].charAt(0);
-            this.paint.setColor(indexShape, color);
-            return true;
-        } else {
-            return false;
+        if (!input.toLowerCase().matches(regex)) {
+            throw new IllegalArgumentException("You must specify an index from the shape list and the color.");
         }
+
+        int shapeIndex = Integer.parseInt(detailInput[1]);
+        char color = detailInput[2].charAt(0);
+
+        this.paint.setColor(shapeIndex, color);
+        validCommandColor();
     }
 
     /**
@@ -288,7 +250,7 @@ public class Application {
 
         String input = keyboard.nextLine();
         while (input.trim().isEmpty() || !input.trim().matches(regex)) { //Ensures that the user cannot enter only whitespace as a valid input.
-            displayInvalidInput("Invalid input! Try again. " + message);
+            displayInvalidInput("Invalid input. " + message);
             input = keyboard.nextLine();
         }
 

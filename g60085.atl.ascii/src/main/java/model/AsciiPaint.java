@@ -1,6 +1,9 @@
 package model;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * The AsciiPaint class serves as the model's facade and contains methods for modifying the model,
@@ -53,8 +56,8 @@ public class AsciiPaint {
      */
     public void newCircle(double x, double y, double radius, char color) throws IllegalArgumentException {
         validateCoordinates(x, y);
-        if (radius <= 0 || radius >= 25) {
-            throw new IllegalArgumentException("Radius must be positive and below 25, received: " + radius);
+        if (radius <= 0) {
+            throw new IllegalArgumentException("Radius must be positive");
         }
         validateColor(color);
 
@@ -73,8 +76,8 @@ public class AsciiPaint {
      */
     public void newRectangle(double x, double y, double width, double height, char color) throws IllegalArgumentException {
         validateCoordinates(x, y);
-        if (width <= 0 || width > 25 || height <= 0 || height > 25) {
-            throw new IllegalArgumentException("The dimensions must be positive and below 25.");
+        if (width <= 0 || height <= 0) {
+            throw new IllegalArgumentException("The dimensions must be positive.");
         }
         validateColor(color);
 
@@ -92,8 +95,8 @@ public class AsciiPaint {
      */
     public void newSquare(double x, double y, double side, char color) throws IllegalArgumentException {
         validateCoordinates(x, y);
-        if (side <= 0 || side > 25) {
-            throw new IllegalArgumentException("The side length of the square must be positive and below 25.");
+        if (side <= 0) {
+            throw new IllegalArgumentException("The side length of the square must be positive.");
         }
         validateColor(color);
 
@@ -107,21 +110,21 @@ public class AsciiPaint {
         drawing.addShape(new Line(new Point(aX, aY), new Point(bX, bY), color));
     }
 
-    public void newGroup(List<Integer> shapeIndex, char color) throws IllegalArgumentException{
+    public void newGroup(List<Integer> shapeIndex, char color) throws IllegalArgumentException {
         Collections.sort(shapeIndex);
-        for(int i = 0; i<shapeIndex.size() - 1; i++){
-            if(Objects.equals(shapeIndex.get(i), shapeIndex.get(i + 1))){
-                shapeIndex.remove(i+1);
+        for (int i = 0; i < shapeIndex.size() - 1; i++) {
+            if (Objects.equals(shapeIndex.get(i), shapeIndex.get(i + 1))) {
+                shapeIndex.remove(i + 1);
                 i--;
             }
         }
-        for(int i : shapeIndex){
-            if(i<0 || i>= drawing.getShapes().size()){
+        for (int i : shapeIndex) {
+            if (i < 0 || i >= drawing.getShapes().size()) {
                 throw new IllegalArgumentException("Invalid shape index.");
             }
         }
         List<Shape> groupShapes = new ArrayList<>();
-        for(Integer i : shapeIndex){
+        for (Integer i : shapeIndex) {
             groupShapes.add(drawing.getShapes().get(i));
         }
 
@@ -132,15 +135,23 @@ public class AsciiPaint {
 
     }
 
-    public void setColor(int indexShape, char color){
+    public void setColor(int indexShape, char color) throws IllegalArgumentException {
+        validateColor(color);
         this.drawing.getShapes().get(indexShape).setColor(color);
     }
 
-    public void deleteShape(int shapeIndex){
-        if(shapeIndex<0 || shapeIndex>= drawing.getShapes().size()){
-            throw new IllegalArgumentException("Invalid shape index.");
+    public void deleteShape(int shapeIndex) throws IllegalArgumentException {
+        if (shapeIndex < 0 || shapeIndex >= drawing.getShapes().size()) {
+            throw new IllegalArgumentException("You must specify an index from the shape list.");
         }
         drawing.deleteShape(shapeIndex);
+    }
+
+    public void moveShape(int shapeIndex, double dx, double dy)  throws IllegalArgumentException {
+        if (shapeIndex < 0 || shapeIndex >= drawing.getShapes().size()) {
+            throw new IllegalArgumentException("You must specify an index from the shape list.");
+        }
+        drawing.getShapes().get(shapeIndex).move(dx, dy);
     }
 
     /**
@@ -151,7 +162,7 @@ public class AsciiPaint {
      * @throws IllegalArgumentException if the coordinates are not positive or are outside the bounds of the drawing area.
      */
     private void validateCoordinates(double x, double y) throws IllegalArgumentException {
-        if (x <= 0 || y <= 0 || x >= drawing.getWidth() || y >= drawing.getHeight()) {
+        if (x < 0 || y < 0 || x > drawing.getWidth() || y > drawing.getHeight()) {
             throw new IllegalArgumentException("The coordinates must be positive and within the bounds of the drawing.");
         }
     }
@@ -176,8 +187,8 @@ public class AsciiPaint {
      */
     public String asASCII() {
         StringBuilder colorShapes = new StringBuilder();
-        for (int y = 0; y < drawing.getHeight(); y++) { // Traverse the height (vertical)
-            for (int x = 0; x < drawing.getWidth(); x++) { // Traverse the width (horizontal)
+        for (int y = 0; y <= drawing.getHeight(); y++) { // Traverse the height (vertical)
+            for (int x = 0; x <= drawing.getWidth(); x++) { // Traverse the width (horizontal)
                 Shape shape = drawing.getShapeAt(new Point(x, drawing.getHeight() - y));
                 if (shape != null) {
                     colorShapes.append(shape.getColor());

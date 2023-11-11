@@ -36,7 +36,8 @@ public class View {
                  \u001B[35m- Display the existing shapes:\u001B[0m list
                  \u001B[35m- Move a shape:\u001B[0m move \u001B[93m<i>\u001B[0m <horizontally> <vertically>
                  \u001B[35m- Change color:\u001B[0m color \u001B[93m<i>\u001B[0m \u001B[32m<color>\u001B[0m
-                 \u001B[35m- Quit:\u001B[0m q
+                 \u001B[35m- Delete a shape:\u001B[0m delete \u001B[93m<i>\u001B[0m
+                 \u001B[35m- Exit:\u001B[0m exit
                  
                         \u001B[34m shape:\u001B[0m circle, rectangle or square
                         \u001B[36m characteristics:\u001B[0m circle     --> center.x center.y radius
@@ -88,6 +89,15 @@ public class View {
         System.out.println();
     }
 
+    /**
+     * Displays a message to inform that the shape has been deleted successfully.
+     */
+    public static void validCommandDelete() {
+        System.out.println(ANSI_GREEN + "The shape has been deleted successfully!" + ANSI_RESET);
+        System.out.println();
+    }
+
+
 
     /**
      * Displays the drawing based on color information, height, and width.
@@ -97,18 +107,16 @@ public class View {
      * @param width       The width of the drawing area.
      */
     public static void displayDrawing(String colorString, int height, int width) {
-
-
         int indexString = 0;
-        for (int y = 0; y < height; y++) {
-            String tmp = "" + (height - y);
+        for (int y = 0; y <= height; y++) {
+            String tmp = "" + (height - y); //Display graduation
             if (tmp.length() == 1) {
-                System.out.print(ANSI_BLUE + (height - y) + "  |  " + ANSI_RESET);
+                System.out.print(ANSI_BLUE + (height - y) + "   " + ANSI_RESET);
             } else {
-                System.out.print(ANSI_BLUE + (height - y) + " |  " + ANSI_RESET);
+                System.out.print(ANSI_BLUE + (height - y) + "  " + ANSI_RESET);
             }
 
-            for (int x = 0; x < width; x++) {
+            for (int x = 0; x <= width; x++) {
                 if (colorString.charAt(indexString) == ' ') {
                     System.out.print(".  ");
                 } else {
@@ -119,7 +127,7 @@ public class View {
             System.out.println();
         }
 
-        System.out.print("      ");
+        System.out.print("    ");
         for (int j = 0; j <= width; j++) {
             String tmp = "" + j;
             if (tmp.length() == 1) {

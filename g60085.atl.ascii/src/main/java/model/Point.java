@@ -10,15 +10,10 @@ public class Point {
     /**
      * Constructs a Point with the specified X and Y coordinates.
      *
-     * @param x The X-coordinate of the point (must be positive).
-     * @param y The Y-coordinate of the point (must be positive).
-     * @throws IllegalArgumentException if either x or y is not positive.
+     * @param x The X-coordinate of the point.
+     * @param y The Y-coordinate of the point.
      */
-    public Point(double x, double y) throws IllegalArgumentException {
-        if (x < 0 || y < 0) {
-            throw new IllegalArgumentException("Coordinates must be positive.");
-        }
-
+    public Point(double x, double y) {
         this.x = x;
         this.y = y;
     }
