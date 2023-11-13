@@ -28,6 +28,15 @@ public class Rectangle extends ColoredShape {
         this.height = height;
     }
 
+    public Point getUpperLeft() {
+        return upperLeft;
+    }
+
+
+    public double getHeight() {
+        return height;
+    }
+
     /**
      * Checks whether a given Point is inside the rectangle.
      *
@@ -58,6 +67,6 @@ public class Rectangle extends ColoredShape {
      */
     @Override
     public String toString() {
-        return "rectangle";
+        return "rectangle (upperLeft point: "+upperLeft+", width: " + width+ ", height: "+height+")";
     }
 }

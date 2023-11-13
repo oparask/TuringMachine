@@ -66,6 +66,11 @@ public class Point {
     public double distanceTo(Point other) {
         return Math.sqrt(Math.pow((other.x - this.x), 2) + Math.pow((other.y - this.y), 2));
     }
+
+    @Override
+    public String toString() {
+        return "(" + x + ", " + y + ")";
+    }
 }
 
 

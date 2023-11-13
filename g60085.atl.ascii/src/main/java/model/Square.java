@@ -24,6 +24,6 @@ public class Square extends Rectangle {
      */
     @Override
     public String toString() {
-        return "square";
+        return "square (upperLeft point: "+this.getUpperLeft()+", side: "+this.getHeight()+")";
     }
 }

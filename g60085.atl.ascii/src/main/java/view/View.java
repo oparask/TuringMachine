@@ -37,6 +37,8 @@ public class View {
                  \u001B[35m- Move a shape:\u001B[0m move \u001B[93m<i>\u001B[0m <horizontally> <vertically>
                  \u001B[35m- Change color:\u001B[0m color \u001B[93m<i>\u001B[0m \u001B[32m<color>\u001B[0m
                  \u001B[35m- Delete a shape:\u001B[0m delete \u001B[93m<i>\u001B[0m
+                 \u001B[35m- Group shapes:\u001B[0m group [\u001B[93m<i>\u001B[0m ...]
+                 \u001B[35m- Degroup shapes:\u001B[0m degroup [\u001B[93m<i>\u001B[0m ...]
                  \u001B[35m- Exit:\u001B[0m exit
                  
                         \u001B[34m shape:\u001B[0m circle, rectangle or square
@@ -97,6 +99,13 @@ public class View {
         System.out.println();
     }
 
+    /**
+     * Displays a message to inform that the shapes have been grouped successfully.
+     */
+    public static void validCommandGroup() {
+        System.out.println(ANSI_GREEN + "The shapes have been grouped successfully!" + ANSI_RESET);
+        System.out.println();
+    }
 
 
     /**
@@ -147,7 +156,7 @@ public class View {
      */
     public static void displayShapeList(List<Shape> shapeList) {
         for (int i = 0; i < shapeList.size(); i++) {
-            System.out.println(shapeList.get(i) + " - " + i + "  ");
+            System.out.println(i + " - " + shapeList.get(i));
         }
         System.out.println();
     }

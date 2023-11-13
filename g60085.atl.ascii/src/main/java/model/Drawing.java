@@ -88,4 +88,8 @@ public class Drawing {
     public List<Shape> getShapes() {
         return shapes;
     }
+
+    public void setShapes(Shape shape) {
+        this.shapes.add(shape);
+    }
 }

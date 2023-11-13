@@ -2,6 +2,8 @@ package controller;
 
 import model.AsciiPaint;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import static view.View.*;
@@ -92,6 +94,8 @@ public class Application {
                     case "move" -> moveShape(input);
                     case "color" -> changeColorShape(input);
                     case "delete" -> deleteShape(input);
+                    case "group" -> groupShapes(input);
+                    case "ungroup" -> ungroupShapes(input);
                     case "exit" -> {
                         displayEnd();
                         return false;
@@ -189,6 +193,7 @@ public class Application {
         if (!input.toLowerCase().matches(regex)) {
             throw new IllegalArgumentException("You must specify an index from the shape list.");
         }
+
         String[] detailInput = input.split("\\s+");
         paint.deleteShape(Integer.parseInt(detailInput[1]));
         validCommandDelete();
@@ -202,11 +207,12 @@ public class Application {
      */
     private void moveShape(String input) throws IllegalArgumentException {
         String regex = "move\\s+(\\d+)\\s+(-?\\d+\\.?\\d*)\\s+(-?\\d+\\.?\\d*)";
-        String[] detailInput = input.split("\\s+");
 
         if (!input.toLowerCase().matches(regex)) {
             throw new IllegalArgumentException("You must specify an index from the shape list, delta x and delta y.");
         }
+
+        String[] detailInput = input.split("\\s+");
 
         int shapeIndex = Integer.parseInt(detailInput[1]);
         double dx = Double.parseDouble(detailInput[2]);
@@ -224,11 +230,12 @@ public class Application {
      */
     private void changeColorShape(String input) throws IllegalArgumentException {
         String regex = "color\\s+\\d+\\s+[a-zA-Z]";
-        String[] detailInput = input.split("\\s+");
 
         if (!input.toLowerCase().matches(regex)) {
             throw new IllegalArgumentException("You must specify an index from the shape list and the color.");
         }
+
+        String[] detailInput = input.split("\\s+");
 
         int shapeIndex = Integer.parseInt(detailInput[1]);
         char color = detailInput[2].charAt(0);
@@ -236,6 +243,37 @@ public class Application {
         this.paint.setColor(shapeIndex, color);
         validCommandColor();
     }
+
+    public void groupShapes(String input) {
+        String regex = "group\\s+\\d+(\\s+\\d+)*";
+
+        if (!input.toLowerCase().matches(regex)) {
+            throw new IllegalArgumentException("You must specify indexes from the shape list.");
+        }
+
+        String[] detailInput = input.split("\\s+");
+        List<Integer> shapeIndexes = new ArrayList<>();
+
+        for(int i = 1; i<detailInput.length; i++){
+            shapeIndexes.add(Integer.parseInt(detailInput[i]));
+        }
+
+        paint.newGroup(shapeIndexes);
+        validCommandGroup();
+    }
+    public void ungroupShapes(String input){
+        String regex = "ungroup\\s+\\d+";
+
+        if (!input.toLowerCase().matches(regex)) {
+            throw new IllegalArgumentException("You must specify an index of a group from the shape list.");
+        }
+
+        String[] detailInput = input.split("\\s+");
+
+        paint.ungroup(Integer.parseInt(detailInput[1]));
+        validCommandGroup();
+    }
+
 
     /**
      * Reads and validates a string input from the user based on a regular expression pattern.

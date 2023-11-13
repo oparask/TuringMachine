@@ -6,13 +6,23 @@ import java.util.List;
 
 public class Group extends ColoredShape {
     private List<Shape> shapes;
+    private List<Integer> previousIndexes;
 
     public Group(char color) {
         super(color);
         this.shapes = new ArrayList<>();
+        this.previousIndexes= new ArrayList<>();
     }
 
-    public void addShapes(List<Shape> shapes) {
+    public List<Shape> getShapes() {
+        return shapes;
+    }
+    public List<Integer> getPreviousIndexes() {
+        return previousIndexes;
+    }
+
+    public void addShapes(List<Shape> shapes, List<Integer> previousIndexes) {
+        previousIndexes = previousIndexes;
         this.shapes = shapes;
     }
 
@@ -37,5 +47,12 @@ public class Group extends ColoredShape {
         return false;
     }
 
-
+    @Override
+    public String toString() {
+        String string = "";
+        for(Shape shape : shapes){
+            string += shape.toString() + " ";
+        }
+        return "Group: " + string;
+    }
 }

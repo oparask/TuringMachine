@@ -110,29 +110,51 @@ public class AsciiPaint {
         drawing.addShape(new Line(new Point(aX, aY), new Point(bX, bY), color));
     }
 
-    public void newGroup(List<Integer> shapeIndex, char color) throws IllegalArgumentException {
-        Collections.sort(shapeIndex);
-        for (int i = 0; i < shapeIndex.size() - 1; i++) {
-            if (Objects.equals(shapeIndex.get(i), shapeIndex.get(i + 1))) {
-                shapeIndex.remove(i + 1);
+    public void newGroup(List<Integer> shapeIndexes) throws IllegalArgumentException {
+        Collections.sort(shapeIndexes);
+        //remove duplicates
+        for (int i = 0; i < shapeIndexes.size() - 1; i++) {
+            if (Objects.equals(shapeIndexes.get(i), shapeIndexes.get(i + 1))) {
+                shapeIndexes.remove(i + 1);
                 i--;
             }
         }
-        for (int i : shapeIndex) {
+
+        for (Integer i : shapeIndexes) {
             if (i < 0 || i >= drawing.getShapes().size()) {
                 throw new IllegalArgumentException("Invalid shape index.");
             }
         }
+
         List<Shape> groupShapes = new ArrayList<>();
-        for (Integer i : shapeIndex) {
+        for (Integer i : shapeIndexes) {
             groupShapes.add(drawing.getShapes().get(i));
         }
 
-        Group group = new Group(color);
-        group.addShapes(groupShapes);
+        //remove shapes that were grouped from the list
+        for (Shape shape : groupShapes) {
+            deleteShape(drawing.getShapes().indexOf(shape));
+        }
+
+        Group group = new Group(groupShapes.get(0).getColor());
+        group.addShapes(groupShapes, shapeIndexes);
 
         drawing.addShape(group);
 
+    }
+
+    public void ungroup(int groupIndex) throws IllegalArgumentException {
+        if (groupIndex < 0 || groupIndex >= drawing.getShapes().size() || !(drawing.getShapes().get(groupIndex) instanceof Group)) {
+            throw new IllegalArgumentException("Invalid group index.");
+        }
+
+        Group group = (Group) drawing.getShapes().get(groupIndex);
+        drawing.getShapes().remove(group);
+
+        while (!group.getShapes().isEmpty()) {
+            Shape shape = group.getShapes().remove(group.getShapes().size() - 1);
+            drawing.getShapes().add(shape);
+        }
     }
 
     public void setColor(int indexShape, char color) throws IllegalArgumentException {
@@ -147,7 +169,7 @@ public class AsciiPaint {
         drawing.deleteShape(shapeIndex);
     }
 
-    public void moveShape(int shapeIndex, double dx, double dy)  throws IllegalArgumentException {
+    public void moveShape(int shapeIndex, double dx, double dy) throws IllegalArgumentException {
         if (shapeIndex < 0 || shapeIndex >= drawing.getShapes().size()) {
             throw new IllegalArgumentException("You must specify an index from the shape list.");
         }
