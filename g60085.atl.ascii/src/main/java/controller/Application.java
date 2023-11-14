@@ -79,7 +79,7 @@ public class Application {
         String invalidInputMessage = "Invalid input! Try again!";
 
         while (true) {
-            try {
+            //try {
                 displayEntrancePrompt();
 
                 String input = keyboard.nextLine().trim();
@@ -96,6 +96,8 @@ public class Application {
                     case "delete" -> deleteShape(input);
                     case "group" -> groupShapes(input);
                     case "ungroup" -> ungroupShapes(input);
+                    case "undo" -> paint.undo();
+                    case "redo" -> paint.redo();
                     case "exit" -> {
                         displayEnd();
                         return false;
@@ -106,10 +108,10 @@ public class Application {
                     }
                 }
 
-            } catch (Exception e) {
+           /* } catch (Exception e) {
                 displayInvalidInput(e.getMessage());
                 checkForHelp();
-            }
+            }*/
         }
     }
 
@@ -187,6 +189,7 @@ public class Application {
         validCommandAdd();
     }
 
+
     public void deleteShape(String input) throws IllegalArgumentException {
         String regex = "delete\\s+\\d+";
 
@@ -226,7 +229,6 @@ public class Application {
      * Changes the color of a shape in the drawing based on the provided input.
      *
      * @param input The user input representing the shape index and the new color character.
-     * @return true if the shape's color is successfully changed, false otherwise.
      */
     private void changeColorShape(String input) throws IllegalArgumentException {
         String regex = "color\\s+\\d+\\s+[a-zA-Z]";
@@ -240,7 +242,7 @@ public class Application {
         int shapeIndex = Integer.parseInt(detailInput[1]);
         char color = detailInput[2].charAt(0);
 
-        this.paint.setColor(shapeIndex, color);
+        this.paint.changeShapeColor(shapeIndex, color);
         validCommandColor();
     }
 
@@ -258,7 +260,8 @@ public class Application {
             shapeIndexes.add(Integer.parseInt(detailInput[i]));
         }
 
-        paint.newGroup(shapeIndexes);
+        paint.groupShapes(shapeIndexes);
+
         validCommandGroup();
     }
     public void ungroupShapes(String input){
@@ -270,10 +273,9 @@ public class Application {
 
         String[] detailInput = input.split("\\s+");
 
-        paint.ungroup(Integer.parseInt(detailInput[1]));
+        paint.ungroupShapes(Integer.parseInt(detailInput[1]));
         validCommandGroup();
     }
-
 
     /**
      * Reads and validates a string input from the user based on a regular expression pattern.

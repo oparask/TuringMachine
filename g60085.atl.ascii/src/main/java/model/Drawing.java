@@ -43,8 +43,25 @@ public class Drawing {
         shapes.add(shape);
     }
 
-    public void deleteShape(int shapeIndex){
-        shapes.remove(shapeIndex);
+    public void addShape( int shapeIndex, Shape shape){
+        shapes.add(shapeIndex, shape);
+    }
+
+    public Shape getShape(int shapeIndex){
+        return shapes.get(shapeIndex);
+    }
+
+    public void deleteShape(Shape shape){
+        shapes.remove(shape);
+    }
+
+
+    public void moveShape(int shapeIndex, double dx, double dy){
+        shapes.get(shapeIndex).move(dx, dy);
+    }
+
+    public void changeShapeColor(int shapeIndex, char color){
+        shapes.get(shapeIndex).setColor(color);
     }
 
     /**
@@ -89,7 +106,4 @@ public class Drawing {
         return shapes;
     }
 
-    public void setShapes(Shape shape) {
-        this.shapes.add(shape);
-    }
 }

@@ -34,6 +34,6 @@ public class Line extends ColoredShape {
      */
     @Override
     public String toString() {
-        return "line (a"+a.toString()+", b"+ b.toString()+ ")";
+        return "line: (a"+a.toString()+", b"+ b.toString()+ ")";
     }
 }

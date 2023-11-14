@@ -156,7 +156,7 @@ public class View {
      */
     public static void displayShapeList(List<Shape> shapeList) {
         for (int i = 0; i < shapeList.size(); i++) {
-            System.out.println(i + " - " + shapeList.get(i));
+            System.out.println(i + " - " + shapeList.get(i) + " ");
         }
         System.out.println();
     }

@@ -53,6 +53,6 @@ public class Circle extends ColoredShape {
      */
     @Override
     public String toString() {
-        return "circle (radius: " + radius + ", center " + center.toString()+")";
+        return "circle: [radius: " + radius + ", center " + center.toString()+"]";
     }
 }

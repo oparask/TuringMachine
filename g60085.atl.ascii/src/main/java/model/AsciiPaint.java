@@ -1,6 +1,7 @@
 package model;
 
-import java.util.ArrayList;
+import DP.*;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -13,11 +14,14 @@ import java.util.Objects;
 public class AsciiPaint {
     private Drawing drawing;
 
+    private CommandManager commandManager;
+
     /**
      * Constructs an AsciiPaint instance with a default drawing.
      */
     public AsciiPaint() {
         drawing = new Drawing();
+        commandManager = new CommandManager();
     }
 
     /**
@@ -61,7 +65,12 @@ public class AsciiPaint {
         }
         validateColor(color);
 
-        drawing.addShape(new Circle(new Point(x, y), radius, color));
+        Shape shape = new Circle(new Point(x, y), radius, color);
+
+        //Create the command and ask commandManager to execute it
+        AddCommand command = new AddCommand(drawing, shape);
+        commandManager.execute(command);
+
     }
 
     /**
@@ -81,7 +90,11 @@ public class AsciiPaint {
         }
         validateColor(color);
 
-        drawing.addShape(new Rectangle(new Point(x, y), width, height, color));
+        Shape shape = new Rectangle(new Point(x, y), width, height, color);
+
+        //Create the command and ask commandManager to execute it
+        AddCommand command = new AddCommand(drawing, shape);
+        commandManager.execute(command);
     }
 
     /**
@@ -100,19 +113,56 @@ public class AsciiPaint {
         }
         validateColor(color);
 
-        drawing.addShape(new Square(new Point(x, y), side, color));
+        Shape shape = new Square(new Point(x, y), side, color);
+
+        //Create the command and ask commandManager to execute it
+        AddCommand command = new AddCommand(drawing, shape);
+        commandManager.execute(command);
     }
 
     public void newLine(double aX, double aY, double bX, double bY, char color) throws IllegalArgumentException {
         validateCoordinates(aX, aY);
         validateCoordinates(bX, bY);
         validateColor(color);
-        drawing.addShape(new Line(new Point(aX, aY), new Point(bX, bY), color));
+
+        Shape shape = new Line(new Point(aX, aY), new Point(bX, bY), color);
+
+        //Create the command and ask commandManager to execute it
+        AddCommand command = new AddCommand(drawing, shape);
+        commandManager.execute(command);
+    }
+    public void moveShape(int shapeIndex, double dx, double dy) throws IllegalArgumentException {
+        if (shapeIndex < 0 || shapeIndex >= drawing.getShapes().size()) {
+            throw new IllegalArgumentException("You must specify an index from the shape list.");
+        }
+
+        //Create the command and ask commandManager to execute it
+        MoveCommand command = new MoveCommand(drawing, shapeIndex, dx, dy);
+        commandManager.execute(command);
     }
 
-    public void newGroup(List<Integer> shapeIndexes) throws IllegalArgumentException {
+    public void changeShapeColor(int indexShape, char color) throws IllegalArgumentException {
+        validateColor(color);
+        this.drawing.getShapes().get(indexShape).setColor(color);
+    }
+
+
+    public void deleteShape(int shapeIndex) throws IllegalArgumentException {
+        if (shapeIndex < 0 || shapeIndex >= drawing.getShapes().size()) {
+            throw new IllegalArgumentException("You must specify an index from the shape list.");
+        }
+
+        //Create the command and ask commandManager to execute it
+        DeleteCommand command = new DeleteCommand(drawing, shapeIndex);
+        commandManager.execute(command);
+    }
+
+
+
+    public void groupShapes(List<Integer> shapeIndexes) throws IllegalArgumentException {
         Collections.sort(shapeIndexes);
-        //remove duplicates
+
+        //Remove duplicates
         for (int i = 0; i < shapeIndexes.size() - 1; i++) {
             if (Objects.equals(shapeIndexes.get(i), shapeIndexes.get(i + 1))) {
                 shapeIndexes.remove(i + 1);
@@ -120,61 +170,38 @@ public class AsciiPaint {
             }
         }
 
+        //Check indexes
         for (Integer i : shapeIndexes) {
             if (i < 0 || i >= drawing.getShapes().size()) {
-                throw new IllegalArgumentException("Invalid shape index.");
+                throw new IllegalArgumentException("Invalid shape index hehehe .");
             }
         }
 
-        List<Shape> groupShapes = new ArrayList<>();
-        for (Integer i : shapeIndexes) {
-            groupShapes.add(drawing.getShapes().get(i));
-        }
-
-        //remove shapes that were grouped from the list
-        for (Shape shape : groupShapes) {
-            deleteShape(drawing.getShapes().indexOf(shape));
-        }
-
-        Group group = new Group(groupShapes.get(0).getColor());
-        group.addShapes(groupShapes, shapeIndexes);
-
-        drawing.addShape(group);
+        //Create the command and ask commandManager to execute it
+        GroupCommand groupCommand = new GroupCommand(drawing, shapeIndexes);
+        commandManager.execute(groupCommand);
 
     }
 
-    public void ungroup(int groupIndex) throws IllegalArgumentException {
+    public void ungroupShapes(int groupIndex) throws IllegalArgumentException {
         if (groupIndex < 0 || groupIndex >= drawing.getShapes().size() || !(drawing.getShapes().get(groupIndex) instanceof Group)) {
             throw new IllegalArgumentException("Invalid group index.");
         }
 
-        Group group = (Group) drawing.getShapes().get(groupIndex);
-        drawing.getShapes().remove(group);
-
-        while (!group.getShapes().isEmpty()) {
-            Shape shape = group.getShapes().remove(group.getShapes().size() - 1);
-            drawing.getShapes().add(shape);
-        }
+        //Create the command and ask commandManager to execute it
+        UngroupCommand groupCommand = new UngroupCommand(drawing, groupIndex);
+        commandManager.execute(groupCommand);
     }
 
-    public void setColor(int indexShape, char color) throws IllegalArgumentException {
-        validateColor(color);
-        this.drawing.getShapes().get(indexShape).setColor(color);
+    public void undo(){
+        commandManager.undoM();
     }
 
-    public void deleteShape(int shapeIndex) throws IllegalArgumentException {
-        if (shapeIndex < 0 || shapeIndex >= drawing.getShapes().size()) {
-            throw new IllegalArgumentException("You must specify an index from the shape list.");
-        }
-        drawing.deleteShape(shapeIndex);
+    public void redo(){
+        commandManager.redoM();
     }
 
-    public void moveShape(int shapeIndex, double dx, double dy) throws IllegalArgumentException {
-        if (shapeIndex < 0 || shapeIndex >= drawing.getShapes().size()) {
-            throw new IllegalArgumentException("You must specify an index from the shape list.");
-        }
-        drawing.getShapes().get(shapeIndex).move(dx, dy);
-    }
+
 
     /**
      * Validates the provided coordinates to ensure they are within the bounds of the drawing area.
