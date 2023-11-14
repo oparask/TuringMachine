@@ -22,6 +22,7 @@ public class MoveCommand implements Command{
 
     @Override
     public void unexecute() {
+        drawing.moveShape(shapeIndex, -dx, -dy);
 
     }
 }

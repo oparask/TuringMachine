@@ -2,9 +2,7 @@ package model;
 
 import DP.*;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * The AsciiPaint class serves as the model's facade and contains methods for modifying the model,
@@ -141,9 +139,12 @@ public class AsciiPaint {
         commandManager.execute(command);
     }
 
-    public void changeShapeColor(int indexShape, char color) throws IllegalArgumentException {
+    public void changeShapeColor(int shapeIndex, char color) throws IllegalArgumentException {
         validateColor(color);
-        this.drawing.getShapes().get(indexShape).setColor(color);
+
+        //Create the command and ask commandManager to execute it
+        ColorCommand command = new ColorCommand(drawing, shapeIndex, color);
+        commandManager.execute(command);
     }
 
 
@@ -160,25 +161,32 @@ public class AsciiPaint {
 
 
     public void groupShapes(List<Integer> shapeIndexes) throws IllegalArgumentException {
-        Collections.sort(shapeIndexes);
+        //remove duplicates
+        Set<Integer> uniqueSet = new HashSet<>();
+        List<Integer> shapeIndexBis = new ArrayList<>();
 
-        //Remove duplicates
-        for (int i = 0; i < shapeIndexes.size() - 1; i++) {
-            if (Objects.equals(shapeIndexes.get(i), shapeIndexes.get(i + 1))) {
-                shapeIndexes.remove(i + 1);
-                i--;
+        for (Integer shapeIndex : shapeIndexes) {
+            if (uniqueSet.add(shapeIndex)) {
+                // L'élément n'est pas déjà présent, donc on l'ajoute à la liste résultante
+                shapeIndexBis.add(shapeIndex);
             }
         }
 
         //Check indexes
         for (Integer i : shapeIndexes) {
             if (i < 0 || i >= drawing.getShapes().size()) {
-                throw new IllegalArgumentException("Invalid shape index hehehe .");
+                throw new IllegalArgumentException("Invalid shape index.");
             }
         }
 
+        //Search the shapes
+        List<Shape> shapes = new ArrayList<>();
+        for (Integer i : shapeIndexBis) {
+            shapes.add(drawing.getShape(i));
+        }
+
         //Create the command and ask commandManager to execute it
-        GroupCommand groupCommand = new GroupCommand(drawing, shapeIndexes);
+        GroupCommand groupCommand = new GroupCommand(drawing, shapes);
         commandManager.execute(groupCommand);
 
     }

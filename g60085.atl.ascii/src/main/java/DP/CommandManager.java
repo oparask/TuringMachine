@@ -14,6 +14,7 @@ public class CommandManager {
     public void execute(Command command){
         command.execute();
         undo.push(command);
+        redo.clear();
     }
 
     public void undoM(){

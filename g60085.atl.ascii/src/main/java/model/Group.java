@@ -15,8 +15,8 @@ public class Group extends ColoredShape {
         return shapes;
     }
 
-    public void addShapes(List<Shape> shapes) {
-        this.shapes = shapes;
+    public void addShape(Shape shape) {
+        this.shapes.add(shape);
     }
 
     @Override

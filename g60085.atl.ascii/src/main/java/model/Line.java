@@ -13,6 +13,14 @@ public class Line extends ColoredShape {
         this.coeffDir = (b.getY()-a.getY())/(b.getX()-a.getX());
     }
 
+    public Point getA() {
+        return a;
+    }
+
+    public Point getB() {
+        return b;
+    }
+
     @Override
     public boolean isInside(Point p) {
         double distance = (Math.abs(coeffDir*p.getX() - p.getY()-coeffDir*a.getX()+a.getY()))

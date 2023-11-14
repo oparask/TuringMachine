@@ -13,18 +13,22 @@ public class GroupCommand implements Command {
     List<Shape> shapes;
     List<Integer> shapeIndexes;
 
-    public GroupCommand(Drawing drawing, List<Integer> shapeIndexes) {
+    public GroupCommand(Drawing drawing, List<Shape> shapes) {
         this.drawing = drawing;
         this.group = null;
-        this.shapes = new ArrayList<>();
-        this.shapeIndexes = shapeIndexes;
+        this.shapes = shapes;
+        this.shapeIndexes = new ArrayList<>();
+        for(Shape shape : shapes){
+            shapeIndexes.add(drawing.getShapes().indexOf(shape));
+        }
     }
 
     @Override
     public void execute() {
-        //Initialise the shapes list
-        for (Integer i : shapeIndexes) {
-            shapes.add(drawing.getShape(i));
+        //Initialize the group
+        this.group = new Group(shapes.get(0).getColor());
+        for(Shape shape : shapes ){
+            group.addShape(shape);
         }
 
         //Remove shapes that were grouped from the list
@@ -32,23 +36,18 @@ public class GroupCommand implements Command {
             drawing.deleteShape(shape);
         }
 
-        //Initialize the group
-        this.group = new Group(shapes.get(0).getColor());
-        group.addShapes(shapes);
-
         //Add the group to the drawing shapes list
-        drawing.addShape(group);
+        this.drawing.addShape(group);
 
     }
 
     @Override
     public void unexecute() {
-        drawing.deleteShape(group);
-
         //Add the shapes in the shapes list
-        for (int i = 0; i < shapeIndexes.size(); i++) {
+        for (int i = 0; i < shapes.size(); i++) {
             drawing.addShape(shapeIndexes.get(i), shapes.get(i));
         }
-        group.getShapes().clear();
+
+        drawing.deleteShape(group);
     }
 }

@@ -37,6 +37,10 @@ public class Rectangle extends ColoredShape {
         return height;
     }
 
+    public double getWidth() {
+        return width;
+    }
+
     /**
      * Checks whether a given Point is inside the rectangle.
      *
