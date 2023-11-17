@@ -1,7 +1,6 @@
 package view;
 
 import model.Shape;
-
 import java.util.List;
 
 /**
@@ -21,7 +20,6 @@ public class View {
     public static void displayTitle() {
         System.out.println(ANSI_PURPLE + "( A )( S )( C )( I )( I )( _ )( P )( A )( I )( N )( T )" + ANSI_RESET);
         System.out.println();
-
     }
 
     /**
@@ -32,16 +30,18 @@ public class View {
                 ASCIIPaint commands:
                                                                               
                  \u001B[35m- Add a new shape:\u001B[0m add\u001B[0m \u001B[34m<shape>\u001B[0m \u001B[36m<characteristics>\u001B[0m \u001B[32m<color>\u001B[0m
+                 \u001B[35m- Delete a shape:\u001B[0m delete \u001B[93m<i>\u001B[0m
+                 \u001B[35m- Move a shape:\u001B[0m move \u001B[93m<i>\u001B[0m <horizontally> <vertically>
+                 \u001B[35m- Change the color of a shape:\u001B[0m color \u001B[93m<i>\u001B[0m \u001B[32m<color>\u001B[0m
+                 \u001B[35m- Group shapes:\u001B[0m group [\u001B[93m<i>\u001B[0m ...]
+                 \u001B[35m- Ungroup shapes:\u001B[0m ungroup [\u001B[93m<i>\u001B[0m ...]
+                 \u001B[35m- Undo the command:\u001B[0m undo
+                 \u001B[35m- Redo the command:\u001B[0m redo
                  \u001B[35m- Display the drawing:\u001B[0m show
                  \u001B[35m- Display the existing shapes:\u001B[0m list
-                 \u001B[35m- Move a shape:\u001B[0m move \u001B[93m<i>\u001B[0m <horizontally> <vertically>
-                 \u001B[35m- Change color:\u001B[0m color \u001B[93m<i>\u001B[0m \u001B[32m<color>\u001B[0m
-                 \u001B[35m- Delete a shape:\u001B[0m delete \u001B[93m<i>\u001B[0m
-                 \u001B[35m- Group shapes:\u001B[0m group [\u001B[93m<i>\u001B[0m ...]
-                 \u001B[35m- Degroup shapes:\u001B[0m degroup [\u001B[93m<i>\u001B[0m ...]
                  \u001B[35m- Exit:\u001B[0m exit
                  
-                        \u001B[34m shape:\u001B[0m circle, rectangle or square
+                        \u001B[34m shape:\u001B[0m circle, rectangle, square and line
                         \u001B[36m characteristics:\u001B[0m circle     --> center.x center.y radius
                                           rectangle  --> upperLeftPoint.x upperLeftPoint.y width height
                                           square     --> upperLeftPoint.x upperLeftPoint.y side
@@ -106,7 +106,6 @@ public class View {
         System.out.println(ANSI_GREEN + "The shapes have been grouped successfully!" + ANSI_RESET);
         System.out.println();
     }
-
 
     /**
      * Displays the drawing based on color information, height, and width.

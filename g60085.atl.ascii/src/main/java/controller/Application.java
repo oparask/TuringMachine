@@ -13,6 +13,8 @@ import static view.View.*;
  * It handles user input, manages the drawing, and controls the interaction with the user.
  */
 public class Application {
+
+    /**The model's facade*/
     private AsciiPaint paint;
 
     /**
@@ -29,7 +31,6 @@ public class Application {
             continueTheDrawing = processCommand();
         }
     }
-
 
     /**
      * Initializes the drawing by prompting the user to specify the width and height of the drawing area
@@ -68,9 +69,9 @@ public class Application {
     }
 
     /**
-     * Processes user commands for interacting with the drawing application. The user is prompted to enter commands
+     * Processes user commands for interacting with the ascii application. The user is prompted to enter commands
      * for adding shapes, displaying the drawing, listing shapes, moving shapes, changing colors, and quitting the application.
-     * The method continuously prompts the user for input and processes the commands until the user chooses to quit (by entering "q").
+     * The method continuously prompts the user for input and processes the commands until the user chooses to quit.
      *
      * @return true if the user wants to continue interacting with the application, false if the user chooses to quit.
      */
@@ -79,7 +80,7 @@ public class Application {
         String invalidInputMessage = "Invalid input! Try again!";
 
         while (true) {
-            //try {
+            try {
                 displayEntrancePrompt();
 
                 String input = keyboard.nextLine().trim();
@@ -88,16 +89,16 @@ public class Application {
 
                 switch (commandType.toLowerCase()) {
                     case "add" -> addShape(input);
-                    case "show" ->
-                            displayDrawing(paint.asASCII(), paint.getDrawing().getHeight(), paint.getDrawing().getWidth());
-                    case "list" -> displayShapeList(paint.getDrawing().getShapes());
+                    case "delete" -> deleteShape(input);
                     case "move" -> moveShape(input);
                     case "color" -> changeColorShape(input);
-                    case "delete" -> deleteShape(input);
                     case "group" -> groupShapes(input);
                     case "ungroup" -> ungroupShapes(input);
                     case "undo" -> paint.undo();
                     case "redo" -> paint.redo();
+                    case "show" ->
+                            displayDrawing(paint.asASCII(), paint.getDrawing().getHeight(), paint.getDrawing().getWidth());
+                    case "list" -> displayShapeList(paint.getDrawing().getShapes());
                     case "exit" -> {
                         displayEnd();
                         return false;
@@ -107,14 +108,12 @@ public class Application {
                         checkForHelp();
                     }
                 }
-
-           /* } catch (Exception e) {
+            } catch (Exception e) {
                 displayInvalidInput(e.getMessage());
                 checkForHelp();
-            }*/
+            }
         }
     }
-
 
     /**
      * Parses and adds a shape to the drawing based on the provided input.
@@ -246,6 +245,12 @@ public class Application {
         validCommandColor();
     }
 
+    /**
+     * Groups the shapes specified by their indexes. The grouped shapes will be combined into a new group.
+     *
+     * @param input A string containing the command and shape indexes to be grouped.
+     * @throws IllegalArgumentException If the input format is incorrect or if the specified indexes are invalid.
+     */
     public void groupShapes(String input) {
         String regex = "group\\s+\\d+(\\s+\\d+)*";
 
@@ -256,7 +261,7 @@ public class Application {
         String[] detailInput = input.split("\\s+");
         List<Integer> shapeIndexes = new ArrayList<>();
 
-        for(int i = 1; i<detailInput.length; i++){
+        for (int i = 1; i < detailInput.length; i++) {
             shapeIndexes.add(Integer.parseInt(detailInput[i]));
         }
 
@@ -264,7 +269,15 @@ public class Application {
 
         validCommandGroup();
     }
-    public void ungroupShapes(String input){
+
+    /**
+     * Ungroups the shapes contained in the specified group index. The shapes will be removed from the group
+     * and added back to the shape list.
+     *
+     * @param input A string containing the command and the group index to be ungrouped.
+     * @throws IllegalArgumentException If the input format is incorrect or if the specified index is invalid.
+     */
+    public void ungroupShapes(String input) {
         String regex = "ungroup\\s+\\d+";
 
         if (!input.toLowerCase().matches(regex)) {
@@ -276,20 +289,19 @@ public class Application {
         paint.ungroupShapes(Integer.parseInt(detailInput[1]));
         validCommandGroup();
     }
-
     /**
      * Reads and validates a string input from the user based on a regular expression pattern.
      *
      * @param message The message to display to the user as a prompt.
-     * @param regex   The regular expression pattern for validating the input.
      * @return The validated user input as a string.
      */
-    private static String stringRobustReading(String message, String regex) {
+    private static String stringRobustReading(String message) {
         Scanner keyboard = new Scanner(System.in);
         displayMessage(message);
 
         String input = keyboard.nextLine();
-        while (input.trim().isEmpty() || !input.trim().matches(regex)) { //Ensures that the user cannot enter only whitespace as a valid input.
+        while (input.trim().isEmpty() || !input.trim().matches("(?i)[yn]")) {
+            // Ensures that the user cannot enter only whitespace as a valid input.
             displayInvalidInput("Invalid input. " + message);
             input = keyboard.nextLine();
         }
@@ -304,14 +316,14 @@ public class Application {
      */
     private boolean choseSize() {
         return stringRobustReading("Do you want to chose the size of the drawing?" +
-                " (y or n)", "(?i)[yn]").equalsIgnoreCase("y");
+                " (y or n)").equalsIgnoreCase("y");
     }
 
     /**
      * Asks the user if they need help and displays help information if the user requests it.
      */
     private void checkForHelp() {
-        if (stringRobustReading("Do you need help (y or n)? : ", "(?i)[yn]").equalsIgnoreCase("y")) {
+        if (stringRobustReading("Do you need help (y or n)? : ").equalsIgnoreCase("y")) {
             displayHelp();
         }
     }

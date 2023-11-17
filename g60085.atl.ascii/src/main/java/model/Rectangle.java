@@ -4,8 +4,13 @@ package model;
  * The Rectangle class represents a colored rectangle and extends the ColoredShape class.
  */
 public class Rectangle extends ColoredShape {
+    /** The upper-left point of the rectangle. */
     private Point upperLeft;
+
+    /** The width of the rectangle (must be a positive value). */
     private double width;
+
+    /** The height of the rectangle (must be a positive value). */
     private double height;
 
     /**
@@ -27,18 +32,22 @@ public class Rectangle extends ColoredShape {
         this.width = width;
         this.height = height;
     }
-
+    /**
+     * Retrieves the upper-left point of the rectangle.
+     *
+     * @return The upper-left {@code Point}.
+     */
     public Point getUpperLeft() {
-        return upperLeft;
+        return this.upperLeft;
     }
 
-
+    /**
+     * Retrieves the height of the rectangle.
+     *
+     * @return The height of the rectangle.
+     */
     public double getHeight() {
-        return height;
-    }
-
-    public double getWidth() {
-        return width;
+        return this.height;
     }
 
     /**
@@ -71,6 +80,6 @@ public class Rectangle extends ColoredShape {
      */
     @Override
     public String toString() {
-        return "rectangle: [upperLeft point: "+upperLeft+", width: " + width+ ", height: "+height+"]";
+        return "rectangle: upperLeft point-> "+upperLeft+", width-> " + width+ ", height-> "+height+ ", color-> "+getColor();
     }
 }

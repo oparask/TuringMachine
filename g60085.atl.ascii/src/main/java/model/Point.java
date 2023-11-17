@@ -67,6 +67,11 @@ public class Point {
         return Math.sqrt(Math.pow((other.x - this.x), 2) + Math.pow((other.y - this.y), 2));
     }
 
+    /**
+     * Returns a string representation of the point.
+     *
+     * @return A string representation of the point in the format "(x, y)".
+     */
     @Override
     public String toString() {
         return "(" + x + ", " + y + ")";

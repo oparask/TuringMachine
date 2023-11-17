@@ -2,9 +2,14 @@ package model;
 
 /**
  * The Circle class represents a colored circle and extends the ColoredShape class.
+ * It provides methods to construct a circle, check if a point is inside the circle, move the circle,
+ * and obtain a string representation of the circle.
  */
 public class Circle extends ColoredShape {
+    /** The radius of the circle. */
     private double radius;
+
+    /** The center Point of the circle. */
     private Point center;
 
     /**
@@ -49,10 +54,11 @@ public class Circle extends ColoredShape {
     /**
      * Returns a string representation of the circle.
      *
-     * @return The string "circle".
+     * @return A formatted string representing the circle's radius, center, and color.
      */
     @Override
     public String toString() {
-        return "circle: [radius: " + radius + ", center " + center.toString()+"]";
+        return "circle: radius-> " + radius + ", center " + center.toString() + ", color-> " + getColor();
     }
 }
+
