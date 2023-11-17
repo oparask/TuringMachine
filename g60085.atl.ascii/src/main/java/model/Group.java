@@ -75,12 +75,12 @@ public class Group extends ColoredShape {
      */
     @Override
     public String toString() {
-        String string = "Group: color: " + getColor() + "\n          shapes: - " + shapes.get(0);
-
-        for (int i = 1; i < shapes.size(); i++) {
-            string += "\n                  - " + shapes.get(i).toString();
+        String string = "";
+        for(Shape shape : shapes){
+            string += shape.toString() + " ";
         }
-        return string;
+        return "Group: " + string;
     }
+
 }
 

@@ -34,6 +34,9 @@ public interface Shape {
      * @param color The character to set as the color of the shape.
      */
     void setColor(char color);
+
+
+
 }
 
 

@@ -30,6 +30,15 @@ public class Circle extends ColoredShape {
     }
 
     /**
+     * Returns the Point object representing the center of the shape.
+     *
+     * @return The Point object representing the center of the shape.
+     */
+    public Point getCenter() {
+        return center;
+    }
+
+    /**
      * Checks whether a given Point is inside the circle.
      *
      * @param p The Point to be checked.

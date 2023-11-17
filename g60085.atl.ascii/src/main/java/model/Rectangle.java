@@ -32,6 +32,7 @@ public class Rectangle extends ColoredShape {
         this.width = width;
         this.height = height;
     }
+
     /**
      * Retrieves the upper-left point of the rectangle.
      *

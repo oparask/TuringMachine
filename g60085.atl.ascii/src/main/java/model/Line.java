@@ -26,6 +26,27 @@ public class Line extends ColoredShape {
         this.b = new Point(b);
         this.slope = (b.getY() - a.getY()) / (b.getX() - a.getX());
     }
+
+    //For tests
+    /**
+     * Returns the Point object representing point A.
+     *
+     * @return The Point object representing point A.
+     */
+    public Point getA() {
+        return a;
+    }
+
+    //For tests
+    /**
+     * Returns the Point object representing point B.
+     *
+     * @return The Point object representing point B.
+     */
+    public Point getB() {
+        return b;
+    }
+
     /**
      * Checks whether a given Point is approximately on the line.
      *
