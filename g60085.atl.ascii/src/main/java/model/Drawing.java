@@ -2,18 +2,25 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * The Drawing class represents a collection of shapes within a specified width and height.
  * It provides methods to add, retrieve, delete, move, and change the color of shapes within the drawing.
  */
 public class Drawing {
-    /** The list of shapes in the drawing. */
+    /**
+     * The list of shapes in the drawing.
+     */
     private List<Shape> shapes;
 
-    /** The height of the drawing area. */
+    /**
+     * The height of the drawing area.
+     */
     private int height;
 
-    /** The width of the drawing area. */
+    /**
+     * The width of the drawing area.
+     */
     private int width;
 
     /**
@@ -52,7 +59,7 @@ public class Drawing {
      * Adds a shape to the drawing at a specified index.
      *
      * @param shapeIndex The index at which the shape is to be added.
-     * @param shape The shape to be added.
+     * @param shape      The shape to be added.
      */
     public void addShape(int shapeIndex, Shape shape) {
         shapes.add(shapeIndex, shape);
@@ -81,8 +88,8 @@ public class Drawing {
      * Moves a shape within the drawing by the specified delta values.
      *
      * @param shapeIndex The index of the shape to be moved.
-     * @param dx The change in the x-coordinate (horizontal displacement).
-     * @param dy The change in the y-coordinate (vertical displacement).
+     * @param dx         The change in the x-coordinate (horizontal displacement).
+     * @param dy         The change in the y-coordinate (vertical displacement).
      */
     public void moveShape(int shapeIndex, double dx, double dy) {
         shapes.get(shapeIndex).move(dx, dy);
@@ -92,7 +99,7 @@ public class Drawing {
      * Changes the color of a shape within the drawing.
      *
      * @param shapeIndex The index of the shape to have its color changed.
-     * @param color The new color for the shape.
+     * @param color      The new color for the shape.
      */
     public void changeShapeColor(int shapeIndex, char color) {
         shapes.get(shapeIndex).setColor(color);

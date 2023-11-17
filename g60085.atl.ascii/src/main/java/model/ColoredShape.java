@@ -1,11 +1,14 @@
 package model;
+
 /**
  * The ColoredShape class is an abstract implementation of the Shape interface and provides functionality for shapes with colors.
  * It defines methods to construct a ColoredShape object, retrieve the color representation, and set the color of the shape.
  */
 public abstract class ColoredShape implements Shape {
 
-    /** The character representing the color of the shape. */
+    /**
+     * The character representing the color of the shape.
+     */
     private char color;
 
     /**

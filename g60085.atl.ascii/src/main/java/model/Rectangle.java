@@ -4,13 +4,19 @@ package model;
  * The Rectangle class represents a colored rectangle and extends the ColoredShape class.
  */
 public class Rectangle extends ColoredShape {
-    /** The upper-left point of the rectangle. */
+    /**
+     * The upper-left point of the rectangle.
+     */
     private Point upperLeft;
 
-    /** The width of the rectangle (must be a positive value). */
+    /**
+     * The width of the rectangle (must be a positive value).
+     */
     private double width;
 
-    /** The height of the rectangle (must be a positive value). */
+    /**
+     * The height of the rectangle (must be a positive value).
+     */
     private double height;
 
     /**
@@ -59,7 +65,7 @@ public class Rectangle extends ColoredShape {
      */
     @Override
     public boolean isInside(Point p) {
-        return p.getX() >= this.upperLeft.getX() && p.getX() <=(this.upperLeft.getX() + width)
+        return p.getX() >= this.upperLeft.getX() && p.getX() <= (this.upperLeft.getX() + width)
                 && p.getY() >= this.upperLeft.getY() && p.getY() <= (this.upperLeft.getY() + height);
     }
 
@@ -81,6 +87,6 @@ public class Rectangle extends ColoredShape {
      */
     @Override
     public String toString() {
-        return "rectangle: upperLeft point-> "+upperLeft+", width-> " + width+ ", height-> "+height+ ", color-> "+getColor();
+        return "rectangle: upperLeft point-> " + upperLeft + ", width-> " + width + ", height-> " + height + ", color-> " + getColor();
     }
 }

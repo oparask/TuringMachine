@@ -12,16 +12,24 @@ import java.util.List;
  * It implements the Command interface and provides methods to execute and unexecute the group operation.
  */
 public class GroupCommand implements Command {
-    /** The drawing on which the group operation is performed. */
+    /**
+     * The drawing on which the group operation is performed.
+     */
     private final Drawing drawing;
 
-    /** The newly created group during the execute operation. */
+    /**
+     * The newly created group during the execute operation.
+     */
     private Group group;
 
-    /** The list of shapes to be grouped. */
+    /**
+     * The list of shapes to be grouped.
+     */
     private final List<Shape> shapes;
 
-    /** The list of shape indexes before the group operation for unexecution. */
+    /**
+     * The list of shape indexes before the group operation for unexecution.
+     */
     private final List<Integer> shapeIndexes;
 
     /**

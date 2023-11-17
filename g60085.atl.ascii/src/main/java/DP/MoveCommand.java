@@ -1,21 +1,30 @@
 package DP;
 
 import model.Drawing;
+
 /**
  * The MoveCommand class represents a command to move a shape within a drawing by a specified displacement.
  * It implements the Command interface and provides methods to execute and unexecute the move operation.
  */
 public class MoveCommand implements Command {
-    /** The drawing on which the move operation is performed. */
+    /**
+     * The drawing on which the move operation is performed.
+     */
     private final Drawing drawing;
 
-    /** The index of the shape to be moved. */
+    /**
+     * The index of the shape to be moved.
+     */
     private final int shapeIndex;
 
-    /** The horizontal displacement for the move operation. */
+    /**
+     * The horizontal displacement for the move operation.
+     */
     private final double dx;
 
-    /** The vertical displacement for the move operation. */
+    /**
+     * The vertical displacement for the move operation.
+     */
     private final double dy;
 
     /**

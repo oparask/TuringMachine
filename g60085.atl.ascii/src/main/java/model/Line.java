@@ -1,22 +1,29 @@
 package model;
+
 /**
  * The Line class represents a colored line and extends the ColoredShape class.
  */
 public class Line extends ColoredShape {
-    /** The starting Point (a) of the line. */
+    /**
+     * The starting Point (a) of the line.
+     */
     private Point a;
 
-    /** The ending Point (b) of the line. */
+    /**
+     * The ending Point (b) of the line.
+     */
     private Point b;
 
-    /** The slope of the line. */
+    /**
+     * The slope of the line.
+     */
     private double slope;
 
     /**
      * Constructs a Line with the specified starting and ending points, and color.
      *
-     * @param a The starting Point of the line.
-     * @param b The ending Point of the line.
+     * @param a     The starting Point of the line.
+     * @param b     The ending Point of the line.
      * @param color The character representing the color of the line, e.g., 'c'.
      */
     public Line(Point a, Point b, char color) {
@@ -28,6 +35,7 @@ public class Line extends ColoredShape {
     }
 
     //For tests
+
     /**
      * Returns the Point object representing point A.
      *
@@ -38,6 +46,7 @@ public class Line extends ColoredShape {
     }
 
     //For tests
+
     /**
      * Returns the Point object representing point B.
      *

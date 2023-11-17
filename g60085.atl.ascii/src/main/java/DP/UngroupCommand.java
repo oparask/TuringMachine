@@ -3,18 +3,25 @@ package DP;
 import model.Drawing;
 import model.Group;
 import model.Shape;
+
 /**
  * The UngroupCommand class represents a command to ungroup a previously grouped shape (Group) within a drawing.
  * It implements the Command interface and provides methods to execute and unexecute the ungroup operation.
  */
 public class UngroupCommand implements Command {
-    /** The drawing on which the ungroup operation is performed. */
+    /**
+     * The drawing on which the ungroup operation is performed.
+     */
     private final Drawing drawing;
 
-    /** The index of the grouped shape to be ungrouped. */
+    /**
+     * The index of the grouped shape to be ungrouped.
+     */
     private final int groupIndex;
 
-    /** The group to be ungrouped. */
+    /**
+     * The group to be ungrouped.
+     */
     private final Group group;
 
     /**

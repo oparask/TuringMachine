@@ -3,21 +3,30 @@ package DP;
 import model.Drawing;
 import model.Group;
 import model.Shape;
+
 /**
  * The ColorCommand class represents a command to change the color of a shape in a drawing.
  * It implements the Command interface and provides methods to execute and unexecute the color change operation.
  */
 public class ColorCommand implements Command {
-    /** The drawing in which the shape's color will be changed. */
+    /**
+     * The drawing in which the shape's color will be changed.
+     */
     private final Drawing drawing;
 
-    /** The index of the shape whose color will be changed. */
+    /**
+     * The index of the shape whose color will be changed.
+     */
     private final int shapeIndex;
 
-    /** The new color to be set for the shape. */
+    /**
+     * The new color to be set for the shape.
+     */
     private final char color;
 
-    /** The previous color of the shape before the color change. */
+    /**
+     * The previous color of the shape before the color change.
+     */
     private final char previousColor;
 
     /**

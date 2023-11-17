@@ -1,15 +1,20 @@
 package DP;
 
 import java.util.Stack;
+
 /**
  * The CommandManager class manages the execution, undo, and redo of commands in the command pattern.
  * It keeps track of executed commands, allowing for undo and redo operations.
  */
 public class CommandManager {
-    /** Stack to store executed commands for undo operations. */
+    /**
+     * Stack to store executed commands for undo operations.
+     */
     private final Stack<Command> undo;
 
-    /** Stack to store undone commands for redo operations. */
+    /**
+     * Stack to store undone commands for redo operations.
+     */
     private final Stack<Command> redo;
 
     /**

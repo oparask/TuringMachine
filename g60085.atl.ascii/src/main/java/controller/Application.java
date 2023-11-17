@@ -14,7 +14,9 @@ import static view.View.*;
  */
 public class Application {
 
-    /**The model's facade*/
+    /**
+     * The model's facade
+     */
     private AsciiPaint paint;
 
     /**
@@ -289,6 +291,7 @@ public class Application {
         paint.ungroupShapes(Integer.parseInt(detailInput[1]));
         validCommandGroup();
     }
+
     /**
      * Reads and validates a string input from the user based on a regular expression pattern.
      *

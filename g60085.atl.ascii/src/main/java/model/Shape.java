@@ -36,7 +36,6 @@ public interface Shape {
     void setColor(char color);
 
 
-
 }
 
 

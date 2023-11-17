@@ -8,7 +8,9 @@ import java.util.List;
  * It extends the ColoredShape class and provides methods to manage the group and perform operations on its shapes.
  */
 public class Group extends ColoredShape {
-    /** The list of shapes contained within the group. */
+    /**
+     * The list of shapes contained within the group.
+     */
     private final List<Shape> shapes;
 
     /**
@@ -75,11 +77,12 @@ public class Group extends ColoredShape {
      */
     @Override
     public String toString() {
-        String string = "";
-        for(Shape shape : shapes){
-            string += shape.toString() + " ";
+        String string = "[";
+        for (Shape shape : shapes) {
+            string += shape.toString() + ";   ";
         }
-        return "Group: " + string;
+        string += "]";
+        return "Group: color-> " + getColor() + "; " + string;
     }
 
 }

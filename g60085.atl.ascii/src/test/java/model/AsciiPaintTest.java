@@ -3,7 +3,6 @@ package model;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,7 +98,7 @@ class AsciiPaintTest {
 
     @Test
     public void testNewRectangleWithValidParameters() {
-       setUp();
+        setUp();
         assertDoesNotThrow(() -> asciiPaint.newRectangle(10, 10, 20, 15, 'R'));
         // Test adding a rectangle with valid parameters
         assertEquals(1, asciiPaint.getDrawing().getShapes().size());
@@ -133,7 +132,7 @@ class AsciiPaintTest {
     public void testNewSquareWithValidParameters() {
         setUp();
         // Test adding a square with valid parameters
-        assertDoesNotThrow(() ->  asciiPaint.newSquare(10, 10, 15, 'S'));
+        assertDoesNotThrow(() -> asciiPaint.newSquare(10, 10, 15, 'S'));
         assertEquals(1, asciiPaint.getDrawing().getShapes().size());
     }
 
@@ -167,15 +166,15 @@ class AsciiPaintTest {
     void validNewLine() {
         setUp();
         // Test adding a line
-        asciiPaint.newLine(6, 6,15, 15,  'L'); //droite croissante
+        asciiPaint.newLine(6, 6, 15, 15, 'L'); //droite croissante
         assertEquals(1, asciiPaint.getDrawing().getShapes().size());
 
         // Test adding multiple lines
         asciiPaint.newLine(0, 0, 20, 20, 'C'); //limits
-        asciiPaint.newLine(3, 8, 8,3, 'X'); //droite décroissante
+        asciiPaint.newLine(3, 8, 8, 3, 'X'); //droite décroissante
         assertEquals(3, asciiPaint.getDrawing().getShapes().size());
 
-        assertDoesNotThrow(() -> asciiPaint.newLine(0,0, 50, 50, 'R'));
+        assertDoesNotThrow(() -> asciiPaint.newLine(0, 0, 50, 50, 'R'));
     }
 
     @Test
@@ -190,30 +189,30 @@ class AsciiPaintTest {
         assertEquals(0, asciiPaint.getDrawing().getShapes().size());
 
         // Test adding a line with the coordinate X above drawing limits
-        assertThrows(IllegalArgumentException.class, () -> asciiPaint.newLine(5, 5, 100, 10,'O'));
+        assertThrows(IllegalArgumentException.class, () -> asciiPaint.newLine(5, 5, 100, 10, 'O'));
         assertEquals(0, asciiPaint.getDrawing().getShapes().size());
 
 
         // Test adding a line with the coordinate Y above drawing limits
-        assertThrows(IllegalArgumentException.class, () -> asciiPaint.newLine(5, 5, 10, 100,'O'));
+        assertThrows(IllegalArgumentException.class, () -> asciiPaint.newLine(5, 5, 10, 100, 'O'));
         assertEquals(0, asciiPaint.getDrawing().getShapes().size());
 
         // Test adding a line with the coordinate X above drawing limits
-        assertThrows(IllegalArgumentException.class, () -> asciiPaint.newLine(5, 5, 51, 10,'O'));
+        assertThrows(IllegalArgumentException.class, () -> asciiPaint.newLine(5, 5, 51, 10, 'O'));
         assertEquals(0, asciiPaint.getDrawing().getShapes().size());
 
 
         // Test adding a line with the coordinate Y above drawing limits
-        assertThrows(IllegalArgumentException.class, () -> asciiPaint.newLine(5, 5, 10, 51,'O'));
+        assertThrows(IllegalArgumentException.class, () -> asciiPaint.newLine(5, 5, 10, 51, 'O'));
         assertEquals(0, asciiPaint.getDrawing().getShapes().size());
 
         // Test adding a line with the coordinate X below drawing limits
-        assertThrows(IllegalArgumentException.class, () -> asciiPaint.newLine(-1, 5, 50, 10,'O'));
+        assertThrows(IllegalArgumentException.class, () -> asciiPaint.newLine(-1, 5, 50, 10, 'O'));
         assertEquals(0, asciiPaint.getDrawing().getShapes().size());
 
 
         // Test adding a line with the coordinate Y below drawing limits
-        assertThrows(IllegalArgumentException.class, () -> asciiPaint.newLine(-1, 5, 10, 50,'O'));
+        assertThrows(IllegalArgumentException.class, () -> asciiPaint.newLine(-1, 5, 10, 50, 'O'));
         assertEquals(0, asciiPaint.getDrawing().getShapes().size());
 
 
@@ -225,7 +224,7 @@ class AsciiPaintTest {
         setUp();
 
         // Test moving a rectangle
-        Rectangle rectangle = new Rectangle(new Point(6,6), 6, 4, 'R');
+        Rectangle rectangle = new Rectangle(new Point(6, 6), 6, 4, 'R');
         asciiPaint.getDrawing().addShape(rectangle);
         asciiPaint.moveShape(0, 5, 5);
         assertEquals(11, rectangle.getUpperLeft().getX());
@@ -304,7 +303,7 @@ class AsciiPaintTest {
         Circle circle = new Circle(new Point(6, 6), 6, 'c');
         Square square = new Square(new Point(6, 6), 6, 'S');
         Line line = new Line(new Point(6, 6), new Point(10, 10), 'l');
-        Rectangle rectangle = new Rectangle(new Point(6,6), 6, 4, 'R');
+        Rectangle rectangle = new Rectangle(new Point(6, 6), 6, 4, 'R');
 
         asciiPaint.getDrawing().addShape(circle);
         asciiPaint.getDrawing().addShape(square);
@@ -324,7 +323,7 @@ class AsciiPaintTest {
         Circle circle = new Circle(new Point(6, 6), 6, 'c');
         Square square = new Square(new Point(6, 6), 6, 'S');
         Line line = new Line(new Point(6, 6), new Point(10, 10), 'l');
-        Rectangle rectangle = new Rectangle(new Point(6,6), 6, 4, 'R');
+        Rectangle rectangle = new Rectangle(new Point(6, 6), 6, 4, 'R');
 
         asciiPaint.getDrawing().addShape(circle);
         asciiPaint.getDrawing().addShape(square);
@@ -350,7 +349,7 @@ class AsciiPaintTest {
         Circle circle = new Circle(new Point(6, 6), 6, 'c');
         Square square = new Square(new Point(6, 6), 6, 'S');
         Line line = new Line(new Point(6, 6), new Point(10, 10), 'l');
-        Rectangle rectangle = new Rectangle(new Point(6,6), 6, 4, 'R');
+        Rectangle rectangle = new Rectangle(new Point(6, 6), 6, 4, 'R');
 
         asciiPaint.getDrawing().addShape(circle);
         asciiPaint.getDrawing().addShape(square);

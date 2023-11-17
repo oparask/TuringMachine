@@ -14,10 +14,14 @@ import java.util.Set;
  */
 public class AsciiPaint {
 
-    /**The Drawing object representing the canvas of the AsciiPaint instance. */
+    /**
+     * The Drawing object representing the canvas of the AsciiPaint instance.
+     */
     private Drawing drawing;
 
-    /**The CommandManager responsible for managing commands (undo and redo) in the AsciiPaint instance. */
+    /**
+     * The CommandManager responsible for managing commands (undo and redo) in the AsciiPaint instance.
+     */
     private CommandManager commandManager;
 
     /**

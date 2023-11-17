@@ -6,10 +6,14 @@ package model;
  * and obtain a string representation of the circle.
  */
 public class Circle extends ColoredShape {
-    /** The radius of the circle. */
+    /**
+     * The radius of the circle.
+     */
     private double radius;
 
-    /** The center Point of the circle. */
+    /**
+     * The center Point of the circle.
+     */
     private Point center;
 
     /**
