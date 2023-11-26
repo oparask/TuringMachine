@@ -4,7 +4,7 @@ public class CompareOneDigitToAValue implements Validator {
     private int secretCode;
     private int userCode;
     private int validatorNumber;
-    private int digit;
+    private int digitIndex;
     private int value;
 
 
@@ -16,40 +16,37 @@ public class CompareOneDigitToAValue implements Validator {
         switch (this.validatorNumber) {
             case 1 -> {
                 this.value = 1;
-                this.digit = 1;
+                this.digitIndex = 0;
             }
             case 2 -> {
                 this.value = 3;
-                this.digit = 1;
+                this.digitIndex = 0;
             }
             case 3 -> {
                 this.value = 3;
-                this.digit = 2;
+                this.digitIndex = 1;
             }
             case 4 -> {
                 this.value = 4;
-                this.digit = 2;
+                this.digitIndex = 1;
             }
         }
     }
 
     private int category(int code){
-        int firstDigit;
-        if(digit == 1){
-            firstDigit= userCode / 100;
+        int digit;
+        if(digitIndex == 0){
+            digit = userCode / 100;
         } else {
-            firstDigit = (userCode / 10) % 10;
+            digit  = (userCode / 10) % 10;
         }
 
-        return Integer.compare(firstDigit, value); //returns -1, 0 or 1
+        return Integer.compare(digit, value); //returns -1, 0 or 1
 
     }
     @Override
     public boolean test() {
-        int resultUserCategory = category(userCode);
-        int resultSecretCategory = category(secretCode);
-
-        return resultSecretCategory == resultUserCategory;
+        return category(userCode) == category(secretCode);
     }
 
 }
