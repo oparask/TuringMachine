@@ -33,19 +33,19 @@ public class CompareTwoDigits implements Validator {
     private int category(int code){
         int firstDigit;
         if(firstDigitIndex == 0){ //first digit
-            firstDigit = userCode / 100;
+            firstDigit = code / 100;
         } else { //second digit
-            firstDigit  = (userCode / 10) % 10;
+            firstDigit  = (code / 10) % 10;
         }
 
         int secondDigit;
         if(secondDigitIndex == 1){ //second digit
-            secondDigit = (userCode / 10) % 10;
+            secondDigit = (code / 10) % 10;
         } else { //third digit
-            secondDigit  = userCode % 10;
+            secondDigit  = code % 10;
         }
 
-        return Integer.compare(digit, value); //returns -1, 0 or 1
+        return Integer.compare(firstDigit, secondDigit); //returns -1, 0 or 1
 
     }
     @Override

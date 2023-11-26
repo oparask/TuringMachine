@@ -22,14 +22,14 @@ public class CheckParityOfOneDigit implements Validator {
     private int category(int code) {
         int digit;
         if (digitIndex == 0) { //first number
-            digit = userCode / 100;
+            digit = code / 100;
         } else if (digitIndex == 1) { //second number
-            digit = (userCode / 10) % 10;
+            digit = (code / 10) % 10;
         } else { //third number
-            digit = userCode % 10;
+            digit = code % 10;
         }
 
-        return digit % 2 == 0 ? 0 : 1; //returns 0 for even ans 1 for odd
+        return digit % 2 == 0 ? 0 : 1; //returns 0 for even and 1 for odd
 
     }
 
