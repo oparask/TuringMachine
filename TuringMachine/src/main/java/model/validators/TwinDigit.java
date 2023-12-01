@@ -1,10 +1,10 @@
-package Model;
+package model.validators;
 
-public class DigitsOrder implements Validator {
+public class TwinDigit implements Validator {
     private int secretCode;
     private int userCode;
 
-    public DigitsOrder(int secretCode, int userCode) {
+    public TwinDigit(int secretCode, int userCode) {
         this.secretCode = secretCode;
         this.userCode = userCode;
     }
@@ -14,11 +14,9 @@ public class DigitsOrder implements Validator {
         int secondDigit = (code / 10) % 10;
         int thirdDigit =  code % 10;
 
-        if (firstDigit < secondDigit && secondDigit < thirdDigit){
-            return 1; //true -> twin
-        } else if (firstDigit > secondDigit && secondDigit > thirdDigit){
-            return -1;
-        } else {
+        if (firstDigit == secondDigit || firstDigit == thirdDigit || secondDigit == thirdDigit ){
+           return 1; //true -> twin
+        } else  {
             return 0;
         }
     }

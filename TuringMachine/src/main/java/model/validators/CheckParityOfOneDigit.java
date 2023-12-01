@@ -1,4 +1,4 @@
-package Model;
+package model.validators;
 
 public class CheckParityOfOneDigit implements Validator {
     private int secretCode;

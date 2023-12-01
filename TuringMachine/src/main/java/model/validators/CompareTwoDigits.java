@@ -1,4 +1,4 @@
-package Model;
+package model.validators;
 
 public class CompareTwoDigits implements Validator {
 

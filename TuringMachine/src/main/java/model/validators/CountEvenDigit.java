@@ -1,4 +1,4 @@
-package Model;
+package model.validators;
 
 import java.util.ArrayList;
 

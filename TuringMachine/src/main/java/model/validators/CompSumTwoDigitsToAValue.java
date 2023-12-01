@@ -1,24 +1,23 @@
-package Model;
+package model.validators;
 
-public class TwinDigit implements Validator {
+public class CompSumTwoDigitsToAValue implements Validator {
     private int secretCode;
     private int userCode;
+    private int value;
 
-    public TwinDigit(int secretCode, int userCode) {
+    public CompSumTwoDigitsToAValue(int secretCode, int userCode) {
         this.secretCode = secretCode;
         this.userCode = userCode;
+        this.value = 6;
     }
 
     private int category(int code) {
         int firstDigit = code / 100;
         int secondDigit = (code / 10) % 10;
-        int thirdDigit =  code % 10;
 
-        if (firstDigit == secondDigit || firstDigit == thirdDigit || secondDigit == thirdDigit ){
-           return 1; //true -> twin
-        } else  {
-            return 0;
-        }
+        int sum  = firstDigit + secondDigit;
+
+        return Integer.compare(sum, value); //returns -1, 0 or 1; //returns 0 for even and 1 for odd
     }
 
     @Override

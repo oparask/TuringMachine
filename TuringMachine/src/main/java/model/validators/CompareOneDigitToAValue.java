@@ -1,4 +1,4 @@
-package Model;
+package model.validators;
 
 public class CompareOneDigitToAValue implements Validator {
     private int secretCode;
@@ -35,10 +35,10 @@ public class CompareOneDigitToAValue implements Validator {
 
     private int category(int code){
         int digit;
-        if(digitIndex == 0){
+        if(digitIndex == 0){ //first digit
             digit = code / 100;
         } else {
-            digit  = (code / 10) % 10;
+            digit  = (code / 10) % 10; //second digit
         }
 
         return Integer.compare(digit, value); //returns -1, 0 or 1

@@ -1,4 +1,4 @@
-package Model;
+package model.validators;
 
 public class RepetitionNumber implements Validator {
     private int secretCode;
