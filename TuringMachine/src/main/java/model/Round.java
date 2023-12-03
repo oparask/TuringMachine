@@ -6,12 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Round {
-    Problem problem;
+
     Code userCode;
     List<Integer> testedValidators;
 
-    public Round(Problem problem, Code userCode) {
-        this.problem = problem;
+    public Round(Code userCode) {
         this.userCode = userCode;
         this.testedValidators = new ArrayList<>();
     }

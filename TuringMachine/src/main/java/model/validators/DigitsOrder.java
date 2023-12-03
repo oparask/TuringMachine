@@ -1,22 +1,20 @@
 package model.validators;
 
-public class DigitsOrder implements Validator {
-    private int secretCode;
-    private int userCode;
+import model.Code;
 
-    public DigitsOrder(int secretCode, int userCode) {
+public class DigitsOrder implements Validator {
+    private Code secretCode;
+    private Code userCode;
+
+    public DigitsOrder(Code secretCode, Code userCode) {
         this.secretCode = secretCode;
         this.userCode = userCode;
     }
 
-    private int category(int code) {
-        int firstDigit = code / 100;
-        int secondDigit = (code / 10) % 10;
-        int thirdDigit =  code % 10;
-
-        if (firstDigit < secondDigit && secondDigit < thirdDigit){
+    private int category(Code code) {
+        if (code.getFirstDigit() < code.getSecondDigit() && code.getSecondDigit() < code.getThirdDigit()){
             return 1; //true -> twin
-        } else if (firstDigit > secondDigit && secondDigit > thirdDigit){
+        } else if (code.getFirstDigit() > code.getSecondDigit() && code.getSecondDigit() > code.getThirdDigit()){
             return -1;
         } else {
             return 0;

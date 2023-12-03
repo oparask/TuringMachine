@@ -1,22 +1,15 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * The {@code Code} class represents a three-digit code with each digit ranging from 1 to 5, inclusive.
  */
-public class Code {
-    private int digit1;
-    private int digit2;
-    private int digit3;
+import java.util.Iterator;
 
-    /**
-     * Constructs a new Code instance with the specified single integer.
-     *
-     * @param code The integer to be divided into digits for the code.
-     * @throws IllegalArgumentException If any of the digits is not between 1 and 5, inclusive.
-     */
+public class Code implements Iterable<Integer> {
+    private int firstDigit;
+    private int secondDigit;
+    private int thirdDigit;
+
     public Code(int code) {
         int firstDigit = code / 100;
         int secondDigit = (code / 10) % 10;
@@ -25,32 +18,71 @@ public class Code {
         if (!isValidDigit(firstDigit) || !isValidDigit(secondDigit) || !isValidDigit(thirdDigit)) {
             throw new IllegalArgumentException("The numbers must be between 1 and 5, inclusive.");
         } else {
-            this.digit1 = firstDigit;
-            this.digit2 = secondDigit;
-            this.digit3 = thirdDigit;
+            this.firstDigit = firstDigit;
+            this.secondDigit = secondDigit;
+            this.thirdDigit = thirdDigit;
         }
-
     }
 
-    /**
-     * Returns a string representation of the code.
-     *
-     * @return A string in the format "Code: [digit1][digit2][digit3]".
-     */
+    public int getFirstDigit() {
+        return firstDigit;
+    }
+
+    public int getSecondDigit() {
+        return secondDigit;
+    }
+
+    public int getThirdDigit() {
+        return thirdDigit;
+    }
+
+    public int getDigit(int index) {
+        if (index < 1 || index > 3) {
+            throw new IllegalArgumentException("Index must be between 1 and 3, inclusive.");
+        }
+        return switch (index) {
+            case 1 -> firstDigit;
+            case 2 -> secondDigit;
+            case 3 -> thirdDigit;
+            default -> throw new IllegalStateException("Unexpected value: " + index);
+        };
+    }
+    @Override
+    public Iterator<Integer> iterator() {
+        return new CodeIterator();
+    }
+
     @Override
     public String toString() {
-        return "Code: " + digit1 + digit2 + digit3;
+        return "Code: " + firstDigit + secondDigit + thirdDigit;
     }
 
-    /**
-     * Checks if a given digit is valid (between 1 and 5, inclusive).
-     *
-     * @param digit The digit to be validated.
-     * @return {@code true} if the digit is valid, {@code false} otherwise.
-     */
     private boolean isValidDigit(int digit) {
         return digit >= 1 && digit <= 5;
     }
 
+    private class CodeIterator implements Iterator<Integer> {
+        private int currentIndex = 0;
 
+        @Override
+        public boolean hasNext() {
+            return currentIndex < 3;
+        }
+
+        @Override
+        public Integer next() {
+            if (!hasNext()) {
+                throw new java.util.NoSuchElementException();
+            }
+            int digit = switch (currentIndex) {
+                case 0 -> firstDigit;
+                case 1 -> secondDigit;
+                case 2 -> thirdDigit;
+                default -> throw new IllegalStateException("Unexpected value: " + currentIndex);
+            };
+            currentIndex++;
+            return digit;
+        }
+    }
 }
+

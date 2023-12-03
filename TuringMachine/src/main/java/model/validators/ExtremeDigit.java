@@ -1,37 +1,30 @@
 package model.validators;
 
+import model.Code;
+
 public class ExtremeDigit implements Validator {
-    private int secretCode;
-    private int userCode;
+    private Code secretCode;
+    private Code userCode;
     private int validatorNumber;
-    private int extremumIndex;
 
 
-    public ExtremeDigit(int secretCode, int userCode, int validatorNumber) {
+
+    public ExtremeDigit(Code secretCode, Code userCode, int validatorNumber) {
         this.secretCode = secretCode;
         this.userCode = userCode;
         this.validatorNumber = validatorNumber;
-
-        switch (this.validatorNumber) {
-            case 14 -> this.extremumIndex = -1;
-            case 15 -> this.extremumIndex = 1;
-        }
     }
 
-    private int category(int code) {
-        int firstDigit = code / 100;
-        int secondDigit = (code / 10) % 10;
-        int thirdDigit =  code % 10;
-
+    private int category(Code code) {
         int extremum;
 
-        if (extremumIndex == -1) { //strictly the smallest
-            extremum = Math.min(firstDigit, secondDigit);
-            extremum = Math.min(extremum, thirdDigit);
+        if (validatorNumber == 14) { //strictly the smallest
+            extremum = Math.min(code.getFirstDigit(), code.getSecondDigit());
+            extremum = Math.min(extremum, code.getThirdDigit());
 
         } else { //strictly the greatest
-            extremum = Math.max(firstDigit, secondDigit);
-            extremum = Math.max(extremum, thirdDigit);
+            extremum = Math.max(code.getFirstDigit(), code.getSecondDigit());
+            extremum = Math.max(extremum, code.getThirdDigit());
         }
 
         return extremum;

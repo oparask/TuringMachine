@@ -1,33 +1,34 @@
 package model.validators;
 
+import model.Code;
+
 public class CountDigitValue implements Validator {
-    private int secretCode;
-    private int userCode;
+    private Code secretCode;
+    private Code userCode;
     private int validatorNumber;
-    private int value;
 
 
-    public CountDigitValue(int secretCode, int userCode, int validatorNumber) {
+    public CountDigitValue(Code secretCode, Code userCode, int validatorNumber) {
         this.secretCode = secretCode;
         this.userCode = userCode;
         this.validatorNumber = validatorNumber;
 
-        switch (this.validatorNumber) {
-            case 8 -> this.value = 1;
-            case 9 -> this.value = 3;
-            case 10 -> this.value = 4;
-        }
-
     }
 
-    private int category(int code) {
-       int repetitionNb = 0;
-       String codeString = Integer.toString(code);
-       for(int i = 0; i<codeString.length(); i++){
-           if(codeString.charAt(i) == value){
-               repetitionNb++;
-           }
-       }
+    private int category(Code code) {
+        int value = 0;
+        switch (this.validatorNumber) {
+            case 8 -> value = 1;
+            case 9 -> value = 3;
+            case 10 -> value = 4;
+        }
+
+        int repetitionNb = 0;
+        for(Integer digit : code){
+            if (digit == value) {
+                repetitionNb++;
+            }
+        }
 
         return repetitionNb; //returns 0 for even ans 1 for odd
 

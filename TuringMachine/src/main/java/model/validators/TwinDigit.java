@@ -1,20 +1,20 @@
 package model.validators;
 
-public class TwinDigit implements Validator {
-    private int secretCode;
-    private int userCode;
+import model.Code;
 
-    public TwinDigit(int secretCode, int userCode) {
+public class TwinDigit implements Validator {
+    private Code secretCode;
+    private Code userCode;
+
+    public TwinDigit(Code secretCode, Code userCode) {
         this.secretCode = secretCode;
         this.userCode = userCode;
     }
 
-    private int category(int code) {
-        int firstDigit = code / 100;
-        int secondDigit = (code / 10) % 10;
-        int thirdDigit =  code % 10;
-
-        if (firstDigit == secondDigit || firstDigit == thirdDigit || secondDigit == thirdDigit ){
+    private int category(Code code) {
+        if (code.getFirstDigit() == code.getSecondDigit()
+                || code.getFirstDigit() == code.getThirdDigit()
+                || code.getSecondDigit()  == code.getThirdDigit() ){
            return 1; //true -> twin
         } else  {
             return 0;

@@ -2,96 +2,66 @@ package model;
 
 import model.problems.Problem;
 import model.problems.ProblemReader;
+import model.validators.*;
 
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
-
-import static view.View.displayInvalidInput;
-import static view.View.displayMessage;
 
 
 public class GameFacade {
     private List<Problem> problems;
     private Problem problem;
     private Game currentGame;
+    private Code userCode;
 
     public GameFacade() {
         this.problems = new ProblemReader().getProblems();
         problem = null;
         currentGame = null;
+        userCode = null;
     }
 
-    public void startNewGame() {
-        problemInitialisation();
-    }
-
-    private void problemInitialisation() {
-        if (choseProblem()) {
-            int problemNb = readProblemNumber();
-            problem = problems.get(problemNb - 1);
-        } else { //chose a random problem
-            problem = getRandomProblem();
+    public void startNewGame(int problemNb) {
+        if (problemNb < 1 || problemNb > problems.size()) {
+            throw new IllegalArgumentException("The problem number must be between 1 and " + problems.size());
         }
+        //Initialize the problem
+        problem = problems.get(problemNb - 1);
+        //Initialize the first game
+        currentGame = new Game(problem);
+
     }
 
-    private int readProblemNumber() {
-        Scanner keyboard = new Scanner(System.in);
-        displayMessage("Enter the number of the problem: ");
-        String input = keyboard.nextLine().trim();
+    //creates a new round
+    public void enterCode(int code) {
+        Code userCode = new Code(code);
+        this.userCode = userCode;
+        currentGame.addRound(userCode);
+    }
 
-        try {
-            String[] detailInput = input.split("\\s+");
-            return Integer.parseInt(detailInput[0]);
-        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-            displayInvalidInput("Invalid input. The problem number must be between 1 and 16.");
-            return readProblemNumber(); // Recursive call to try again
+    public void chooseValidator(int validatorNb) {
+        Validator validator;
+        switch (validatorNb){
+            case 1, 2, 3, 4 -> validator = new CompareOneDigitToAValue(problem.getSecretCode(), userCode, validatorNb);
+            case 5,6,7 -> validator = new CheckParityOfOneDigit(problem.getSecretCode(), userCode, validatorNb);
+            case 8, 9, 10 -> validator = new CountDigitValue(problem.getSecretCode(), userCode, validatorNb);
+            case 11, 12, 13 -> validator = new CompareTwoDigits(problem.getSecretCode(), userCode, validatorNb);
+            case 14, 15 ->  validator = new ExtremeDigit(problem.getSecretCode(), userCode, validatorNb);
+            case 16 -> validator = new MostFrequentParity(problem.getSecretCode(), userCode);
+            case 17 -> validator = new CountEvenDigit(problem.getSecretCode(), userCode);
+            case 18 -> validator = new SumParity(problem.getSecretCode(), userCode);
+            case 19 -> validator = new CompSumTwoDigitsToAValue(problem.getSecretCode(), userCode);
+            case 20 -> validator = new RepetitionNumber(problem.getSecretCode(), userCode);
+            case 21 -> validator = new TwinDigit(problem.getSecretCode(), userCode);
+            case 22 -> validator = new DigitsOrder(problem.getSecretCode(), userCode);
         }
-    }
-
-    private boolean choseProblem() {
-        return stringRobustReading("Do you want to chose the problem?" +
-                " (y or n)").equalsIgnoreCase("y");
-    }
-
-    private boolean validProblemNb(int problemNb) {
-        return problemNb >= 1 && problemNb <= 16;
-    }
-
-    private Problem getRandomProblem() {
-        Random random = new Random();
-        int randomIndex = random.nextInt(problems.size());
-        return problems.get(randomIndex);
-    }
-
-    /**
-     * Reads and validates a string input from the user based on a regular expression pattern.
-     *
-     * @param message The message to display to the user as a prompt.
-     * @return The validated user input as a string.
-     */
-    private static String stringRobustReading(String message) {
-        Scanner keyboard = new Scanner(System.in);
-        displayMessage(message);
-
-        String input = keyboard.nextLine();
-        while (input.trim().isEmpty() || !input.trim().matches("(?i)[yn]")) {
-            // Ensures that the user cannot enter only whitespace as a valid input.
-            displayInvalidInput("Invalid input. " + message);
-            input = keyboard.nextLine();
-        }
-
-        return input;
-    }
-
-
-    public void enterCode(Code code) {
-        currentGame.enterCode(code);
-    }
-
-    public void chooseValidator(Validator validator) {
         currentGame.chooseValidator(validator);
     }
+/*
+    public void nextRound() {
+        currentGame.nextRound();
+    }
+
 
     public void nextRound() {
         currentGame.nextRound();
@@ -112,5 +82,5 @@ public class GameFacade {
     public void abandonGame() {
         currentGame.abandonGame();
         currentGame = null; // Réinitialiser le jeu courant après l'abandon
-    }
+    }*/
 }

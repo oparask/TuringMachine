@@ -1,23 +1,24 @@
 package model.validators;
 
-public class RepetitionNumber implements Validator {
-    private int secretCode;
-    private int userCode;
+import model.Code;
 
-    public RepetitionNumber(int secretCode, int userCode) {
+public class RepetitionNumber implements Validator {
+    private Code secretCode;
+    private Code userCode;
+
+    public RepetitionNumber(Code secretCode, Code userCode) {
         this.secretCode = secretCode;
         this.userCode = userCode;
     }
 
-    private int category(int code) {
-        int firstDigit = code / 100;
-        int secondDigit = (code / 10) % 10;
-        int thirdDigit =  code % 10;
+    private int category(Code code) {
         int repetition = 0;
 
-        if(firstDigit == secondDigit && firstDigit == thirdDigit){
+        if(code.getFirstDigit() == code.getSecondDigit() && code.getFirstDigit() == code.getThirdDigit()){
             repetition = 3;
-        } else if (firstDigit == secondDigit || firstDigit == thirdDigit || secondDigit == thirdDigit ){
+        } else if (code.getFirstDigit() == code.getSecondDigit()
+                || code.getFirstDigit() == code.getThirdDigit()
+                || code.getSecondDigit()  == code.getThirdDigit() ){
             repetition = 2;
         }
 

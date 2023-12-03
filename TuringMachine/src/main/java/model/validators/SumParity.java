@@ -1,20 +1,18 @@
 package model.validators;
 
-public class SumParity  implements Validator {
-    private int secretCode;
-    private int userCode;
+import model.Code;
 
-    public SumParity(int secretCode, int userCode) {
+public class SumParity  implements Validator {
+    private Code secretCode;
+    private Code userCode;
+
+    public SumParity(Code secretCode, Code userCode) {
         this.secretCode = secretCode;
         this.userCode = userCode;
     }
 
-    private int category(int code) {
-        int firstDigit = code / 100;
-        int secondDigit = (code / 10) % 10;
-        int thirdDigit =  code % 10;
-
-        int sum  = firstDigit + secondDigit + thirdDigit;
+    private int category(Code code) {
+        int sum  = code.getFirstDigit() + code.getSecondDigit() + code.getThirdDigit();
 
         return sum % 2 == 0 ? 0 : 1; //returns 0 for even and 1 for odd
     }

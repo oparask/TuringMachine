@@ -1,25 +1,22 @@
 package model.validators;
 
-import java.util.ArrayList;
+import model.Code;
+
 
 public class CountEvenDigit  implements Validator{
-    private int secretCode;
-    private int userCode;
+    private Code secretCode;
+    private Code userCode;
 
-    public CountEvenDigit(int secretCode, int userCode) {
+    public CountEvenDigit(Code secretCode, Code userCode) {
         this.secretCode = secretCode;
         this.userCode = userCode;
     }
 
-    private int category(int code) {
-        var codeDigits = new ArrayList<Integer>();
-        codeDigits.add(code / 100); // firstDigit
-        codeDigits.add((code / 10) % 10); // secondDigit
-        codeDigits.add(code % 10); //thirdDigit
+    private int category(Code code) {
         int even = 0;
 
-        for(int codeDigit : codeDigits){
-            if(codeDigit % 2 ==0){
+        for(Integer digit : code){
+            if(digit % 2 == 0){
                 even++;
             }
         }

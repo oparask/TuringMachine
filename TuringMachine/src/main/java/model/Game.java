@@ -8,10 +8,18 @@ import java.util.List;
 public class Game {
 
     Problem problem;
-    List<Round> manches;
+    List<Round> rounds;
 
     public Game(Problem problem) {
         this.problem = problem;
-        this.manches = new ArrayList<>();
+        this.rounds = new ArrayList<>();
+        Round firstRound = new Round(problem, )
+    }
+
+
+    //creates a new round
+    public void addRound(Code code) {
+        Round round = new Round(code);
+        rounds.add(round);
     }
 }

@@ -1,27 +1,25 @@
 package model.validators;
 
+import model.Code;
+
 import java.util.ArrayList;
 
 public class MostFrequentParity implements Validator {
-    private int secretCode;
-    private int userCode;
+    private Code secretCode;
+    private Code userCode;
 
 
-    public MostFrequentParity(int secretCode, int userCode) {
+    public MostFrequentParity(Code secretCode, Code userCode) {
         this.secretCode = secretCode;
         this.userCode = userCode;
     }
 
-    private int category(int code) {
-        var codeDigits = new ArrayList<Integer>();
-        codeDigits.add(code / 100); // firstDigit
-        codeDigits.add((code / 10) % 10); // secondDigit
-        codeDigits.add(code % 10); //thirdDigit
+    private int category(Code code) {
         int even = 0;
         int odd = 0;
 
-        for(int codeDigit : codeDigits){
-            if(codeDigit % 2 ==0){
+        for(Integer digit : code){
+            if(digit % 2 ==0){
                 even++;
             } else {
                 odd++;
