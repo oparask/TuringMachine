@@ -1,6 +1,7 @@
 package view;
 
 import model.problems.Problem;
+import model.validators.Validator;
 
 import java.util.List;
 
@@ -34,6 +35,20 @@ public class View {
         System.out.println();
     }
 
+    public static void displayValidators(List<Validator> validators) {
+        for (Validator validator : validators) {
+            System.out.println(validator.toString());
+        }
+
+    }
+
+    public static void displayScore(int testedValidatorsNb, int roundsNb) {
+        //les scores (nombre de validateurs vérifiés et nombre de manches) sont affichés ;
+        System.out.println("You've tested "+ testedValidatorsNb + " in " + roundsNb + " rounds.");
+
+    }
+
+
     /**
      * Displays a general message.
      *
@@ -53,10 +68,6 @@ public class View {
         System.out.println(ANSI_ORANGE + message + ANSI_RESET);
         System.out.println();
     }
-
-
-
-
 
 
 }

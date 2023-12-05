@@ -4,6 +4,7 @@ import model.problems.Problem;
 import model.problems.ProblemReader;
 import model.validators.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -12,13 +13,38 @@ public class GameFacade {
     private List<Problem> problems;
     private Problem problem;
     private Game currentGame;
-    private Code userCode;
 
     public GameFacade() {
         this.problems = new ProblemReader().getProblems();
         problem = null;
         currentGame = null;
-        userCode = null;
+    }
+
+    public List<Problem> getProblems() {
+        return problems;
+    }
+
+    public Problem getProblem() {
+        return problem;
+    }
+
+    public Game getCurrentGame() {
+        return currentGame;
+    }
+
+    public List<Validator> getValidators (){
+        return currentGame.getValidators();
+    }
+    public List<Validator> getTestedValidators() {
+        return currentGame.getTestedValidators();
+    }
+
+    public List<Validator> getCurRoundTestedValidators() {
+        return currentGame.getCurRoundTestedValidators();
+    }
+
+    public List<Round> getRounds(){
+        return currentGame.getRounds();
     }
 
     public void startNewGame(int problemNb) {
@@ -35,41 +61,28 @@ public class GameFacade {
     //creates a new round
     public void enterCode(int code) {
         Code userCode = new Code(code);
-        this.userCode = userCode;
         currentGame.addRound(userCode);
     }
 
-    public void chooseValidator(int validatorNb) {
-        Validator validator;
-        switch (validatorNb){
-            case 1, 2, 3, 4 -> validator = new CompareOneDigitToAValue(problem.getSecretCode(), userCode, validatorNb);
-            case 5,6,7 -> validator = new CheckParityOfOneDigit(problem.getSecretCode(), userCode, validatorNb);
-            case 8, 9, 10 -> validator = new CountDigitValue(problem.getSecretCode(), userCode, validatorNb);
-            case 11, 12, 13 -> validator = new CompareTwoDigits(problem.getSecretCode(), userCode, validatorNb);
-            case 14, 15 ->  validator = new ExtremeDigit(problem.getSecretCode(), userCode, validatorNb);
-            case 16 -> validator = new MostFrequentParity(problem.getSecretCode(), userCode);
-            case 17 -> validator = new CountEvenDigit(problem.getSecretCode(), userCode);
-            case 18 -> validator = new SumParity(problem.getSecretCode(), userCode);
-            case 19 -> validator = new CompSumTwoDigitsToAValue(problem.getSecretCode(), userCode);
-            case 20 -> validator = new RepetitionNumber(problem.getSecretCode(), userCode);
-            case 21 -> validator = new TwinDigit(problem.getSecretCode(), userCode);
-            case 22 -> validator = new DigitsOrder(problem.getSecretCode(), userCode);
+    public boolean chooseValidator(int validatorNb) {
+        if(validatorNb<1 || validatorNb > 22){
+            throw new IllegalArgumentException("Invalid validator number");
         }
-        currentGame.chooseValidator(validator);
+        return currentGame.testValidator(validatorNb);
     }
+
+    public void nextRound(int code) {
+        enterCode(code);
+    }
+
+
+    public boolean guessCode(int code) {
+        Code userCode = new Code(code);
+
+        return currentGame.guessCode(userCode);
+    }
+
 /*
-    public void nextRound() {
-        currentGame.nextRound();
-    }
-
-
-    public void nextRound() {
-        currentGame.nextRound();
-    }
-
-    public boolean guessCode(Code code) {
-        return currentGame.guessCode(code);
-    }
 
     public void undoMove() {
         currentGame.undoMove();

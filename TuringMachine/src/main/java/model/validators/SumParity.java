@@ -21,4 +21,9 @@ public class SumParity  implements Validator {
     public boolean test() {
         return category(userCode) == category(secretCode);
     }
+
+    @Override
+    public String toString() {
+        return "Determines whether the sum of the digits of the code is even or odd";
+    }
 }

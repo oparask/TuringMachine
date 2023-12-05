@@ -33,4 +33,9 @@ public class MostFrequentParity implements Validator {
     public boolean test() {
         return category(userCode) == category(secretCode);
     }
+
+    @Override
+    public String toString() {
+        return "Determines if there are more even numbers or odd in code";
+    }
 }

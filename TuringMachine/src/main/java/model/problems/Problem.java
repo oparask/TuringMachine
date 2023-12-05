@@ -1,6 +1,10 @@
 package model.problems;
 
 import model.Code;
+import model.validators.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The {@code Problem} class represents a problem with a specific number, difficulty level,
@@ -11,7 +15,7 @@ public class Problem {
     private int difficultyLevel;
     private int luckDegree;
     private Code secretCode;
-    private int[] validators;
+    private int[] validatorsNb;
 
     /**
      * Constructs a new Problem instance with the specified parameters.
@@ -27,7 +31,9 @@ public class Problem {
         this.difficultyLevel = difficultyLevel;
         this.luckDegree = luckDegree;
         this.secretCode = secretCode;
-        this.validators = validators;
+        this.validatorsNb = validators;
+
+
     }
 
     /**
@@ -72,7 +78,7 @@ public class Problem {
      * @return The array of validators.
      */
     public int[] getValidators() {
-        return validators;
+        return validatorsNb;
     }
 
     /**
@@ -86,7 +92,7 @@ public class Problem {
                 ", Difficulty Level: " + difficultyLevel +
                 ", Luck Degree: " + luckDegree +
                 ", Secret Code: " + secretCode +
-                ", Validators: " + arrayToString(validators);
+                ", Validators: " + arrayToString(validatorsNb);
     }
 
     // Utility method to convert an array to a string

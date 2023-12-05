@@ -25,4 +25,9 @@ public class TwinDigit implements Validator {
     public boolean test() {
         return category(userCode) == category(secretCode);
     }
+
+    @Override
+    public String toString() {
+        return "Determines if a digit of the code is found in exactly two copies in the code (but not three)";
+    }
 }

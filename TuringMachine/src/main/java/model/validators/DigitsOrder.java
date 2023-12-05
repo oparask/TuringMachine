@@ -25,4 +25,9 @@ public class DigitsOrder implements Validator {
     public boolean test() {
         return category(userCode) == category(secretCode);
     }
+
+    @Override
+    public String toString() {
+        return "Determines whether the three digits of the code are in ascending or descending order";
+    }
 }

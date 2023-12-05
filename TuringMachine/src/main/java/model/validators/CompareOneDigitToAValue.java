@@ -31,4 +31,15 @@ public class CompareOneDigitToAValue implements Validator {
         return category(userCode) == category(secretCode);
     }
 
+    @Override
+    public String toString() {
+        String displayValidator = "";
+        switch (this.validatorNumber) {
+            case 1 -> displayValidator = "Compare the first digit of the code with 1";
+            case 2 -> displayValidator = "Compare the first number with 3";
+            case 3 -> displayValidator = "Compare the second number with 3";
+            case 4 -> displayValidator = "Compare the second number with 4";
+        }
+        return displayValidator;
+    }
 }

@@ -29,4 +29,9 @@ public class RepetitionNumber implements Validator {
     public boolean test() {
         return category(userCode) == category(secretCode);
     }
+
+    @Override
+    public String toString() {
+        return "Determines if a digit in the code repeats and if so, how many times";
+    }
 }

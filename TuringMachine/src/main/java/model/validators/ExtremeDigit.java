@@ -36,4 +36,13 @@ public class ExtremeDigit implements Validator {
         return category(userCode) == category(secretCode);
     }
 
+    @Override
+    public String toString() {
+        String displayValidator = "";
+        switch (this.validatorNumber) {
+            case 14 -> displayValidator = "Determine which number is strictly the smaller";
+            case 15 -> displayValidator = "Determine which number is strictly the bigger";
+        }
+        return displayValidator;
+    }
 }

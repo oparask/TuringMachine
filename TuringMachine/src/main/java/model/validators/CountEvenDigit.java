@@ -28,4 +28,9 @@ public class CountEvenDigit  implements Validator{
     public boolean test() {
         return category(userCode) == category(secretCode);
     }
+
+    @Override
+    public String toString() {
+        return "Count how many digits in the code are even";
+    }
 }

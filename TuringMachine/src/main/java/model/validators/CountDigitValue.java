@@ -38,4 +38,16 @@ public class CountDigitValue implements Validator {
     public boolean test() {
         return category(userCode) == category(secretCode);
     }
+
+    @Override
+    public String toString() {
+        String displayValidator = "";
+        switch (this.validatorNumber) {
+            case 8 -> displayValidator = "Count how many times the value 1 appears";
+            case 9 -> displayValidator = "Count how many times the value 3 appears";
+            case 10 -> displayValidator = "Count how many times the value 4 appears";
+        }
+        return displayValidator;
+    }
+
 }

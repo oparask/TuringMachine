@@ -26,4 +26,15 @@ public class CompareTwoDigits implements Validator {
     public boolean test() {
         return category(userCode) == category(secretCode);
     }
+
+    @Override
+    public String toString() {
+        String displayValidator = "";
+        switch (validatorNumber){
+            case 11 -> displayValidator = "Compare the first digit of the code with the second";
+            case 12 -> displayValidator = "Compare the first digit of the code with the third";
+            case 13 -> displayValidator = "Compare the second digit of the code with the third";
+        }
+        return displayValidator;
+    }
 }

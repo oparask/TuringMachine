@@ -29,4 +29,15 @@ public class CheckParityOfOneDigit implements Validator {
     public boolean test() {
         return category(userCode) == category(secretCode);
     }
+
+    @Override
+    public String toString() {
+        String displayValidator = "";
+        switch (this.validatorNumber) {
+            case 5 -> displayValidator = "Checks the parity of the first digit";
+            case 6 -> displayValidator = "Check the parity of the second digit";
+            case 7 -> displayValidator = "Check the parity of the third digit";
+        }
+        return displayValidator;
+    }
 }

@@ -23,4 +23,9 @@ public class CompSumTwoDigitsToAValue implements Validator {
     public boolean test() {
         return category(userCode) == category(secretCode);
     }
+
+    @Override
+    public String toString() {
+        return "Compare the sum of the first of second digit of the code with the value 6";
+    }
 }
