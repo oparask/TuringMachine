@@ -7,28 +7,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-    Problem problem;
-    List<Round> rounds;
-    Round currentRound;
+   private Problem problem;
+    private List<Round> rounds;
+    private Round currentRound;
+
 
 
     public Game(Problem problem) {
         this.problem = problem;
         this.rounds = new ArrayList<>();
         this.currentRound = new Round();
+        this.rounds.add(currentRound);
     }
 
     public int[] getProblemValidators(){
         return problem.getValidators();
     }
-    public List<Integer> getTestedValidators() {
-        List<Integer> testedValidators = new ArrayList<>();
+    public int getScore() {
 
+        int score = 0;
         for (Round round : rounds) {
-            testedValidators.addAll(round.getTestedValidators());
+            score += round.getTestedValidators().size();
         }
 
-        return testedValidators;
+        return score;
     }
     public List<Integer> getCurRoundTestedValidators() {
         return currentRound.getTestedValidators();

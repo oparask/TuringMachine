@@ -48,6 +48,7 @@ public class View {
 
     public static void displayScore(int testedValidatorsNb, int roundsNb) {
         //les scores (nombre de validateurs vérifiés et nombre de manches) sont affichés ;
+        if(testedValidatorsNb == 1 )
         System.out.println("You've tested "+ testedValidatorsNb + " validators in " + roundsNb + " rounds.");
         System.out.println();
 

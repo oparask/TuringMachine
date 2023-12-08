@@ -1,7 +1,9 @@
 package controller;
 
 import model.GameFacade;
+import model.validators.Validator;
 
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -27,7 +29,8 @@ public class App {
 
     private boolean processOfGame() {
         displayValidators(gameFacade.getProblemValidators());
-        displayScore(gameFacade.getTestedValidators().size(), gameFacade.getRounds().size());
+        displayScore(gameFacade.getScore(), gameFacade.getRounds().size());
+
 
         //l'utilisateur
         // entrer un code (uniquement si aucun validateur n’a été vérifié à cette manche) ;
@@ -37,7 +40,8 @@ public class App {
 
         System.out.println("Hello");
         //choisir un validateur (dans la limite de 3 validateurs par manche) ;
-        int nbValidatorToBeTested = chooseValidator();
+        int indexValidator = chooseValidator(gameFacade.getProblemValidators());
+        int validatorNb = game
         boolean testResult = gameFacade.testValidator(nbValidatorToBeTested);
         if (testResult) {
             displayMessage("The test has passed!");
@@ -96,8 +100,16 @@ public class App {
         }
     }
 
-    private int chooseValidator() {
-        return readNumber("Choose a validator from the problem.");
+    private int chooseValidator(List<Validator> validators) {
+        Scanner keyboard = new Scanner(System.in);
+        int input = keyboard.nextInt();
+
+        while (input < 0 || input >= validators.size()) {
+            displayInvalidInput("You must choose a valid validator index");
+            input = keyboard.nextInt();
+        }
+
+        return input;
     }
 
     private boolean nextRound(){

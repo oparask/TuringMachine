@@ -31,8 +31,8 @@ public class GameFacade {
         return problemValidators;
     }
 
-    public List<Integer> getTestedValidators() {
-        return currentGame.getTestedValidators();
+    public int getScore() {
+        return currentGame.getScore();
     }
 
     public List<Integer> getCurRoundTestedValidators() {
@@ -88,9 +88,8 @@ public class GameFacade {
     }
 
     public boolean testValidator(int validatorNb) {
-        if (!contains(currentGame.getProblemValidators(), validatorNb)
-                && getCurRoundTestedValidators().contains(validatorNb)) {
-            throw new IllegalArgumentException("Invalid validator number");
+        if (getCurRoundTestedValidators().contains(validatorNb)) {
+            throw new IllegalArgumentException("You've already tested this validator");
         }
 
         Validator validator = validatorConversion(currentGame.getSecretCode(), currentGame.getUserCode(), validatorNb);
