@@ -1,10 +1,11 @@
 package model;
 
+
+import java.util.Iterator;
+
 /**
  * The {@code Code} class represents a three-digit code with each digit ranging from 1 to 5, inclusive.
  */
-import java.util.Iterator;
-
 public class Code implements Iterable<Integer> {
     private int firstDigit;
     private int secondDigit;
@@ -13,10 +14,10 @@ public class Code implements Iterable<Integer> {
     public Code(int code) {
         int firstDigit = code / 100;
         int secondDigit = (code / 10) % 10;
-        int thirdDigit =  code % 10;
+        int thirdDigit = code % 10;
 
         if (!isValidDigit(firstDigit) || !isValidDigit(secondDigit) || !isValidDigit(thirdDigit)) {
-            throw new IllegalArgumentException("The numbers must be between 1 and 5, inclusive.");
+            throw new IllegalArgumentException("Each digit must be between 1 and 5, inclusive.");
         } else {
             this.firstDigit = firstDigit;
             this.secondDigit = secondDigit;
@@ -38,7 +39,7 @@ public class Code implements Iterable<Integer> {
 
     public int getDigit(int index) {
         if (index < 1 || index > 3) {
-            throw new IllegalArgumentException("Index must be between 1 and 3, inclusive.");
+            return -1; // ou une autre valeur par défaut
         }
         return switch (index) {
             case 1 -> firstDigit;
@@ -47,6 +48,7 @@ public class Code implements Iterable<Integer> {
             default -> throw new IllegalStateException("Unexpected value: " + index);
         };
     }
+
     @Override
     public Iterator<Integer> iterator() {
         return new CodeIterator();
@@ -84,5 +86,7 @@ public class Code implements Iterable<Integer> {
             return digit;
         }
     }
+
+
 }
 

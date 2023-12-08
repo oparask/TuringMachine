@@ -14,6 +14,10 @@ public class CheckParityOfOneDigit implements Validator {
         this.validatorNumber = validatorNumber;
     }
 
+    public int getValidatorNumber() {
+        return validatorNumber;
+    }
+
     private int category(Code code) {
         int digit = 0;
 

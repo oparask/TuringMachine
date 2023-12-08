@@ -30,13 +30,18 @@ public class ProblemReader {
                 int luckDegree = Integer.parseInt(line[2]);
                 Code secretCode = new Code(Integer.parseInt(line[3]));
 
-                String[] stringValidators = line[4].split(",");
-                int[] validators = new int[stringValidators.length];
-                for (int i = 0; i < stringValidators.length; i++) {
-                    validators[i] = Integer.parseInt(stringValidators[i].trim());
+                List<String> validators = new ArrayList<>();
+                for (int i = 4; i < line.length; i++) {
+                    if(!line[i].isEmpty()){
+                        validators.add(line[i]);
+                    } else {
+                        break;
+                    }
                 }
 
-                Problem problem = new Problem(problemNumber, difficultyLevel, luckDegree, secretCode, validators);
+                int[] validatorsArray = validators.stream().mapToInt(Integer::parseInt).toArray();
+
+                Problem problem = new Problem(problemNumber, difficultyLevel, luckDegree, secretCode, validatorsArray);
                 problems.add(problem);
             }
         } catch (IOException | CsvException e) {

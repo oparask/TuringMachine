@@ -12,7 +12,9 @@ public class CompareTwoDigits implements Validator {
         this.userCode = userCode;
         this.validatorNumber = validatorNumber;
     }
-
+    public int getValidatorNumber() {
+        return validatorNumber;
+    }
     private int category(Code code){
         int result = 0; //-1, 0 or 1
         switch (validatorNumber){

@@ -20,33 +20,49 @@ public class View {
      * Displays the welcome message.
      */
     public static void displayTitle() {
-        System.out.println(ANSI_PURPLE + "( T )( U )( R )( I )( N )( G )  ( M )( A )( C )( H )( I )( N )( E )( S )" + ANSI_RESET);
+        System.out.println(ANSI_PURPLE + "( T )( U )( R )( I )( N )( G )  ( M )( A )( C )( H )( I )( N )( E )" + ANSI_RESET);
         System.out.println();
     }
 
     public static void displayProblems(List<Problem> problems) {
-        System.out.println(FORMAT_HEADER);
+        System.out.println("The problems of Turing Machine are: ");
+
         for (Problem problem : problems) {
-            System.out.printf(FORMAT_PROBLEM,
-                    problem.getProblemNumber(),
-                    problem.getDifficultyLevel(),
-                    problem.getLuckDegree());
+            System.out.println("Problem " + problem.getProblemNumber()
+                    + " (difficulty level: " +  problem.getDifficultyLevel()
+                    + ", luck degree: " +  problem.getLuckDegree() + ")");
+
         }
         System.out.println();
     }
 
     public static void displayValidators(List<Validator> validators) {
+        System.out.println("The available validators for the chosen problem are: ");
         for (Validator validator : validators) {
-            System.out.println(validator.toString());
+            System.out.println("validator " + validator.getValidatorNumber() + " -> " + validator.toString());
         }
+
+        System.out.println();
 
     }
 
     public static void displayScore(int testedValidatorsNb, int roundsNb) {
         //les scores (nombre de validateurs vérifiés et nombre de manches) sont affichés ;
-        System.out.println("You've tested "+ testedValidatorsNb + " in " + roundsNb + " rounds.");
+        System.out.println("You've tested "+ testedValidatorsNb + " validators in " + roundsNb + " rounds.");
+        System.out.println();
 
     }
+
+
+    public static void displayTestResult(boolean testResult) {
+        if (testResult) {
+            System.out.println("The test has passed!");
+        } else {
+            System.out.println("The test has failed!");
+        }
+    }
+
+
 
 
     /**

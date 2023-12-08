@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-
     Problem problem;
     List<Round> rounds;
     Round currentRound;
@@ -16,13 +15,14 @@ public class Game {
     public Game(Problem problem) {
         this.problem = problem;
         this.rounds = new ArrayList<>();
+        this.currentRound = new Round();
     }
 
-    public List<Validator> getValidators (){
-        return currentRound.getValidators();
+    public int[] getProblemValidators(){
+        return problem.getValidators();
     }
-    public List<Validator> getTestedValidators() {
-        List<Validator> testedValidators = new ArrayList<>();
+    public List<Integer> getTestedValidators() {
+        List<Integer> testedValidators = new ArrayList<>();
 
         for (Round round : rounds) {
             testedValidators.addAll(round.getTestedValidators());
@@ -30,8 +30,16 @@ public class Game {
 
         return testedValidators;
     }
-    public List<Validator> getCurRoundTestedValidators() {
+    public List<Integer> getCurRoundTestedValidators() {
         return currentRound.getTestedValidators();
+    }
+
+    public Code getUserCode(){
+        return currentRound.getUserCode();
+    }
+
+    public Code getSecretCode(){
+        return problem.getSecretCode();
     }
 
     public Problem getProblem() {
@@ -46,29 +54,23 @@ public class Game {
         return currentRound;
     }
 
+
+    public void enterCode(Code code){
+        currentRound.addUserCode(code);
+    }
+
     //creates a new round
-    public void addRound(Code userCode) {
-        Round round = new Round(userCode, problem);
+    public void nextRound() {
+        Round round = new Round();
         currentRound = round;
         rounds.add(round);
     }
 
-
-    public boolean testValidator(int validatorNb) {
-        int[] problemValidators = problem.getValidators();
-
-        // Vérifier si le validateur se trouve dans le tableau de validateurs
-        for (int problemValidator : problemValidators) {
-            if (problemValidator == validatorNb) {
-
-                return currentRound.testValidator(validatorNb); // Sortir de la méthode une fois que le validateur est trouvé
-            }
-        }
-        throw new IllegalArgumentException("Chose a validator from the problem validators");
+    public boolean testValidator(Validator validator) {
+        return currentRound.testValidator(validator);
     }
 
-    public boolean guessCode(Code userCode) {
-        return userCode == problem.getSecretCode();
+    public boolean guessCode() {
+        return currentRound.getUserCode().equals(problem.getSecretCode());
     }
-
 }

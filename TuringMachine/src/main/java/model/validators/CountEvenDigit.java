@@ -6,12 +6,17 @@ import model.Code;
 public class CountEvenDigit  implements Validator{
     private Code secretCode;
     private Code userCode;
+    private int validatorNumber;
 
-    public CountEvenDigit(Code secretCode, Code userCode) {
+    public CountEvenDigit(Code secretCode, Code userCode, int validatorNumber) {
         this.secretCode = secretCode;
         this.userCode = userCode;
+        this.validatorNumber = validatorNumber;
     }
 
+    public int getValidatorNumber() {
+        return validatorNumber;
+    }
     private int category(Code code) {
         int even = 0;
 

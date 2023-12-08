@@ -15,6 +15,9 @@ public class CountDigitValue implements Validator {
 
     }
 
+    public int getValidatorNumber() {
+        return validatorNumber;
+    }
     private int category(Code code) {
         int value = 0;
         switch (this.validatorNumber) {

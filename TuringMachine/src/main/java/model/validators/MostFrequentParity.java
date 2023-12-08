@@ -7,13 +7,18 @@ import java.util.ArrayList;
 public class MostFrequentParity implements Validator {
     private Code secretCode;
     private Code userCode;
+    private int validatorNumber;
 
 
-    public MostFrequentParity(Code secretCode, Code userCode) {
+    public MostFrequentParity(Code secretCode, Code userCode, int validatorNumber) {
         this.secretCode = secretCode;
         this.userCode = userCode;
+        this.validatorNumber = validatorNumber;
     }
 
+    public int getValidatorNumber() {
+        return validatorNumber;
+    }
     private int category(Code code) {
         int even = 0;
         int odd = 0;

@@ -5,12 +5,18 @@ import model.Code;
 public class DigitsOrder implements Validator {
     private Code secretCode;
     private Code userCode;
+    private int validatorNumber;
 
-    public DigitsOrder(Code secretCode, Code userCode) {
+
+    public DigitsOrder(Code secretCode, Code userCode, int validatorNumber) {
         this.secretCode = secretCode;
         this.userCode = userCode;
+        this.validatorNumber = validatorNumber;
     }
 
+    public int getValidatorNumber() {
+        return validatorNumber;
+    }
     private int category(Code code) {
         if (code.getFirstDigit() < code.getSecondDigit() && code.getSecondDigit() < code.getThirdDigit()){
             return 1; //true -> twin

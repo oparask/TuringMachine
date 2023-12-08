@@ -5,12 +5,17 @@ import model.Code;
 public class RepetitionNumber implements Validator {
     private Code secretCode;
     private Code userCode;
+    private int validatorNumber;
 
-    public RepetitionNumber(Code secretCode, Code userCode) {
+    public RepetitionNumber(Code secretCode, Code userCode, int validatorNumber) {
         this.secretCode = secretCode;
         this.userCode = userCode;
+        this.validatorNumber = validatorNumber;
     }
 
+    public int getValidatorNumber() {
+        return validatorNumber;
+    }
     private int category(Code code) {
         int repetition = 0;
 

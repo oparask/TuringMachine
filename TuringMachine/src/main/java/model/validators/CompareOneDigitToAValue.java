@@ -14,6 +14,9 @@ public class CompareOneDigitToAValue implements Validator {
 
     }
 
+    public int getValidatorNumber() {
+        return validatorNumber;
+    }
     private int category(Code code){
         int result = 0;
 

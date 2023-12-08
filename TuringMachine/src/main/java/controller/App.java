@@ -1,10 +1,7 @@
 package controller;
 
 import model.GameFacade;
-import model.problems.Problem;
-import model.problems.ProblemReader;
 
-import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -12,61 +9,114 @@ import java.util.regex.Pattern;
 import static view.View.*;
 
 public class App {
-    GameFacade gameFacade = new GameFacade();
-    List<Problem> problems = new ProblemReader().getProblems();
+    private final GameFacade gameFacade = new GameFacade();
 
-    public void start() {
+    public void app() {
         displayTitle();
-        //displayHelp();
-        startNewGame();
-        boolean continueGame = true;
 
+        int problemNumber = problemOfGame();
+        gameFacade.startNewGame(problemNumber);
+
+        //une fois la partie lancée
+        boolean continueGame = true; //tant que continuer la partie
         while (continueGame) {
-            continueGame = processCommand();
+            continueGame = processOfGame();
         }
     }
 
 
-    private boolean processCommand() {
-        Scanner keyboard = new Scanner(System.in);
-        String invalidInputMessage = "Invalid input! Try again!";
-
-        //les validateurs du probleme sont affichés ;
-        displayValidators(gameFacade.getValidators());
-
-        //les scores (nombre de validateurs vérifiés et nombre de manches) sont affichés ;
+    private boolean processOfGame() {
+        displayValidators(gameFacade.getProblemValidators());
         displayScore(gameFacade.getTestedValidators().size(), gameFacade.getRounds().size());
 
+        //l'utilisateur
         // entrer un code (uniquement si aucun validateur n’a été vérifié à cette manche) ;
         if (gameFacade.getCurRoundTestedValidators().size() == 0) {
-            enterCode();
+            gameFacade.enterCode(enterCode());
         }
 
-/*
+        System.out.println("Hello");
+        //choisir un validateur (dans la limite de 3 validateurs par manche) ;
+        int nbValidatorToBeTested = chooseValidator();
+        boolean testResult = gameFacade.testValidator(nbValidatorToBeTested);
+        if (testResult) {
+            displayMessage("The test has passed!");
+        } else {
+            displayMessage("The test has failed!");
+        }
 
-        . l’utilisateur peut alors :
-. entrer un code (uniquement si aucun validateur n’a été vérifié à cette manche) ;
-. choisir un validateur (dans la limite de 3 validateurs par manche) ;
-. choisir de passer à la manche suivante (pour tester un nouveau code) ;
-. vérifier si son code est le bon (ce qui met fin au jeu et lui dit s’il a gagné ou
-                perdu) ;
 
-*/
-    }
+        //choisir de passer à la manche suivante (pour tester un nouveau code) ;
+        if (nextRound()) {
+            gameFacade.nextRound();
+            return true;
+        }
 
-    public void startNewGame() {
-        displayProblems(problems);
-        if (choseProblem()) { //the player wants to choose the problem
-            gameFacade.startNewGame(readProblemNumber());
-        } else { //chose a random problem
-            gameFacade.startNewGame(getRandomProblem());
+        //vérifier si son code est le bon (ce qui met fin au jeu et lui dit s’il a gagné ou perdu) ;
+        if(wantToGuessCode()){
+            displayTestResult(gameFacade.guessCode());
+            return false;
+        } else {
+            return true;
         }
     }
 
+    public int problemOfGame() {
+        displayProblems(gameFacade.getProblems());
+        if (choseYorN("Do you want to chose the problem?")) { //the player wants to choose the problem
+            return chooseProblem();
+        } else {
+            return getRandomProblem();
+        }
+    }
 
-    private int readProblemNumber() {
+    private int chooseProblem() {
+        return readNumber("Choose a problem.");
+    }
+
+    private int getRandomProblem() {
+        Random random = new Random();
+        return random.nextInt(gameFacade.getProblems().size());
+    }
+
+
+    private int enterCode() {
         Scanner keyboard = new Scanner(System.in);
-        displayMessage("Enter the number of the problem: ");
+
+        displayMessage("Enter a code of three digits between 1 and 5: ");
+
+        String input = keyboard.nextLine().trim();
+        String regex = "^[1-5]{3}$";   // code regex
+
+        if (Pattern.matches(regex, input)) {
+            return (Integer.parseInt(input));
+        } else {
+            displayInvalidInput("Invalid code format.");
+            return enterCode(); //recursive call
+        }
+    }
+
+    private int chooseValidator() {
+        return readNumber("Choose a validator from the problem.");
+    }
+
+    private boolean nextRound(){
+        return choseYorN("Do you want to test another code ?");
+    }
+
+    private boolean wantToGuessCode(){
+        return choseYorN("Do you want to guess the secret code ?");
+    }
+
+    private boolean choseYorN(String message) {
+        return stringRobustReading(message +
+                " (y or n)").equalsIgnoreCase("y");
+    }
+
+
+    private int readNumber(String message) {
+        Scanner keyboard = new Scanner(System.in);
+        displayMessage(message);
         String input = keyboard.nextLine().trim();
 
         try {
@@ -74,44 +124,8 @@ public class App {
             return Integer.parseInt(detailInput[0]);
         } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
             displayInvalidInput("Invalid input. Please try again.");
-            return readProblemNumber(); // Recursive call to try again
+            return readNumber(message); // Recursive call to try again
         }
-    }
-
-    private boolean choseProblem() {
-        return stringRobustReading("Do you want to chose the problem?" +
-                " (y or n)").equalsIgnoreCase("y");
-    }
-
-
-    private int getRandomProblem() {
-        Random random = new Random();
-        int randomIndex = random.nextInt(problems.size());
-        return randomIndex;
-    }
-
-
-    private void enterCode() {
-        Scanner keyboard = new Scanner(System.in);
-        displayMessage("Enter a code of three digits between 1 and 5: ");
-        String input = keyboard.nextLine().trim();
-        // code regex
-        String regex = "^[1-5]{3}$";
-        if (Pattern.matches(regex, input)) {
-            int userCode = Integer.parseInt(input);
-            gameFacade.enterCode(userCode);
-        } else {
-            displayInvalidInput("Invalid code format. Please enter a code of three digits between 1 and 5.");
-        }
-    }
-
-    private boolean isValidCode(int code) {
-        return code >= 1 && code <= 5;
-    }
-
-
-    private boolean isValidCode(int code) {
-        return code >= 1 && code <= 5;
     }
 
 
@@ -135,9 +149,21 @@ public class App {
         return input;
     }
 
+
+    // Méthode pour vérifier si un tableau d'entiers contient une valeur spécifique
+    public static boolean contains(int[] array, int targetValue) {
+        for (int value : array) {
+            if (value == targetValue) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     public static void main(String[] args) {
         App app = new App();
-        app.start();
+        app.app();
     }
 }
 

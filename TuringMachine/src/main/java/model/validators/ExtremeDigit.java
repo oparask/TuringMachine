@@ -14,7 +14,9 @@ public class ExtremeDigit implements Validator {
         this.userCode = userCode;
         this.validatorNumber = validatorNumber;
     }
-
+    public int getValidatorNumber() {
+        return validatorNumber;
+    }
     private int category(Code code) {
         int extremum;
 

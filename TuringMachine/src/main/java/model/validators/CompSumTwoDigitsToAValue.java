@@ -5,14 +5,19 @@ import model.Code;
 public class CompSumTwoDigitsToAValue implements Validator {
     private Code secretCode;
     private Code userCode;
+    private int validatorNumber;
     private int value;
 
-    public CompSumTwoDigitsToAValue(Code secretCode, Code userCode) {
+    public CompSumTwoDigitsToAValue(Code secretCode, Code userCode, int validatorNumber) {
         this.secretCode = secretCode;
         this.userCode = userCode;
+        this.validatorNumber = validatorNumber;
         this.value = 6;
     }
 
+    public int getValidatorNumber() {
+        return validatorNumber;
+    }
     private int category(Code code) {
         int sum  = code.getFirstDigit() + code.getSecondDigit();
 

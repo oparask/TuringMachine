@@ -5,12 +5,17 @@ import model.Code;
 public class SumParity  implements Validator {
     private Code secretCode;
     private Code userCode;
+    private int validatorNumber;
 
-    public SumParity(Code secretCode, Code userCode) {
+    public SumParity(Code secretCode, Code userCode, int validatorNumber) {
         this.secretCode = secretCode;
         this.userCode = userCode;
+        this.validatorNumber = validatorNumber;
     }
 
+    public int getValidatorNumber() {
+        return validatorNumber;
+    }
     private int category(Code code) {
         int sum  = code.getFirstDigit() + code.getSecondDigit() + code.getThirdDigit();
 
