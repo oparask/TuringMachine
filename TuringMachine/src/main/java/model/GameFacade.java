@@ -109,9 +109,11 @@ public class GameFacade {
         currentGame.redoMove();
     }
 
-    public void abandonGame() {
-        currentGame.abandonGame();
-        currentGame = null; // Réinitialiser le jeu courant après l'abandon
+
     }*/
+
+    public void abandonGame() {
+        currentGame = null; // Réinitialiser le jeu courant après l'abandon
+    }
 }
 
