@@ -2,9 +2,8 @@ package model;
 
 import model.problems.Problem;
 import model.problems.ProblemReader;
-import model.validators.*;
+import model.validators.Validator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -18,21 +17,11 @@ public class GameFacade {
     }
 
     public List<Problem> getProblems() {
-
         return problems;
     }
 
-
-    public List<Validator> getProblemValidators(){
-        List<Validator> problemValidators = new ArrayList<>();
-        for(int validatorNb : currentGame.getProblemValidators()){
-            problemValidators.add(validatorConversion(currentGame.getSecretCode(), currentGame.getUserCode(), validatorNb));
-        }
-        return problemValidators;
-    }
-
-    public int getScore() {
-        return currentGame.getScore();
+    public Validator[] getProblemValidators() {
+        return currentGame.getProblemValidators();
     }
 
     public List<Integer> getCurRoundTestedValidators() {
@@ -41,6 +30,9 @@ public class GameFacade {
 
     public List<Round> getRounds() {
         return currentGame.getRounds();
+    }
+    public int getScore() {
+        return currentGame.getScore();
     }
 
 
@@ -58,7 +50,7 @@ public class GameFacade {
 
     //entrer un code
     public void enterCode(int code) {
-        if(!validateCode(code)){
+        if (!validateCode(code)) {
             throw new IllegalArgumentException("Le code doit être constitué de trois chiffre.\n" +
                     "Et chaque chiffre du code doit être compris entre 1 et 5 inclus.");
         }
@@ -68,6 +60,26 @@ public class GameFacade {
     }
 
     // Méthode pour valider l'entier
+
+
+    public boolean testValidator(int validatorIndex) {
+        if(validatorIndex < 0 || validatorIndex > currentGame.getProblemValidators().length - 1){
+            throw new IllegalArgumentException("You must choose an valid validator index.");
+        }
+
+        return currentGame.testValidator(validatorIndex);
+    }
+
+    public void nextRound() {
+        currentGame.nextRound();
+    }
+
+    //Deviner un code (et donc vérifier s’il est correct)
+    public boolean guessCode() {
+        return currentGame.guessCode();
+    }
+
+
     private boolean validateCode(int code) {
         // Convertit l'entier en une chaîne de caractères pour faciliter la manipulation des chiffres
         String codeStr = String.valueOf(code);
@@ -85,42 +97,6 @@ public class GameFacade {
             }
         }
         return true;
-    }
-
-    public boolean testValidator(int validatorNb) {
-        if (getCurRoundTestedValidators().contains(validatorNb)) {
-            throw new IllegalArgumentException("You've already tested this validator");
-        }
-
-        Validator validator = validatorConversion(currentGame.getSecretCode(), currentGame.getUserCode(), validatorNb);
-
-        return currentGame.testValidator(validator);
-    }
-
-    public void nextRound() {
-        currentGame.nextRound();
-    }
-
-
-    //Deviner un code (et donc vérifier s’il est correct)
-    public boolean guessCode() {
-        return currentGame.guessCode();
-    }
-
-
-    // Méthode pour vérifier si un tableau d'entiers contient une valeur spécifique
-    public static boolean contains(int[] array, int targetValue) {
-        for (int value : array) {
-            if (value == targetValue) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private Validator validatorConversion(Code secretCode, Code userCode, int validatorNb) {
-        ValidatorFactory validatorFactory = new DefaultValidatorFactory();
-        return validatorFactory.createValidator(secretCode, userCode, validatorNb);
     }
 
 /*

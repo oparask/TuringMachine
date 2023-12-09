@@ -2,20 +2,17 @@ package model.validators;
 
 import model.Code;
 
-public class RepetitionNumber implements Validator {
-    private Code secretCode;
-    private Code userCode;
-    private int validatorNumber;
+public class RepetitionNumber extends Validator {
 
     public RepetitionNumber(Code secretCode, Code userCode, int validatorNumber) {
-        this.secretCode = secretCode;
-        this.userCode = userCode;
-        this.validatorNumber = validatorNumber;
+        super(validatorNumber, secretCode, userCode);
     }
 
-    public int getValidatorNumber() {
-        return validatorNumber;
+    @Override
+    public boolean test() {
+        return category(super.getUserCode()) == category(super.getSecretCode());
     }
+
     private int category(Code code) {
         int repetition = 0;
 
@@ -28,11 +25,6 @@ public class RepetitionNumber implements Validator {
         }
 
         return repetition;
-    }
-
-    @Override
-    public boolean test() {
-        return category(userCode) == category(secretCode);
     }
 
     @Override

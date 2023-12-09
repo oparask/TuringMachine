@@ -2,18 +2,15 @@ package model.validators;
 
 import model.Code;
 
-public class TwinDigit implements Validator {
-    private Code secretCode;
-    private Code userCode;
-    private int validatorNumber;
+public class TwinDigit extends Validator {
 
     public TwinDigit(Code secretCode, Code userCode, int validatorNumber) {
-        this.secretCode = secretCode;
-        this.userCode = userCode;
-        this.validatorNumber = validatorNumber;
+        super(validatorNumber, secretCode, userCode);
     }
-    public int getValidatorNumber() {
-        return validatorNumber;
+
+    @Override
+    public boolean test() {
+        return category(super.getUserCode()) == category(super.getSecretCode());
     }
 
     private int category(Code code) {
@@ -24,11 +21,6 @@ public class TwinDigit implements Validator {
         } else  {
             return 0;
         }
-    }
-
-    @Override
-    public boolean test() {
-        return category(userCode) == category(secretCode);
     }
 
     @Override

@@ -2,21 +2,17 @@ package model.validators;
 
 import model.Code;
 
-public class DigitsOrder implements Validator {
-    private Code secretCode;
-    private Code userCode;
-    private int validatorNumber;
-
+public class DigitsOrder extends Validator {
 
     public DigitsOrder(Code secretCode, Code userCode, int validatorNumber) {
-        this.secretCode = secretCode;
-        this.userCode = userCode;
-        this.validatorNumber = validatorNumber;
+        super(validatorNumber, secretCode, userCode);
     }
 
-    public int getValidatorNumber() {
-        return validatorNumber;
+    @Override
+    public boolean test(){
+     return category(super.getUserCode()) == category(super.getSecretCode());
     }
+
     private int category(Code code) {
         if (code.getFirstDigit() < code.getSecondDigit() && code.getSecondDigit() < code.getThirdDigit()){
             return 1; //true -> twin
@@ -25,11 +21,6 @@ public class DigitsOrder implements Validator {
         } else {
             return 0;
         }
-    }
-
-    @Override
-    public boolean test() {
-        return category(userCode) == category(secretCode);
     }
 
     @Override

@@ -2,29 +2,21 @@ package model.validators;
 
 import model.Code;
 
-public class SumParity  implements Validator {
-    private Code secretCode;
-    private Code userCode;
-    private int validatorNumber;
+public class SumParity  extends Validator {
 
     public SumParity(Code secretCode, Code userCode, int validatorNumber) {
-        this.secretCode = secretCode;
-        this.userCode = userCode;
-        this.validatorNumber = validatorNumber;
-    }
-
-    public int getValidatorNumber() {
-        return validatorNumber;
-    }
-    private int category(Code code) {
-        int sum  = code.getFirstDigit() + code.getSecondDigit() + code.getThirdDigit();
-
-        return sum % 2 == 0 ? 0 : 1; //returns 0 for even and 1 for odd
+        super(validatorNumber, secretCode, userCode);
     }
 
     @Override
     public boolean test() {
-        return category(userCode) == category(secretCode);
+        return category(super.getUserCode()) == category(super.getSecretCode());
+    }
+
+    private int category(Code code) {
+        int sum  = code.getFirstDigit() + code.getSecondDigit() + code.getThirdDigit();
+
+        return sum % 2 == 0 ? 0 : 1; //returns 0 for even and 1 for odd
     }
 
     @Override

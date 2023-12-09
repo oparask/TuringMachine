@@ -2,26 +2,21 @@ package model.validators;
 
 import model.Code;
 
-public class CheckParityOfOneDigit implements Validator {
-    private Code secretCode;
-    private Code userCode;
-    private int validatorNumber;
-
+public class CheckParityOfOneDigit extends Validator {
 
     public CheckParityOfOneDigit(Code secretCode, Code userCode, int validatorNumber) {
-        this.secretCode = secretCode;
-        this.userCode = userCode;
-        this.validatorNumber = validatorNumber;
+        super(validatorNumber, secretCode, userCode);
     }
 
-    public int getValidatorNumber() {
-        return validatorNumber;
+    @Override
+    public boolean test() {
+        return category(super.getUserCode()) == category(super.getSecretCode());
     }
 
     private int category(Code code) {
         int digit = 0;
 
-        switch (this.validatorNumber) {
+        switch (super.getValidatorNumber()) {
             case 5 -> digit = code.getFirstDigit();
             case 6 -> digit = code.getSecondDigit();
             case 7 -> digit = code.getThirdDigit();
@@ -30,14 +25,9 @@ public class CheckParityOfOneDigit implements Validator {
     }
 
     @Override
-    public boolean test() {
-        return category(userCode) == category(secretCode);
-    }
-
-    @Override
     public String toString() {
         String displayValidator = "";
-        switch (this.validatorNumber) {
+        switch (super.getValidatorNumber()) {
             case 5 -> displayValidator = "Checks the parity of the first digit";
             case 6 -> displayValidator = "Check the parity of the second digit";
             case 7 -> displayValidator = "Check the parity of the third digit";

@@ -3,20 +3,17 @@ package model.validators;
 import model.Code;
 
 
-public class CountEvenDigit  implements Validator{
-    private Code secretCode;
-    private Code userCode;
-    private int validatorNumber;
+public class CountEvenDigit  extends Validator{
 
     public CountEvenDigit(Code secretCode, Code userCode, int validatorNumber) {
-        this.secretCode = secretCode;
-        this.userCode = userCode;
-        this.validatorNumber = validatorNumber;
+        super(validatorNumber, secretCode, userCode);
     }
 
-    public int getValidatorNumber() {
-        return validatorNumber;
+    @Override
+    public boolean test() {
+        return category(super.getUserCode()) == category(super.getSecretCode());
     }
+
     private int category(Code code) {
         int even = 0;
 
@@ -27,11 +24,6 @@ public class CountEvenDigit  implements Validator{
         }
 
         return even;
-    }
-
-    @Override
-    public boolean test() {
-        return category(userCode) == category(secretCode);
     }
 
     @Override

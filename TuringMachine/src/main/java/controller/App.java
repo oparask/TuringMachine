@@ -1,9 +1,7 @@
 package controller;
 
 import model.GameFacade;
-import model.validators.Validator;
 
-import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -38,16 +36,10 @@ public class App {
             gameFacade.enterCode(enterCode());
         }
 
-        System.out.println("Hello");
+
         //choisir un validateur (dans la limite de 3 validateurs par manche) ;
-        int indexValidator = chooseValidator(gameFacade.getProblemValidators());
-        int validatorNb = game
-        boolean testResult = gameFacade.testValidator(nbValidatorToBeTested);
-        if (testResult) {
-            displayMessage("The test has passed!");
-        } else {
-            displayMessage("The test has failed!");
-        }
+        int validatorIndex = chooseValidatorIndex();
+        displayTestResult(gameFacade.testValidator(validatorIndex));
 
 
         //choisir de passer à la manche suivante (pour tester un nouveau code) ;
@@ -58,7 +50,8 @@ public class App {
 
         //vérifier si son code est le bon (ce qui met fin au jeu et lui dit s’il a gagné ou perdu) ;
         if(wantToGuessCode()){
-            displayTestResult(gameFacade.guessCode());
+            displayGuessedCode(gameFacade.guessCode());
+            displayScore(gameFacade.getScore(), gameFacade.getRounds().size());
             return false;
         } else {
             return true;
@@ -78,39 +71,38 @@ public class App {
         return readNumber("Choose a problem.");
     }
 
+
     private int getRandomProblem() {
         Random random = new Random();
         return random.nextInt(gameFacade.getProblems().size());
     }
 
-
     private int enterCode() {
         Scanner keyboard = new Scanner(System.in);
-
-        displayMessage("Enter a code of three digits between 1 and 5: ");
-
-        String input = keyboard.nextLine().trim();
         String regex = "^[1-5]{3}$";   // code regex
 
-        if (Pattern.matches(regex, input)) {
-            return (Integer.parseInt(input));
-        } else {
-            displayInvalidInput("Invalid code format.");
-            return enterCode(); //recursive call
-        }
-    }
+        boolean validInput = false;
+        int code = 0;
 
-    private int chooseValidator(List<Validator> validators) {
-        Scanner keyboard = new Scanner(System.in);
-        int input = keyboard.nextInt();
+        while (!validInput) {
+            displayMessage("Enter a code of three digits between 1 and 5: ");
+            String input = keyboard.nextLine().trim();
 
-        while (input < 0 || input >= validators.size()) {
-            displayInvalidInput("You must choose a valid validator index");
-            input = keyboard.nextInt();
+            if (Pattern.matches(regex, input)) {
+                code = Integer.parseInt(input);
+                validInput = true;
+            } else {
+                displayInvalidInput("Invalid code format. Please enter a valid code.");
+            }
         }
 
-        return input;
+        return code;
     }
+
+    private int chooseValidatorIndex(){
+        return readNumber( "Enter a valid validator index: ");
+    }
+
 
     private boolean nextRound(){
         return choseYorN("Do you want to test another code ?");
@@ -128,15 +120,15 @@ public class App {
 
     private int readNumber(String message) {
         Scanner keyboard = new Scanner(System.in);
-        displayMessage(message);
-        String input = keyboard.nextLine().trim();
 
-        try {
-            String[] detailInput = input.split("\\s+");
-            return Integer.parseInt(detailInput[0]);
-        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-            displayInvalidInput("Invalid input. Please try again.");
-            return readNumber(message); // Recursive call to try again
+        while (true) {
+            displayMessage(message);
+            if (keyboard.hasNextInt()) {
+                return keyboard.nextInt();
+            } else {
+                displayInvalidInput("Invalid input. Please enter a valid integer.");
+                keyboard.next(); // Pour consommer la mauvaise entrée
+            }
         }
     }
 

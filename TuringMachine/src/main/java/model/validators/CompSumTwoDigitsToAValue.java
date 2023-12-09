@@ -2,31 +2,23 @@ package model.validators;
 
 import model.Code;
 
-public class CompSumTwoDigitsToAValue implements Validator {
-    private Code secretCode;
-    private Code userCode;
-    private int validatorNumber;
-    private int value;
+public class CompSumTwoDigitsToAValue extends Validator {
+    private final int value;
 
     public CompSumTwoDigitsToAValue(Code secretCode, Code userCode, int validatorNumber) {
-        this.secretCode = secretCode;
-        this.userCode = userCode;
-        this.validatorNumber = validatorNumber;
+        super(validatorNumber, secretCode, userCode);
         this.value = 6;
-    }
-
-    public int getValidatorNumber() {
-        return validatorNumber;
-    }
-    private int category(Code code) {
-        int sum  = code.getFirstDigit() + code.getSecondDigit();
-
-        return Integer.compare(sum, value); //returns -1, 0 or 1; //returns 0 for even and 1 for odd
     }
 
     @Override
     public boolean test() {
-        return category(userCode) == category(secretCode);
+        return category(super.getUserCode()) == category(super.getSecretCode());
+    }
+
+    private int category(Code code) {
+        int sum  = code.getFirstDigit() + code.getSecondDigit();
+
+        return Integer.compare(sum, value); //returns -1, 0 or 1; //returns 0 for even and 1 for odd
     }
 
     @Override

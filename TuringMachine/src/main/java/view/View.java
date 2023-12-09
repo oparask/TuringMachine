@@ -12,10 +12,6 @@ public class View {
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_ORANGE = "\u001B[38;5;208m";
 
-
-    private static final String FORMAT_HEADER = "n°  difficulty  luck";
-    private static final String FORMAT_PROBLEM = "%-3d %-11d %-3d%n";
-
     /**
      * Displays the welcome message.
      */
@@ -29,41 +25,56 @@ public class View {
 
         for (Problem problem : problems) {
             System.out.println("Problem " + problem.getProblemNumber()
-                    + " (difficulty level: " +  problem.getDifficultyLevel()
-                    + ", luck degree: " +  problem.getLuckDegree() + ")");
+                    + " (difficulty level: " + problem.getDifficultyLevel()
+                    + ", luck degree: " + problem.getLuckDegree() + ")");
 
         }
         System.out.println();
     }
 
-    public static void displayValidators(List<Validator> validators) {
+    public static void displayValidators(Validator[] validators) {
         System.out.println("The available validators for the chosen problem are: ");
+        int i = 0;
         for (Validator validator : validators) {
-            System.out.println("validator " + validator.getValidatorNumber() + " -> " + validator.toString());
+            System.out.println(i + ": validator " + validator.getValidatorNumber() + " -> " + validator);
+            i++;
         }
 
         System.out.println();
 
     }
+
 
     public static void displayScore(int testedValidatorsNb, int roundsNb) {
         //les scores (nombre de validateurs vérifiés et nombre de manches) sont affichés ;
-        if(testedValidatorsNb == 1 )
-        System.out.println("You've tested "+ testedValidatorsNb + " validators in " + roundsNb + " rounds.");
+        if (testedValidatorsNb == 1 && roundsNb == 1) {
+            System.out.println("You've tested " + testedValidatorsNb + " validator in " + roundsNb + " round.");
+        } else if (testedValidatorsNb == 1) {
+            System.out.println("You've tested " + testedValidatorsNb + " validator in " + roundsNb + " rounds.");
+        } else if (roundsNb == 1) {
+            System.out.println("You've tested " + testedValidatorsNb + " validators in " + roundsNb + " round.");
+        } else {
+            System.out.println("You've tested " + testedValidatorsNb + " validators in " + roundsNb + " rounds.");
+        }
         System.out.println();
-
     }
 
-
-    public static void displayTestResult(boolean testResult) {
-        if (testResult) {
-            System.out.println("The test has passed!");
+    public static void displayTestResult(boolean sameCharacteristics) {
+        if (sameCharacteristics) {
+            System.out.println("true -> the secret code has the same characteristic as your user code :)");
         } else {
-            System.out.println("The test has failed!");
+            System.out.println("false -> the secret code doesn't have the same characteristic as your user code :(");
+        }
+        System.out.println();
+    }
+
+    public static void displayGuessedCode(boolean guessedCode) {
+        if (guessedCode) {
+            System.out.println("Congratulations! You guessed the code!");
+        } else {
+            System.out.println("Unfortunately, you didn't guessed...");
         }
     }
-
-
 
 
     /**

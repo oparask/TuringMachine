@@ -2,25 +2,21 @@ package model.validators;
 
 import model.Code;
 
-public class ExtremeDigit implements Validator {
-    private Code secretCode;
-    private Code userCode;
-    private int validatorNumber;
-
-
+public class ExtremeDigit extends Validator {
 
     public ExtremeDigit(Code secretCode, Code userCode, int validatorNumber) {
-        this.secretCode = secretCode;
-        this.userCode = userCode;
-        this.validatorNumber = validatorNumber;
+        super(validatorNumber, secretCode, userCode);
     }
-    public int getValidatorNumber() {
-        return validatorNumber;
+
+    @Override
+    public boolean test() {
+        return category(super.getUserCode()) == category(super.getSecretCode());
     }
+
     private int category(Code code) {
         int extremum;
 
-        if (validatorNumber == 14) { //strictly the smallest
+        if (super.getValidatorNumber() == 14) { //strictly the smallest
             extremum = Math.min(code.getFirstDigit(), code.getSecondDigit());
             extremum = Math.min(extremum, code.getThirdDigit());
 
@@ -34,14 +30,9 @@ public class ExtremeDigit implements Validator {
     }
 
     @Override
-    public boolean test() {
-        return category(userCode) == category(secretCode);
-    }
-
-    @Override
     public String toString() {
         String displayValidator = "";
-        switch (this.validatorNumber) {
+        switch (super.getValidatorNumber()) {
             case 14 -> displayValidator = "Determine which number is strictly the smaller";
             case 15 -> displayValidator = "Determine which number is strictly the bigger";
         }
