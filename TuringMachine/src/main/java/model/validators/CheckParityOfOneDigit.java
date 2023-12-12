@@ -34,4 +34,5 @@ public class CheckParityOfOneDigit extends Validator {
         }
         return displayValidator;
     }
+
 }

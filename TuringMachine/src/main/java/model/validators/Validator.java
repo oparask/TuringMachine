@@ -48,4 +48,10 @@ public abstract class Validator {
     public void setUserCode(Code code){
         this.userCode = code;
     }
+
+    public String getImagePath() {
+        return "/card" + validatorNumber + ".png";
+    }
+
+
 }
