@@ -1,5 +1,6 @@
 package consoleView;
 
+import model.Code;
 import model.problems.Problem;
 import model.validators.Validator;
 
@@ -20,7 +21,28 @@ public class View {
         System.out.println();
     }
 
+    /**
+     * Displays the help message with available commands and usage.
+     */
+    public static void displayHelp() {
+        System.out.println();
+        System.out.println(ANSI_PURPLE + """
+                TURING MACHINE COMMANDS:
+                                                                              
+                 \u001B[35m- Enter user code:\u001B[0m code
+                 \u001B[35m- Choose a validator:\u001B[0m test
+                 \u001B[35m- Next round:\u001B[0m next
+                 \u001B[35m- Guess round:\u001B[0m guess
+                 \u001B[35m- Undo the command:\u001B[0m undo
+                 \u001B[35m- Redo the command:\u001B[0m redo
+                 \u001B[35m- Display commands:\u001B[0m help
+                 \u001B[35m- Exit:\u001B[0m exit
+                """ + ANSI_RESET);
+    }
+
+
     public static void displayProblems(List<Problem> problems) {
+        System.out.println();
         System.out.println(ANSI_PURPLE + "THE PROBLEMS OF TURING MACHINE GAME: " + ANSI_RESET);
         System.out.println();
 
@@ -30,10 +52,10 @@ public class View {
                     ", luck: " + ANSI_PURPLE + problem.getLuckDegree() + ANSI_RESET + ")" + ANSI_RESET);
 
         }
-        System.out.println();
     }
 
     public static void displayValidators(Validator[] validators) {
+        System.out.println();
         System.out.println(ANSI_PURPLE + "AVAILABLE VALIDATORS: " + ANSI_RESET);
         int i = 0;
         for (Validator validator : validators) {
@@ -41,28 +63,26 @@ public class View {
             i++;
         }
 
-        System.out.println();
     }
 
-
     public static void displayScore(int testedValidatorsNb, int roundsNb) {
+        System.out.println();
         System.out.println(ANSI_PURPLE + "SCORE: " + ANSI_RESET + testedValidatorsNb + ANSI_RESET);
         //les scores (nombre de validateurs vérifiés et nombre de manches) sont affichés ;
         System.out.println(ANSI_PURPLE + "ROUNDS: " + ANSI_RESET + roundsNb);
-
-        System.out.println();
     }
 
     public static void displayTestResult(boolean sameCharacteristics) {
+        System.out.println();
         if (sameCharacteristics) {
             System.out.println(ANSI_GREEN + "true -> the secret code has the same characteristic as your user code :)" + ANSI_RESET);
         } else {
             System.out.println(ANSI_ORANGE + "false -> the secret code doesn't have the same characteristic as your user code :(" + ANSI_RESET);
         }
-        System.out.println();
     }
 
     public static void displayGuessedCode(boolean guessedCode) {
+        System.out.println();
         if (guessedCode) {
             System.out.println(ANSI_GREEN + "Congratulations! You guessed the code!" + ANSI_RESET);
         } else {
@@ -70,6 +90,24 @@ public class View {
         }
     }
 
+    public static void displayUserCode(Code userCode) {
+        System.out.println();
+        System.out.println(ANSI_PURPLE+"USER CODE: " + userCode+ANSI_RESET);
+    }
+
+    public static void displayTestedValidators(List<Validator>testedValidators) {
+        System.out.println();
+
+        if(testedValidators.isEmpty()){
+            System.out.println(ANSI_PURPLE+"You tested 0 validators in this round.");
+        } else {
+            System.out.print(ANSI_PURPLE+"You already have tested in the this round the validator: ");
+            for (Validator validator : testedValidators) {
+                System.out.print(validator.getValidatorNumber() + " ");
+            }
+        }
+        System.out.println(ANSI_RESET);
+    }
 
     /**
      * Displays a general message.
@@ -77,14 +115,15 @@ public class View {
      * @param message The message to display.
      */
     public static void displayMessage(String message) {
+        System.out.println();
         System.out.println(ANSI_PURPLE+message+ANSI_RESET);
     }
-
     /**
      * Prints a prompt symbol (">") and expects user input.
      */
     public static void displayEntrancePrompt() {
-        System.out.print(ANSI_PURPLE + "> " + ANSI_RESET);
+        System.out.println();
+        System.out.print(ANSI_PURPLE + "Enter a command:\n> " + ANSI_RESET);
     }
 
     /**
@@ -93,14 +132,15 @@ public class View {
      * @param message The message to display.
      */
     public static void displayInvalidInput(String message) {
-        System.out.println(ANSI_ORANGE + message + ANSI_RESET);
         System.out.println();
+        System.out.println(ANSI_ORANGE + message + ANSI_RESET);
     }
 
     /**
      * Displays the end message when exiting the application.
      */
     public static void displayEnd() {
+        System.out.println();
         System.out.print(ANSI_PURPLE + "Bye, see you next time :)");
     }
 

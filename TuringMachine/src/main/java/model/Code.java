@@ -149,6 +149,6 @@ public class Code implements Iterable<Integer> {
      */
     @Override
     public String toString() {
-        return "Code: " + firstDigit + secondDigit + thirdDigit;
+        return "" + firstDigit + secondDigit + thirdDigit;
     }
 }

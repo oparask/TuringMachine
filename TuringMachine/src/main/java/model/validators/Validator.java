@@ -7,7 +7,7 @@ public abstract class Validator {
     private final Code secretCode;
     private Code userCode;
     private boolean tested = false;
-    private boolean testResult = false;
+    private boolean sameCharacteristic = false;
 
     public Validator(int validatorNumber, Code secretCode, Code userCode) {
         this.secretCode = secretCode;
@@ -26,8 +26,8 @@ public abstract class Validator {
     public Code getUserCode() {
         return userCode;
     }
-    public boolean isTestResult() {
-        return testResult;
+    public boolean hasSameCharacteristic() {
+        return sameCharacteristic;
     }
 
     public boolean isTested() {
@@ -42,7 +42,7 @@ public abstract class Validator {
     }
 
     public void setTestResult(boolean testResult){
-        this.testResult = testResult;
+        this.sameCharacteristic = testResult;
     }
 
     public void setUserCode(Code code){

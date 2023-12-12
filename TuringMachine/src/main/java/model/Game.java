@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Game {
     private final Problem problem;
-    private final Validator[] problemValidators;
+    private Validator[] problemValidators;
     private List<Round> rounds;
     private Round currentRound;
 
@@ -40,19 +40,36 @@ public class Game {
         return problemValidators;
     }
 
-    public List<Integer> getCurRoundTestedValidators() {
+    public List<Validator> getCurRoundTestedValidators() {
         return currentRound.getTestedValidators();
+    }
+
+    public void setProblemValidators(Validator[] problemValidators) {
+        this.problemValidators = problemValidators;
+    }
+
+    public Validator getLastValidatorTested(){
+        return currentRound.getLastValidatorTested();
+    }
+    public Code getUserCode(){
+        return currentRound.getUserCode();
     }
 
     public List<Round> getRounds() {
         return rounds;
     }
 
+    public Round getCurrentRound() {
+        return currentRound;
+    }
+
+    public void setCurrentRound(Round currentRound) {
+        this.currentRound = currentRound;
+    }
 
     public void enterCode(Code code) {
         for(Validator validator: problemValidators){
             validator.setUserCode(code);
-            validator.markAsTested(false);
         }
         currentRound.setUserCode(code);
     }
@@ -62,9 +79,9 @@ public class Game {
     }
 
     public void nextRound() {
-        Round round = new Round();
-        currentRound = round;
-        rounds.add(round);
+        problemValidators = initializeValidators();
+        currentRound = new Round();
+        rounds.add(currentRound);
     }
 
     public boolean guessCode() {

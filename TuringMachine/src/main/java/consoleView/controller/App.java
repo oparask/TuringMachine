@@ -15,28 +15,18 @@ public class App {
 
         boolean anotherGame = true;
 
-        while (anotherGame){
+        while (anotherGame) {
             //First part of the game
-            while (true) {
-                try {
-                    gameFacade.startNewGame(chooseProblemOfGame());
-                    break; // Exit the loop if gameFacade.startNewGame() is successful
-                } catch (IllegalArgumentException e) {
-                    displayInvalidInput(e.getMessage());
-                }
-            }
+            problemInitialization();
 
             //Second part of the game
-            boolean continueGame = true;
-            while (continueGame) {
-                try {
-                    continueGame = processGame();
-                } catch (IllegalArgumentException e) {
-                    displayInvalidInput(e.getMessage());
-                }
+            displayHelp();
+
+            while (gameFacade.getCurrentGame() != null) {
+                processCommand();
             }
 
-            if(anotherGame()){
+            if (anotherGame()) {
                 gameFacade = new GameFacade();
             } else {
                 anotherGame = false;
@@ -47,72 +37,109 @@ public class App {
 
     }
 
-    private boolean processGame() {
-        int passCommand = 0;
-        displayGameInfo();
+    private void problemInitialization() {
+        while (true) {
+            try {
+                gameFacade.startNewGame(chooseProblemOfGame());
+                break; // Exit the loop if gameFacade.startNewGame() is successful
+            } catch (IllegalArgumentException e) {
+                displayInvalidInput(e.getMessage());
+            }
+        }
 
+    }
+
+    private void processCommand() {
+        Scanner keyboard = new Scanner(System.in);
+        String invalidInputMessage = "Invalid input! Try again!";
+        while (gameFacade.getCurrentGame() != null) {
+            displayScore(gameFacade.getScore(), gameFacade.getRounds().size());
+            try {
+                displayEntrancePrompt();
+
+                String input = keyboard.nextLine().trim();
+                String[] detailInput = input.split("\\s+");
+                String commandType = detailInput[0];
+
+                switch (commandType.toLowerCase()) {
+                    case "code" -> handleUserCode();
+                    case "test" -> handleValidatorTest();
+                    case "next" -> {
+                        handleNextRound();
+                    }
+                    case "guess" -> handleCodeGuessing();
+                    case "undo" -> gameFacade.undo();
+                    case "redo" -> gameFacade.redo();
+                    case "help" -> displayHelp();
+                    case "exit" -> gameFacade.abandonGame();
+                    default -> {
+                        displayInvalidInput(invalidInputMessage);
+                        displayHelp();
+                    }
+                }
+            } catch (Exception e) {
+                displayInvalidInput(e.getMessage());
+                displayHelp();
+            }
+        }
+    }
+
+    private void handleUserCode() {
         if (gameFacade.getCurRoundTestedValidators().isEmpty()) {
             gameFacade.enterCode(enterCode());
-        }
-
-        if (testValidator()) {
-            int validatorIndex = chooseValidatorIndex();
-            displayTestResult(gameFacade.testValidator(validatorIndex));
         } else {
-            passCommand++;
+            displayInvalidInput("You must pass to the next round if you want to test another code.");
+            displayMessage("Your current code is " + gameFacade.getUserCode() + ".");
+        }
+    }
+
+    private void handleValidatorTest() {
+        if (gameFacade.getUserCode() != null) {
+            displayValidators(gameFacade.getProblemValidators());
+            displayUserCode(gameFacade.getUserCode());
+            displayTestedValidators(gameFacade.getCurRoundTestedValidators());
+            gameFacade.testValidator(chooseValidatorIndex());
+            displayTestResult(gameFacade.getLastValidatorTestResult());
+        } else {
+            displayInvalidInput("You must choose first your user code!");
         }
 
-        if (nextRound()) {
+    }
+
+    private void handleNextRound() {
+        if (!gameFacade.getCurRoundTestedValidators().isEmpty()) {
             gameFacade.nextRound();
+        } else {
+            displayInvalidInput("You haven't yet chosen a validator for the round " + gameFacade.getRounds().size() + ".");
+        }
+    }
+
+    private boolean handleCodeGuessing() {
+        if (gameFacade.getUserCode() != null) {
+            displayGuessedCode(gameFacade.guessCode());
             return true;
         } else {
-            passCommand++;
-        }
-
-        if (wantToGuessCode()) {
-            displayGuessedCode(gameFacade.guessCode());
-            return false;
-        } else {
-            passCommand++;
-        }
-
-        if (passCommand == 3 && wantToQuit()) {
-            gameFacade.abandonGame();
+            displayInvalidInput("You must choose first your user code!");
             return false;
         }
-
-        return true;
     }
 
     public int chooseProblemOfGame() {
         displayProblems(gameFacade.getProblems());
         if (chooseYesOrNo("Do you want to choose the problem? Tap : y or n")) {
-            return chooseProblem();
+            return readNumber("Choose a problem from the list.");
         } else {
-            return getRandomProblem();
+            Random random = new Random();
+            return random.nextInt(gameFacade.getProblems().size());
         }
     }
 
-    private int chooseProblem() {
-        return readNumber("Choose a problem from the list.");
-    }
-
-    private int getRandomProblem() {
-        Random random = new Random();
-        return random.nextInt(gameFacade.getProblems().size());
-    }
-
-    private void displayGameInfo() {
-        displayValidators(gameFacade.getProblemValidators());
-        displayScore(gameFacade.getScore(), gameFacade.getRounds().size());
-    }
 
     private int enterCode() {
         Scanner keyboard = new Scanner(System.in);
 
         while (true) {
             displayMessage("Enter a code of three digits between 1 and 5: ");
-            displayEntrancePrompt();
             String input = keyboard.nextLine().trim();
 
             if (input.matches("^[1-5]{3}$")) {
@@ -123,24 +150,8 @@ public class App {
         }
     }
 
-    private boolean testValidator() {
-        return chooseYesOrNo("Do you want to test a validator? Tap : y or n");
-    }
-
     private int chooseValidatorIndex() {
-        return readNumber("Enter a validator index: ");
-    }
-
-    private boolean nextRound() {
-        return chooseYesOrNo("Do you want to pass to the next round? Tap : y or n");
-    }
-
-    private boolean wantToGuessCode() {
-        return chooseYesOrNo("Do you want to guess the secret code? Tap : y or n");
-    }
-
-    private boolean wantToQuit() {
-        return chooseYesOrNo("Do you want to quit the game? Tap : y or n");
+        return readNumber("Enter a validator index from the list: ");
     }
 
     private boolean anotherGame() {
@@ -156,11 +167,10 @@ public class App {
 
         while (true) {
             displayMessage(message);
-            displayEntrancePrompt();
             if (keyboard.hasNextInt()) {
                 return keyboard.nextInt();
             } else {
-                displayInvalidInput("Invalid input. Please enter a valid integer.");
+                displayInvalidInput("Invalid input. Please enter a valid number.");
                 keyboard.next();
             }
         }
@@ -169,7 +179,6 @@ public class App {
     private static String stringRobustReading(String message) {
         Scanner keyboard = new Scanner(System.in);
         displayMessage(message);
-        displayEntrancePrompt();
         String input = keyboard.nextLine();
         while (input.trim().isEmpty() || !input.trim().matches("(?i)[yn]")) {
             displayInvalidInput("Invalid input. " + message);

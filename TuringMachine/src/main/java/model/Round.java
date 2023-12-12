@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class Round {
     private Code userCode;
-    private final List<Integer> testedValidators;
+    private final List<Validator> testedValidators;
 
     /**
      * Constructs a Round object with no user code and an empty list of tested validators.
@@ -35,9 +35,14 @@ public class Round {
      *
      * @return The list of tested validator numbers.
      */
-    public List<Integer> getTestedValidators() {
+    public List<Validator> getTestedValidators() {
         return testedValidators;
     }
+
+    public Validator  getLastValidatorTested() {
+        return testedValidators.get(testedValidators.size()-1);
+    }
+
 
     /**
      * Tests a validator in the current round, marking it as tested and storing the result.
@@ -59,7 +64,7 @@ public class Round {
         validator.markAsTested(true);
         validator.setTestResult(testResult);
 
-        testedValidators.add(validator.getValidatorNumber());
+        testedValidators.add(validator);
 
         return testResult;
     }
@@ -72,4 +77,5 @@ public class Round {
     public void setUserCode(Code code) {
         this.userCode = code;
     }
+
 }
