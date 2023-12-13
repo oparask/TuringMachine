@@ -130,7 +130,7 @@ public class App {
             return readNumber("Choose a problem from the list.");
         } else {
             Random random = new Random();
-            return random.nextInt(gameFacade.getProblems().size());
+            return random.nextInt(gameFacade.getProblems().size() + 1);
         }
     }
 

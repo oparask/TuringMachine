@@ -2,14 +2,15 @@ package javaFxView;
 
 import javafx.application.Application;
 import javafx.geometry.Bounds;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -98,126 +99,82 @@ public class AppJavafx extends Application {
     private void startNewGameWithChoice(Stage displayProblems, Problem selectedProblem) {
         gameFacade.startNewGame(selectedProblem.getProblemNumber());
         updateStatusLabel("Starting a new game with manual problem choice");
-        displayValidators(displayProblems);
+        displayGameProcess(displayProblems);
     }
 
     private void startNewGameAuto(Stage problemChoiceStage) {
         Random random = new Random();
         int autoChosenProblemIndex = random.nextInt(gameFacade.getProblems().size());
-        gameFacade.startNewGame(autoChosenProblemIndex);
+        gameFacade.startNewGame(autoChosenProblemIndex + 1);
         updateStatusLabel("Starting a new game with automatic problem choice");
-        displayValidators(problemChoiceStage);
+        displayGameProcess(problemChoiceStage);
     }
 
-    private void displayValidators(Stage displayProblems) {
+    private void displayGameProcess(Stage displayProblems) {
         displayProblems.close();
 
-        Stage displayValidators = new Stage();
-        VBox root = new VBox();
+        Stage GameProcessParts = new Stage();
+
+        VBox root = new VBox(25);
+        root.setAlignment(Pos.CENTER);
         root.setStyle("-fx-background-color: green;");
 
-        Validator[] validators = gameFacade.getProblemValidators();
-
-        HBox validatorsLayout = new HBox();
-        validatorsLayout.setStyle("-fx-background-color: green;");
-
-        validatorsLayout.setAlignment(Pos.TOP_CENTER);
+        ValidatorsLayout validatorsLayout = new ValidatorsLayout(gameFacade.getProblemValidators());
+        root.getChildren().add(validatorsLayout);
 
 
-        int indexValidator = 0;
-        for (Validator validator : validators) {
-            String validatorImagePath = validator.getImagePath();
-
-            if (validatorImagePath != null) {
-                InputStream validatorImageStream = getClass().getResourceAsStream(validatorImagePath);
-                if (validatorImageStream != null) {
-                    ImageView validatorImage = new ImageView(new Image(validatorImageStream));
-                    validatorImage.setFitWidth(190);
-                    validatorImage.setFitHeight(150);
+        Label scoreLayout = new Label();
+        scoreLayout.setTextFill(Color.WHITE);
+        scoreLayout.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        scoreLayout.setText("SCORE: " + gameFacade.getScore() + "    ROUNDS: " + gameFacade.getRounds().size());
+        root.getChildren().add(scoreLayout);
 
 
-                    // Créer une VBox pour chaque validator et ajouter des éléments associés
-                    VBox validatorBox = new VBox();
-                    validatorBox.setAlignment(Pos.CENTER);
-                    validatorBox.setPadding(new Insets(10));
+        HBox codeLayout = new HBox(150);
+        codeLayout.setAlignment(Pos.CENTER);
+        root.getChildren().add(codeLayout);
 
-                    //
-                    InputStream robotImageStream = null;
-                    Label validatorLabel = new Label();
-                    validatorLabel.setTextFill(Color.WHITE);
-                    validatorLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16)); // Ajustez la police, le style et la taille selon vos besoins
-
-                    switch (indexValidator) {
-                        case 0 -> {
-                            robotImageStream = getClass().getResourceAsStream("/robotA.png");
-                            validatorLabel.setText("A");
-                        }
-                        case 1 -> {
-                            robotImageStream = getClass().getResourceAsStream("/robotB.png");
-                            validatorLabel.setText("B");
-                        }
-                        case 2 -> {
-                            robotImageStream = getClass().getResourceAsStream("/robotC.png");
-                            validatorLabel.setText("C");
-                        }
-                        case 3 -> {
-                            robotImageStream = getClass().getResourceAsStream("/robotD.png");
-                            validatorLabel.setText("D");
-                        }
-                        case 4 -> {
-                            robotImageStream = getClass().getResourceAsStream("/robotE.png");
-                            validatorLabel.setText("E");
-                        }
-                        case 5 -> {
-                            robotImageStream = getClass().getResourceAsStream("/robotF.png");
-                            validatorLabel.setText("F");
-                        }
-                    }
-                    ImageView robotImage = new ImageView(new Image(robotImageStream));
-                    robotImage.setFitHeight(60);
-                    robotImage.setFitWidth(60);
-
-                    validatorBox.getChildren().addAll(robotImage, validatorLabel, validatorImage);
-                    validatorsLayout.getChildren().add(validatorBox);
-
-                    // Récupérer les dimensions de l'image
-                    Bounds bounds = validatorImage.getBoundsInLocal();
-
-                    // Appliquer la hauteur de la première image à la HBox
-                    if (validatorsLayout.getChildren().size() == 1) {
-                        validatorsLayout.setMinHeight(bounds.getHeight());
-                    }
-                } else {
-                    System.err.println("Could not load image: " + validatorImagePath);
-                }
-            } else {
-                System.err.println("Image path is null for validator");
-            }
-            indexValidator++;
-        }
-
-        ScrollPane scrollPaneHbox = new ScrollPane(validatorsLayout);
-        scrollPaneHbox.setFitToWidth(true);  // Permet au ScrollPane de s'adapter à la largeur du contenu
-        scrollPaneHbox.setFitToHeight(true); // Permet au ScrollPane de s'adapter à la hauteur du contenu
-        root.getChildren().add(scrollPaneHbox);
-
-
-        Label scoreLabel = new Label();
-        scoreLabel.setTextFill(Color.WHITE);
-        scoreLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
-        // Mise à jour du texte du Label du score
-        scoreLabel.setText("SCORE: " + gameFacade.getScore() + "    ROUNDS: " + gameFacade.getRounds().size());
-
-        // Ajouter le Label du score à la VBox
-        root.getChildren().add(scoreLabel);
+        CodeVbox  codeVbox = new CodeVbox();
+        codeLayout.getChildren().add(codeVbox);
 
 
 
-        //code
+        // Créer une grille pour testValidator
+        GridPane testValidator = new GridPane();
+        testValidator.setPadding(new Insets(0, 20, 0, 20)); // Remplacez ces valeurs par celles qui conviennent à votre mise en page
 
-        
+        testValidator.setAlignment(Pos.CENTER);
+        testValidator.setHgap(5);
+        testValidator.setVgap(50);
+        testValidator.setStyle("-fx-background-color: white;");
+
+     /*   ColumnConstraints columnConstraints = new ColumnConstraints();
+        columnConstraints.setHgrow(javafx.scene.layout.Priority.ALWAYS);
+        testValidator.getColumnConstraints().addAll(columnConstraints, columnConstraints);*/
+
+        codeLayout.getChildren().add(testValidator);
+
+        Label chooseValidator = new Label("Choose validator");
+        ChoiceBox<String> choiceBox = new ChoiceBox<>();
+        choiceBox.getItems().addAll(validatorsLayout.getValidatorsLabels());
+        choiceBox.setStyle("-fx-text-fill: black;");
+        chooseValidator.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        testValidator.add(chooseValidator, 0, 0);
+        testValidator.add(choiceBox, 1, 0);
 
 
+        Button testButton = new Button("Test");
+        testButton.setAlignment(Pos.CENTER);
+        testButton.setMinWidth(200);
+        testValidator.add(testButton, 0, 1, 2, 1); // Couvre 2 colonnes
+
+        Label resultLabel = new Label("Result");
+        GridPane.setHalignment(resultLabel, HPos.RIGHT);
+        resultLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        TextField testResult = new TextField();
+        testResult.setMaxWidth(50);
+        testValidator.add(resultLabel, 0, 2);
+        testValidator.add(testResult, 1, 2);
 
 
 
@@ -227,11 +184,11 @@ public class AppJavafx extends Application {
         scrollPaneRoot.setFitToWidth(true);  // Permet au ScrollPane de s'adapter à la largeur du contenu
         scrollPaneRoot.setFitToHeight(true); // Permet au ScrollPane de s'adapter à la hauteur du contenu
 
-        // Ajouter le ScrollPane à la scène ou à un autre conteneur si nécessaire
+        // Ajouter le ScrollPane à la scène
         Scene scene = new Scene(scrollPaneRoot, 500, 425);
 
-        displayValidators.setScene(scene);
-        displayValidators.show();
+        GameProcessParts.setScene(scene);
+        GameProcessParts.show();
     }
 
 
