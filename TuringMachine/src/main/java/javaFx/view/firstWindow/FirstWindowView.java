@@ -1,6 +1,6 @@
 package javaFx.view.firstWindow;
 
-import javaFx.view.fourthWindow.StyledButton;
+import javaFx.view.StyledButton;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -21,8 +21,6 @@ public class FirstWindowView extends VBox {
 
         playButton = new StyledButton("Play");
         playButton.setMinWidth(200);
-        /*playButton.setOnAction(e -> openProblemChoiceWindow(primaryStage));*/
-
 
         this.getChildren().addAll(gameTitle, playButton);
 

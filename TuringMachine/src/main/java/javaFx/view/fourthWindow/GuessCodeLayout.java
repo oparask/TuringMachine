@@ -1,5 +1,6 @@
 package javaFx.view.fourthWindow;
 
+import javaFx.view.StyledButton;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;

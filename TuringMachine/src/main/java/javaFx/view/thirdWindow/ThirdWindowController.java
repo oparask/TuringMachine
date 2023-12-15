@@ -19,9 +19,11 @@ public class ThirdWindowController {
 
     private void attachEventHandlers() {
         for (Button problemButton : view.getProblemButtons()) {
-            problemButton.setOnAction(new ProblemButtonClickHandler());
+            problemButton.addEventHandler(ActionEvent.ACTION, new ProblemButtonClickHandler());
+
         }
     }
+
 
     private class ProblemButtonClickHandler implements EventHandler<ActionEvent> {
         @Override

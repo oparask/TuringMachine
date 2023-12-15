@@ -7,7 +7,6 @@ import model.GameFacade;
 import java.util.Random;
 
 public class SecondWindowController {
-
     private SecondWindowView view;
     private GameFacade gameFacade;
 
@@ -18,7 +17,7 @@ public class SecondWindowController {
     }
 
     private void attachEventHandlers() {
-        view.getAutoChooseButton().setOnAction(new AutoChooseButtonClickHandler());
+        view.getAutoChooseButton().addEventHandler(ActionEvent.ACTION, new SecondWindowController.AutoChooseButtonClickHandler());
     }
 
     private class AutoChooseButtonClickHandler implements EventHandler<ActionEvent> {
@@ -27,9 +26,6 @@ public class SecondWindowController {
             Random random = new Random();
             int autoChosenProblemIndex = random.nextInt(gameFacade.getProblems().size());
             gameFacade.startNewGame(autoChosenProblemIndex + 1);
-
         }
-
     }
-
 }

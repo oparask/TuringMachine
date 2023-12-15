@@ -1,4 +1,4 @@
-package javaFx.view.fourthWindow;
+package javaFx.view;
 import javafx.scene.control.Button;
 
 

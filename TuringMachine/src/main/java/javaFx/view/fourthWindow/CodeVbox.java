@@ -1,5 +1,6 @@
 package javaFx.view.fourthWindow;
 
+import javaFx.view.StyledButton;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -54,11 +55,6 @@ public class CodeVbox extends VBox {
 
         enterCodeButton = new StyledButton("Enter this code");
         enterCodeButton.setMaxWidth(120);
-        // Ajouter un gestionnaire d'événements au bouton enterCodeButton
-        enterCodeButton.setOnAction(event -> {
-            handleEnterCodeButtonClick();
-        });
-
 
         firstDigit = null;
         secondDigit = null;
@@ -75,15 +71,11 @@ public class CodeVbox extends VBox {
         gridPane.setVgap(10);
 
 
-        // Gestionnaire d'événements pour les boutons
-        digitButtonClickHandler clickHandler = new digitButtonClickHandler();
-
-
         for (int row = 0; row < 5; row++) {
             for (int col = 0; col < 3; col++) {
                 int number = 5 - row; // Les chiffres décroissants de 5 à 1
                 Button numberButton = new Button(Integer.toString(number));
-                numberButton.setOnAction(clickHandler);
+                numberButton.addEventHandler(ActionEvent.ACTION,new digitButtonClickHandler());
                 if (col == 0) {
                     firstDigitButtons.add(numberButton);
                 } else if (col == 1) {
@@ -94,15 +86,6 @@ public class CodeVbox extends VBox {
                 gridPane.add(numberButton, col, row); // Commence à la ligne 3
             }
         }
-    }
-
-    // Méthode à appeler lorsque le bouton enterCodeButton est cliqué
-    private void handleEnterCodeButtonClick() {
-        if(firstDigit != null && secondDigit != null && thirdDigit != null){
-            String code = ""+firstDigit + secondDigit + thirdDigit;
-            //gameFacade.enterCode()
-        }
-
     }
 
 
@@ -149,15 +132,32 @@ public class CodeVbox extends VBox {
             int buttonIndex = GridPane.getColumnIndex(button);
             if (buttonIndex == 0) {
                 firstDigit = button;
+                System.out.println(firstDigit);
             } else if (buttonIndex == 1) {
                 secondDigit = button;
+                System.out.println(secondDigit);
             } else if (buttonIndex == 2) {
                 thirdDigit = button;
+                System.out.println(thirdDigit);
             }
         }
     }
 
 
 
+    public StyledButton getEnterCodeButton() {
+        return enterCodeButton;
+    }
 
+    public Button getFirstDigit() {
+        return firstDigit;
+    }
+
+    public Button getSecondDigit() {
+        return secondDigit;
+    }
+
+    public Button getThirdDigit() {
+        return thirdDigit;
+    }
 }

@@ -1,10 +1,10 @@
 package javaFx.view.fourthWindow;
 
+import javaFx.view.StyledButton;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -16,12 +16,10 @@ public class FourthWindowView extends VBox {
     private HBox undoRedoButtons;
     private ValidatorsLayout validatorsLayout;
     private Label scoreLayout;
-    private HBox codeLayout;
+    private GameProcessLayout gameProcessLayout;
 
     public FourthWindowView(GameFacade gameFacade) {
-        //initialiser la racine
-        //this.root = new VBox(10);
-
+        this.setSpacing(10);
         this.setAlignment(Pos.CENTER);
         this.setStyle("-fx-background-color: green;");
 
@@ -53,57 +51,22 @@ public class FourthWindowView extends VBox {
 
 
 
-        codeLayout = new HBox(100);
-        codeLayout.setAlignment(Pos.CENTER);
-        //code machine
-        CodeVbox codeVbox = new CodeVbox();
-        // Créer une grille pour testValidator
-        TestValidatorLayout testValidator = new TestValidatorLayout(validatorsLayout);
-        //le bouton next
-        StyledButton nextRoundButton = new StyledButton("NEXT ROUND");
-        nextRoundButton.setMinWidth(200);
-        //guesscode layout
-        GuessCodeLayout buttonsVbox = new GuessCodeLayout();
-
-        codeLayout.getChildren().add(codeVbox);
-        codeLayout.getChildren().add(testValidator);
-        codeLayout.getChildren().add(nextRoundButton);
-        codeLayout.getChildren().add(buttonsVbox);
-
+        gameProcessLayout = new GameProcessLayout(validatorsLayout);
 
         //ajouter tous les enfants a son parent
         this.getChildren().add(undoRedoButtons);
         this.getChildren().add(validatorsLayout);
         this.getChildren().add(scoreLayout);
-        this.getChildren().add(codeLayout);
+        this.getChildren().add(gameProcessLayout);
+    }
+
+    public StyledButton getEnterCodeButton() {
+        return gameProcessLayout.getCodeVbox().getEnterCodeButton();
+    }
+
+    public CodeVbox getCodeVbox() {
+        return gameProcessLayout.getCodeVbox();
     }
 }
 
 
-/* private void displayGameProcess(Stage displayProblems) {
-        displayProblems.close();
-        Stage GameProcessParts = new Stage();
-
-
-
-
-
-
-
-
-
-
-
-
-        // Ajouter le ScrollPane à la VBox
-        ScrollPane scrollPaneRoot = new ScrollPane(root);
-        scrollPaneRoot.setFitToWidth(true);  // Permet au ScrollPane de s'adapter à la largeur du contenu
-        scrollPaneRoot.setFitToHeight(true); // Permet au ScrollPane de s'adapter à la hauteur du contenu
-
-        // Ajouter le ScrollPane à la scène
-        Scene scene = new Scene(scrollPaneRoot, 500, 425);
-
-        GameProcessParts.setScene(scene);
-        GameProcessParts.show();
-    }
-*/
