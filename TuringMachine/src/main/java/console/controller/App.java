@@ -1,11 +1,11 @@
-package consoleView.controller;
+package console.controller;
 
 import model.GameFacade;
 
 import java.util.Random;
 import java.util.Scanner;
 
-import static consoleView.View.*;
+import static console.View.*;
 
 public class App {
     private GameFacade gameFacade = new GameFacade();

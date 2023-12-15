@@ -1,4 +1,4 @@
-package javaFxView;
+package javaFx.view.fourthWindow;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -30,7 +30,8 @@ public class ValidatorsLayout extends HBox {
             // Créer une VBox pour chaque validator et ajouter des éléments associés
             VBox validatorBox = new VBox();
             validatorBox.setAlignment(Pos.CENTER);
-            validatorBox.setPadding(new Insets(10));
+            validatorBox.setPadding(new Insets(0, 10, 0, 10)); // Haut, Droite, Bas, Gauche
+
 
             createRobotImage(indexValidator, validatorBox);
             createValidatorImage(validator.getImagePath(), validatorBox);

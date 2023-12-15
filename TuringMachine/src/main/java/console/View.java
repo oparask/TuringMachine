@@ -1,4 +1,4 @@
-package consoleView;
+package console;
 
 import model.Code;
 import model.problems.Problem;
