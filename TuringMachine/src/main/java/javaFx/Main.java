@@ -1,5 +1,6 @@
 package javaFx;
 
+import javaFx.view.PopOut;
 import javaFx.view.firstWindow.FirstWindowView;
 import javaFx.view.fourthWindow.FourthWindowController;
 import javaFx.view.fourthWindow.FourthWindowView;
@@ -86,6 +87,11 @@ public class Main extends Application {
 
 
         FourthWindowView fourthWindowView = new FourthWindowView(gameFacade);
+
+            fourthWindowView.getGuessCodeButton().addEventHandler(ActionEvent.ACTION, e -> openNewInstance(GameProcessParts));
+
+
+
         FourthWindowController FourthWindowController = new FourthWindowController(fourthWindowView, gameFacade);
 
         // Ajouter le ScrollPane à la VBox
@@ -99,6 +105,26 @@ public class Main extends Application {
         GameProcessParts.setScene(scene);
         GameProcessParts.show();
     }
+
+    private void openNewInstance(Stage currentStage) {
+        try {
+            // Vérifier si le code utilisateur est défini
+            if (gameFacade.getUserCode() != null) {
+                currentStage.close();
+
+                // Créer une nouvelle instance de votre application principale
+                Main newAppInstance = new Main();
+                // Lancer la nouvelle instance
+                newAppInstance.start(new Stage());
+            }
+        } catch (Exception e) {
+            // Gérer l'exception ici (affichage ou traitement supplémentaire si nécessaire)
+            e.printStackTrace();
+            PopOut popOut = new PopOut("ERROR", e.getMessage(), true);
+            popOut.show();
+        }
+    }
+
 
 }
 

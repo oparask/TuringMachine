@@ -6,9 +6,9 @@ import javafx.scene.layout.HBox;
 
 public class GameProcessLayout extends HBox {
     private CodeVbox codeVbox;
-    private TestValidatorLayout testValidator;
+    private StyledButton testValidator;
     private StyledButton nextRoundButton;
-    private GuessCodeLayout buttonsVbox;
+    private StyledButton guessCodeButton;
 
 
     public GameProcessLayout(ValidatorsLayout validatorsLayout) {
@@ -17,25 +17,27 @@ public class GameProcessLayout extends HBox {
 
         codeVbox = new CodeVbox();
 
-        testValidator = new TestValidatorLayout(validatorsLayout);
+        testValidator = new StyledButton("TEST");
+        testValidator.setMinWidth(200);
 
         nextRoundButton = new StyledButton("NEXT ROUND");
         nextRoundButton.setMinWidth(200);
 
 
-        buttonsVbox = new GuessCodeLayout();
+        guessCodeButton = new StyledButton("GUESS");
+        guessCodeButton.setMinWidth(200);
 
         this.getChildren().add(codeVbox);
         this.getChildren().add(testValidator);
         this.getChildren().add(nextRoundButton);
-        this.getChildren().add(buttonsVbox);
+        this.getChildren().add(guessCodeButton);
     }
 
     public CodeVbox getCodeVbox() {
         return codeVbox;
     }
 
-    public TestValidatorLayout getTestValidator() {
+    public StyledButton getTestValidator() {
         return testValidator;
     }
 
@@ -43,7 +45,7 @@ public class GameProcessLayout extends HBox {
         return nextRoundButton;
     }
 
-    public GuessCodeLayout getButtonsVbox() {
-        return buttonsVbox;
+    public StyledButton guessCodeButton() {
+        return guessCodeButton;
     }
 }

@@ -22,13 +22,8 @@ public class CodeVbox extends VBox {
     private GridPane codeButtons;
 
     private StyledButton enterCodeButton;
-    private List<Button> firstDigitButtons;
-    private List<Button> secondDigitButtons;
-    private List<Button> thirdDigitButtons;
-
-    private Button firstDigit;
-    private Button secondDigit;
-    private Button thirdDigit;
+    private List<Button> firstDigitButtons, secondDigitButtons, thirdDigitButtons;
+    private Button firstDigit, secondDigit, thirdDigit;
 
 
     public CodeVbox() {
@@ -159,5 +154,23 @@ public class CodeVbox extends VBox {
 
     public Button getThirdDigit() {
         return thirdDigit;
+    }
+
+    public void resetListButtons(List<Button> buttonList){
+        for(Button button : buttonList){
+            button.setStyle("");
+        }
+    }
+    public void resetView (){
+        resetListButtons(firstDigitButtons);
+        resetListButtons(secondDigitButtons);
+        resetListButtons(thirdDigitButtons);
+
+        firstDigit = null;
+        secondDigit = null;
+        thirdDigit = null;
+
+        enterCodeButton.setStyle("");
+
     }
 }

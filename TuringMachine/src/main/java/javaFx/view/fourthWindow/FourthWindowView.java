@@ -12,6 +12,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import model.GameFacade;
 
+import java.util.Map;
+
 public class FourthWindowView extends VBox {
     private HBox undoRedoButtons;
     private ValidatorsLayout validatorsLayout;
@@ -64,8 +66,41 @@ public class FourthWindowView extends VBox {
         return gameProcessLayout.getCodeVbox().getEnterCodeButton();
     }
 
+    public StyledButton getTestValidatorButton() {
+        return gameProcessLayout.getTestValidator();
+    }
+
+    public StyledButton getNextRoundButton() {
+        return gameProcessLayout.getNextRoundButton();
+    }
+    public StyledButton getGuessCodeButton() {
+        return gameProcessLayout.guessCodeButton();
+    }
+
+
+
+    public HBox getUndoRedoButtons() {
+        return undoRedoButtons;
+    }
+
+    public ValidatorsLayout getValidatorsLayout() {
+        return validatorsLayout;
+    }
+
+    public Label getScoreLayout() {
+        return scoreLayout;
+    }
+
+    public GameProcessLayout getGameProcessLayout() {
+        return gameProcessLayout;
+    }
+
     public CodeVbox getCodeVbox() {
         return gameProcessLayout.getCodeVbox();
+    }
+
+    public Map<Button, Boolean> getButtonClickedMap(){
+        return validatorsLayout.getButtonClickedMap();
     }
 }
 
