@@ -10,12 +10,14 @@ import javaFx.view.thirdWindow.ThirdWindowController;
 import javaFx.view.thirdWindow.ThirdWindowView;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
 import model.GameFacade;
+
+import static console.View.displayInvalidInput;
+import static console.View.displayScore;
 
 
 public class Main extends Application {
@@ -24,7 +26,6 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
 
     @Override
     public void start(Stage primaryStage) {
@@ -49,7 +50,7 @@ public class Main extends Application {
         SecondWindowController secondWindowController = new SecondWindowController(secondWindowView, gameFacade);
 
         secondWindowView.getChooseProblemButton().setOnAction(e -> openThirdWindow(problemChoiceStage));
-        secondWindowView.getAutoChooseButton().addEventHandler(ActionEvent.ACTION, e -> openFourthWindow(problemChoiceStage));
+        secondWindowView.getRandomProblemButton().addEventHandler(ActionEvent.ACTION, e -> openFourthWindow(problemChoiceStage));
 
 
         Scene scene = new Scene(secondWindowView, 400, 200);
@@ -82,17 +83,16 @@ public class Main extends Application {
     private void openFourthWindow(Stage displayProblems) {
         displayProblems.close();
 
-        Stage GameProcessParts = new Stage();
-        GameProcessParts.setTitle("GUESS CODE");
+        Stage gameProcessParts = new Stage();
+        gameProcessParts.setTitle("GUESS CODE");
 
 
         FourthWindowView fourthWindowView = new FourthWindowView(gameFacade);
 
-            fourthWindowView.getGuessCodeButton().addEventHandler(ActionEvent.ACTION, e -> openNewInstance(GameProcessParts));
+        fourthWindowView.getGuessCodeButton().addEventHandler(ActionEvent.ACTION, e -> openNewInstance(gameProcessParts));
+        fourthWindowView.getNextRoundButton().addEventHandler(ActionEvent.ACTION, e -> handleNextRoundButtonClick(gameProcessParts));
 
-
-
-        FourthWindowController FourthWindowController = new FourthWindowController(fourthWindowView, gameFacade);
+        FourthWindowController fourthWindowController = new FourthWindowController(fourthWindowView, gameFacade);
 
         // Ajouter le ScrollPane à la VBox
         ScrollPane scrollPaneRoot = new ScrollPane(fourthWindowView);
@@ -102,9 +102,26 @@ public class Main extends Application {
         // Ajouter le ScrollPane à la scène
         Scene scene = new Scene(scrollPaneRoot, 500, 425);
 
-        GameProcessParts.setScene(scene);
-        GameProcessParts.show();
+        gameProcessParts.setScene(scene);
+        gameProcessParts.show();
     }
+
+
+    private void handleNextRoundButtonClick(Stage gameProcessParts) {
+        if (gameFacade.getCurRoundTestedValidators().isEmpty()) {
+            PopOut popOut = new PopOut("ERROR", "You haven't tested any validators for the round "
+                    + gameFacade.getRounds().size() + "!", true);
+            popOut.show();
+            displayInvalidInput("You haven't yet chosen a validator for the round " + gameFacade.getRounds().size() + ".");
+        } else {
+            gameFacade.nextRound();
+            // Fermer l'ancienne fenêtre et ouvrir une nouvelle
+            gameProcessParts.close();
+            openFourthWindow(new Stage());
+            displayScore(gameFacade.getScore(), gameFacade.getRounds().size());
+        }
+    }
+
 
     private void openNewInstance(Stage currentStage) {
         try {

@@ -7,9 +7,8 @@ import model.GameFacade;
 import model.problems.Problem;
 
 public class ThirdWindowController {
-
-    private ThirdWindowView view;
-    private GameFacade gameFacade;
+    private final ThirdWindowView view;
+    private final GameFacade gameFacade;
 
     public ThirdWindowController(ThirdWindowView view, GameFacade gameFacade) {
         this.view = view;
@@ -20,18 +19,15 @@ public class ThirdWindowController {
     private void attachEventHandlers() {
         for (Button problemButton : view.getProblemButtons()) {
             problemButton.addEventHandler(ActionEvent.ACTION, new ProblemButtonClickHandler());
-
         }
     }
-
 
     private class ProblemButtonClickHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
             Button clickedButton = (Button) event.getSource();
-            int problemIndex = view.getProblemButtons().indexOf(clickedButton);
 
-            // Récupérer l'objet Problem depuis la propriété userData
+            //Retrieve the Problem object from the userData property.
             Problem selectedProblem = (Problem) clickedButton.getUserData();
 
             gameFacade.startNewGame(selectedProblem.getProblemNumber());

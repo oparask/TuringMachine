@@ -7,8 +7,8 @@ import model.GameFacade;
 import java.util.Random;
 
 public class SecondWindowController {
-    private SecondWindowView view;
-    private GameFacade gameFacade;
+    private final SecondWindowView view;
+    private final GameFacade gameFacade;
 
     public SecondWindowController(SecondWindowView view, GameFacade gameFacade) {
         this.view = view;
@@ -17,7 +17,7 @@ public class SecondWindowController {
     }
 
     private void attachEventHandlers() {
-        view.getAutoChooseButton().addEventHandler(ActionEvent.ACTION, new SecondWindowController.AutoChooseButtonClickHandler());
+        view.getRandomProblemButton().addEventHandler(ActionEvent.ACTION, new SecondWindowController.AutoChooseButtonClickHandler());
     }
 
     private class AutoChooseButtonClickHandler implements EventHandler<ActionEvent> {

@@ -3,6 +3,7 @@ package javaFx.view.fourthWindow;
 import javaFx.view.StyledButton;
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 public class GameProcessLayout extends HBox {
     private CodeVbox codeVbox;
@@ -11,7 +12,7 @@ public class GameProcessLayout extends HBox {
     private StyledButton guessCodeButton;
 
 
-    public GameProcessLayout(ValidatorsLayout validatorsLayout) {
+    public GameProcessLayout() {
         this.setSpacing(100);
         this.setAlignment(Pos.CENTER);
 
@@ -27,10 +28,12 @@ public class GameProcessLayout extends HBox {
         guessCodeButton = new StyledButton("GUESS");
         guessCodeButton.setMinWidth(200);
 
-        this.getChildren().add(codeVbox);
-        this.getChildren().add(testValidator);
-        this.getChildren().add(nextRoundButton);
-        this.getChildren().add(guessCodeButton);
+        VBox buttonsVbox = new VBox(15);
+        buttonsVbox.setAlignment(Pos.CENTER);
+        buttonsVbox.getChildren().addAll(testValidator, nextRoundButton, guessCodeButton );
+
+        this.getChildren().addAll(codeVbox, buttonsVbox);
+
     }
 
     public CodeVbox getCodeVbox() {

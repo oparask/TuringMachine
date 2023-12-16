@@ -64,9 +64,7 @@ public class App {
                 switch (commandType.toLowerCase()) {
                     case "code" -> handleUserCode();
                     case "test" -> handleValidatorTest();
-                    case "next" -> {
-                        handleNextRound();
-                    }
+                    case "next" -> handleNextRound();
                     case "guess" -> handleCodeGuessing();
                     case "undo" -> gameFacade.undo();
                     case "redo" -> gameFacade.redo();

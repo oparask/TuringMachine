@@ -6,27 +6,27 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
 public class SecondWindowView extends VBox {
-    private StyledButton chooseProblemButton;
+    private final StyledButton chooseProblemButton;
 
-    private StyledButton autoChooseButton;
+    private final StyledButton randomProblemButton;
 
     public SecondWindowView() {
         this.setSpacing(10);
         this.setAlignment(Pos.CENTER);
 
-        chooseProblemButton = new StyledButton("Choose Problem");
+        chooseProblemButton = new StyledButton("CHOOSE PROBLEM");
         chooseProblemButton.setMinWidth(200);
 
-        autoChooseButton = new StyledButton("Auto Choose");
-        autoChooseButton.setMinWidth(200);
-        this.getChildren().addAll(chooseProblemButton, autoChooseButton);
+        randomProblemButton = new StyledButton("RANDOM PROBLEM");
+        randomProblemButton.setMinWidth(200);
+        this.getChildren().addAll(chooseProblemButton, randomProblemButton);
     }
 
     public Button getChooseProblemButton() {
         return chooseProblemButton;
     }
 
-    public Button getAutoChooseButton() {
-        return autoChooseButton;
+    public Button getRandomProblemButton() {
+        return randomProblemButton;
     }
 }
