@@ -32,8 +32,6 @@ public class Problem {
         this.luckDegree = luckDegree;
         this.secretCode = secretCode;
         this.validatorsNb = validators;
-
-
     }
 
     /**

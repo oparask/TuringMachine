@@ -16,6 +16,10 @@ import javafx.scene.text.FontWeight;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a vertical box (VBox) containing UI elements for entering a code in the Turing Machine game.
+ * It includes buttons for digits, allowing users to create a three-digit code.
+ */
 public class CodeVbox extends VBox {
     private final StyledButton enterCodeButton;
     private final List<Button> firstDigitButtons;
@@ -23,15 +27,19 @@ public class CodeVbox extends VBox {
     private final List<Button> thirdDigitButtons;
     private Button firstDigit, secondDigit, thirdDigit;
 
+    /**
+     * Constructs a new instance of the CodeVbox.
+     * Initializes the layout, sets the spacing, alignment, style, and adds UI elements
+     * like labels, image, digit buttons, and an "Enter Code" button.
+     */
     public CodeVbox() {
         this.setSpacing(15);
         this.setMinWidth(170);
         this.setMinHeight(300);
         this.setAlignment(Pos.CENTER);
-        this.setStyle("-fx-background-color: white;"+
+        this.setStyle("-fx-background-color: white;" +
                 "-fx-background-radius: 10; " +
-                        "-fx-border-radius: 10;");
-
+                "-fx-border-radius: 10;");
 
         firstDigitButtons = new ArrayList<>();
         secondDigitButtons = new ArrayList<>();
@@ -57,23 +65,47 @@ public class CodeVbox extends VBox {
         this.getChildren().addAll(testCodeLabel, codeFormsImage, codeButtons, enterCodeButton);
     }
 
+    /**
+     * Gets the "Enter Code" button from the view.
+     *
+     * @return The "Enter Code" button.
+     */
     public StyledButton getEnterCodeButton() {
         return enterCodeButton;
     }
 
+    /**
+     * Gets the first digit button from the view.
+     *
+     * @return The first digit button.
+     */
     public Button getFirstDigit() {
         return firstDigit;
     }
 
+    /**
+     * Gets the second digit button from the view.
+     *
+     * @return The second digit button.
+     */
     public Button getSecondDigit() {
         return secondDigit;
     }
 
+    /**
+     * Gets the third digit button from the view.
+     *
+     * @return The third digit button.
+     */
     public Button getThirdDigit() {
         return thirdDigit;
     }
 
-
+    /**
+     * Configures and populates a GridPane with buttons representing digits for entering a code.
+     *
+     * @param gridPane The GridPane to be configured.
+     */
     private void codeButtonsGridPane(GridPane gridPane) {
         gridPane.setMaxWidth(150);
         gridPane.setAlignment(Pos.CENTER);
@@ -84,7 +116,7 @@ public class CodeVbox extends VBox {
             for (int col = 0; col < 3; col++) {
                 int number = 5 - row;
                 Button numberButton = new Button(Integer.toString(number));
-                numberButton.addEventHandler(ActionEvent.ACTION,new digitButtonClickHandler());
+                numberButton.addEventHandler(ActionEvent.ACTION, new CodeVbox.digitButtonClickHandler());
 
                 if (col == 0) {
                     firstDigitButtons.add(numberButton);
@@ -99,6 +131,10 @@ public class CodeVbox extends VBox {
         }
     }
 
+    /**
+     * Event handler for the digit buttons. Handles the button click event by resetting
+     * other buttons in the same column and graying out the clicked button.
+     */
     private class digitButtonClickHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
@@ -108,6 +144,11 @@ public class CodeVbox extends VBox {
             setGrayedButton(clickedButton);
         }
 
+        /**
+         * Resets all buttons in the same column as the clicked button.
+         *
+         * @param clickedButton The button that was clicked.
+         */
         private void resetAllButtonsFromList(Button clickedButton) {
             // Identify to which button list it belongs and reset only that list.
             if (firstDigitButtons.contains(clickedButton)) {
@@ -119,12 +160,23 @@ public class CodeVbox extends VBox {
             }
         }
 
+        /**
+         * Resets the styles of the given list of buttons to the default values.
+         *
+         * @param buttons The list of buttons to reset.
+         */
         private void resetButtons(List<Button> buttons) {
             for (Button button : buttons) {
                 button.setStyle(""); // Reset the style to the default value.
             }
         }
 
+        /**
+         * Sets the style of the clicked button to grayed out and stores the button
+         * in the corresponding attribute based on its column index.
+         *
+         * @param button The clicked button.
+         */
         private void setGrayedButton(Button button) {
             button.setStyle("-fx-background-color: gray;" +
                     "-fx-text-fill: white;" +
@@ -144,6 +196,4 @@ public class CodeVbox extends VBox {
             }
         }
     }
-
-
 }

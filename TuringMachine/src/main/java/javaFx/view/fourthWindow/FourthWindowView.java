@@ -18,7 +18,12 @@ import model.GameFacade;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-
+/**
+ * Represents the view for the fourth window in the Turing Machine game.
+ * Extends VBox and implements PropertyChangeListener to observe changes in the game state.
+ * This class displays the UI components for the game process, including undo and redo buttons,
+ * validators layout, score information, and game process layout.
+ */
 public class FourthWindowView extends VBox implements PropertyChangeListener {
     private final StyledButton undoButton;
     private final StyledButton redoButton;
@@ -28,6 +33,11 @@ public class FourthWindowView extends VBox implements PropertyChangeListener {
 
     private GameFacade gameFacade;
 
+    /**
+     * Constructs a new FourthWindowView with the specified GameFacade.
+     *
+     * @param gameFacade The GameFacade representing the underlying game logic.
+     */
     public FourthWindowView(GameFacade gameFacade) {
         gameFacade.getCurrentGame().registerObserver(this);
 
@@ -85,7 +95,7 @@ public class FourthWindowView extends VBox implements PropertyChangeListener {
                 }
                 break;
             }
-           case "newScore": {
+            case "newScore": {
                 int newState = (int) event.getNewValue();
                 scoreLayout.setText("SCORE: " + newState + "    ROUND: " + gameFacade.getRounds().size());
                 break;
@@ -100,47 +110,80 @@ public class FourthWindowView extends VBox implements PropertyChangeListener {
                             "\nNext time \uD83D\uDE09 ", true);
                 }
                 popOut.show();
-
                 break;
             }
-
         }
     }
 
-
+    /**
+     * Gets the Test Validator button from the GameProcessLayout.
+     *
+     * @return The Test Validator button.
+     */
     public StyledButton getTestValidatorButton() {
         return gameProcessLayout.getTestValidator();
     }
 
+    /**
+     * Gets the Next Round button from the GameProcessLayout.
+     *
+     * @return The Next Round button.
+     */
     public StyledButton getNextRoundButton() {
         return gameProcessLayout.getNextRoundButton();
     }
 
+    /**
+     * Gets the Guess Code button from the GameProcessLayout.
+     *
+     * @return The Guess Code button.
+     */
     public StyledButton getGuessCodeButton() {
         return gameProcessLayout.guessCodeButton();
     }
 
-
+    /**
+     * Gets the CodeVbox from the GameProcessLayout.
+     *
+     * @return The CodeVbox.
+     */
     public CodeVbox getCodeVbox() {
         return gameProcessLayout.getCodeVbox();
     }
 
+    /**
+     * Gets the Enter Code button from the GameProcessLayout.
+     *
+     * @return The Enter Code button.
+     */
     public StyledButton getEnterCodeButton() {
         return gameProcessLayout.getCodeVbox().getEnterCodeButton();
     }
 
+    /**
+     * Gets the Undo button.
+     *
+     * @return The Undo button.
+     */
     public Button getUndoButton() {
         return undoButton;
     }
 
+    /**
+     * Gets the Redo button.
+     *
+     * @return The Redo button.
+     */
     public Button getRedoButton() {
         return redoButton;
     }
 
+    /**
+     * Gets the index of the clicked button in the ValidatorsLayout.
+     *
+     * @return The index of the clicked button.
+     */
     public Integer getIndexOfClickedButton() {
         return validatorsLayout.getIndexOfClickedButton();
     }
 }
-
-
-

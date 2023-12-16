@@ -9,10 +9,21 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+/**
+ * Simple pop-up window for displaying messages.
+ * The pop-up can be used to show informational or error messages to the user.
+ */
 public class PopOut {
 
     private Stage stage;
 
+    /**
+     * Constructs a new PopOut instance with the specified title, message, and message type.
+     *
+     * @param title          The title of the pop-up window.
+     * @param message        The message to be displayed in the pop-up.
+     * @param isErrorMessage A flag indicating whether the message is an error message.
+     */
     public PopOut(String title, String message, boolean isErrorMessage) {
         stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -24,7 +35,7 @@ public class PopOut {
         text.setFont(Font.font("Arial", 16));
 
         TextFlow textFlow = new TextFlow(text);
-        textFlow.setPrefWidth(200); // Ajustez la largeur préférée en fonction de vos besoins
+        textFlow.setPrefWidth(200); // Adjust the preferred width based on your needs
 
         VBox layout = new VBox(10);
         layout.getChildren().addAll(textFlow);
@@ -34,6 +45,9 @@ public class PopOut {
         stage.setScene(scene);
     }
 
+    /**
+     * Displays the pop-up window and waits for the user to close it.
+     */
     public void show() {
         stage.showAndWait();
     }

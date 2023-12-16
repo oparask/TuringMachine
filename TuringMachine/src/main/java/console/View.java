@@ -6,6 +6,9 @@ import model.validators.Validator;
 
 import java.util.List;
 
+/**
+ * The View class provides static methods for displaying various messages and information in the Turing Machine game.
+ */
 public class View {
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_GREEN = "\u001B[32m";
@@ -40,7 +43,11 @@ public class View {
                 """ + ANSI_RESET);
     }
 
-
+    /**
+     * Displays the problems available in the Turing Machine game.
+     *
+     * @param problems The list of problems to display.
+     */
     public static void displayProblems(List<Problem> problems) {
         System.out.println();
         System.out.println(ANSI_PURPLE + "THE PROBLEMS OF TURING MACHINE GAME: " + ANSI_RESET);
@@ -50,10 +57,14 @@ public class View {
             System.out.println(ANSI_PURPLE + "Problem " + ANSI_BLUE + problem.getProblemNumber() + ANSI_RESET
                     + " (difficulty: " + ANSI_PURPLE + problem.getDifficultyLevel() + ANSI_RESET +
                     ", luck: " + ANSI_PURPLE + problem.getLuckDegree() + ANSI_RESET + ")" + ANSI_RESET);
-
         }
     }
 
+    /**
+     * Displays the available validators.
+     *
+     * @param validators An array of validators to display.
+     */
     public static void displayValidators(Validator[] validators) {
         System.out.println();
         System.out.println(ANSI_PURPLE + "AVAILABLE VALIDATORS: " + ANSI_RESET);
@@ -62,9 +73,15 @@ public class View {
             System.out.println(ANSI_BLUE + i + ANSI_RESET + ": validator " + validator.getValidatorNumber() + ANSI_PURPLE + " -> " + ANSI_RESET + validator + ANSI_RESET);
             i++;
         }
-
     }
 
+
+    /**
+     * Displays the score information.
+     *
+     * @param testedValidatorsNb The number of tested validators.
+     * @param roundsNb           The number of rounds played.
+     */
     public static void displayScore(int testedValidatorsNb, int roundsNb) {
         System.out.println();
         System.out.println(ANSI_PURPLE + "SCORE: " + ANSI_RESET + testedValidatorsNb + ANSI_RESET);
@@ -72,6 +89,12 @@ public class View {
         System.out.println(ANSI_PURPLE + "ROUNDS: " + ANSI_RESET + roundsNb);
     }
 
+
+    /**
+     * Displays the result of a validator test.
+     *
+     * @param sameCharacteristics Indicates whether the characteristics match or not.
+     */
     public static void displayTestResult(boolean sameCharacteristics) {
         System.out.println();
         if (sameCharacteristics) {
@@ -81,6 +104,12 @@ public class View {
         }
     }
 
+
+    /**
+     * Displays the result of guessing the secret code.
+     *
+     * @param guessedCode Indicates whether the code was guessed or not.
+     */
     public static void displayGuessedCode(boolean guessedCode) {
         System.out.println();
         if (guessedCode) {
@@ -90,18 +119,28 @@ public class View {
         }
     }
 
+    /**
+     * Displays the user's entered code.
+     *
+     * @param userCode The user's code to display.
+     */
     public static void displayUserCode(Code userCode) {
         System.out.println();
-        System.out.println(ANSI_PURPLE+"USER CODE: " + userCode+ANSI_RESET);
+        System.out.println(ANSI_PURPLE + "USER CODE: " + userCode + ANSI_RESET);
     }
 
-    public static void displayTestedValidators(List<Validator>testedValidators) {
+    /**
+     * Displays information about tested validators in the current round.
+     *
+     * @param testedValidators The list of tested validators.
+     */
+    public static void displayTestedValidators(List<Validator> testedValidators) {
         System.out.println();
 
-        if(testedValidators.isEmpty()){
-            System.out.println(ANSI_PURPLE+"You tested 0 validators in this round.");
+        if (testedValidators.isEmpty()) {
+            System.out.println(ANSI_PURPLE + "You tested 0 validators in this round.");
         } else {
-            System.out.print(ANSI_PURPLE+"You already have tested in the this round the validator: ");
+            System.out.print(ANSI_PURPLE + "You already have tested in the this round the validator: ");
             for (Validator validator : testedValidators) {
                 System.out.print(validator.getValidatorNumber() + " ");
             }
@@ -116,8 +155,9 @@ public class View {
      */
     public static void displayMessage(String message) {
         System.out.println();
-        System.out.println(ANSI_PURPLE+message+ANSI_RESET);
+        System.out.println(ANSI_PURPLE + message + ANSI_RESET);
     }
+
     /**
      * Prints a prompt symbol (">") and expects user input.
      */

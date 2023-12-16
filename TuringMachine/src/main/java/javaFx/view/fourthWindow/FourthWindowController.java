@@ -9,16 +9,32 @@ import model.GameFacade;
 
 import static console.View.*;
 
+/**
+ * The controller class for the fourth window in the Turing Machine game.
+ * This class handles user interactions and updates the model and view accordingly.
+ * It contains event handlers for buttons such as Enter Code, Test Validator, Guess Code, Undo, and Redo.
+ * The controller interacts with the GameFacade, which represents the underlying game logic.
+ *
+ */
 public class FourthWindowController {
     private FourthWindowView view;
     private GameFacade gameFacade;
 
+    /**
+     * Constructs a new FourthWindowController with the specified view and gameFacade.
+     *
+     * @param view       The view associated with this controller.
+     * @param gameFacade The GameFacade representing the underlying game logic.
+     */
     public FourthWindowController(FourthWindowView view, GameFacade gameFacade) {
         this.view = view;
         this.gameFacade = gameFacade;
         attachEventHandlers();
     }
 
+    /**
+     * Attaches event handlers to the buttons in the view.
+     */
     private void attachEventHandlers() {
         // Retrieve the Enter Code button from the view
         StyledButton enterCodeButton = view.getEnterCodeButton();
@@ -43,6 +59,9 @@ public class FourthWindowController {
         view.getRedoButton().addEventHandler(ActionEvent.ACTION, new RedoButtonClickHandler());
     }
 
+    /**
+     * Handles the event when the Enter Code button is clicked.
+     */
     private class EnterCodeButtonClickHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
@@ -58,6 +77,7 @@ public class FourthWindowController {
                         popOut.show();
                     } else {
                         String code = firstDigit.getText() + secondDigit.getText() + thirdDigit.getText();
+                        gameFacade.addViewToTheStack(view);
                         gameFacade.enterCode(Integer.parseInt(code));
                         displayMessage(gameFacade.getUserCode().toString());
                     }
@@ -75,6 +95,9 @@ public class FourthWindowController {
         }
     }
 
+    /**
+     * Handles the event when the Test Validator button is clicked.
+     */
     private class TestValidatorButtonClickHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
@@ -85,13 +108,14 @@ public class FourthWindowController {
                     displayInvalidInput("You must choose first your user code!");
                 } else {
                     Integer validatorIndex = view.getIndexOfClickedButton();
-                    if( validatorIndex == null){
+                    if (validatorIndex == null) {
                         PopOut popOut = new PopOut("ERROR", "You must choose a validator!", true);
                         popOut.show();
                         displayInvalidInput("You must choose a validator!");
                     } else {
                         displayValidators(gameFacade.getProblemValidators());
                         displayUserCode(gameFacade.getUserCode());
+                        gameFacade.addViewToTheStack(view);
                         gameFacade.testValidator(validatorIndex);
                         System.out.println();
                         displayTestResult(gameFacade.getLastValidatorTestResult());
@@ -127,6 +151,9 @@ public class FourthWindowController {
         }
     }*/
 
+    /**
+     * Handles the event when the Guess Code button is clicked.
+     */
     private class GuessCodeButtonClickHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
@@ -148,26 +175,41 @@ public class FourthWindowController {
         }
     }
 
+    /**
+     * Handles the event when the Undo button is clicked.
+     */
     private class UndoButtonClickHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-            gameFacade.undo();
+            gameFacade.undo();  // Assurez-vous que cette opération n'affecte pas la vue
+            FourthWindowView previousView = gameFacade.undoFourthWindowView();
+            if (previousView != null) {
+                view.getChildren().setAll(previousView.getChildren());
+            }
+
             displayMessage("UNDO");
             displayScore(gameFacade.getScore(), gameFacade.getRounds().size());
         }
     }
 
+
+    /**
+     * Handles the event when the Redo button is clicked.
+     */
     private class RedoButtonClickHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-            gameFacade.redo();
+            gameFacade.redo();  // Assurez-vous que cette opération n'affecte pas la vue
+            FourthWindowView nextView = gameFacade.redoFourthWindowView();
+            if (nextView != null) {
+                view.getChildren().setAll(nextView.getChildren());
+            }
+
             displayMessage("REDO");
             displayScore(gameFacade.getScore(), gameFacade.getRounds().size());
         }
     }
 
-    public GameFacade getGameFacade() {
-        return gameFacade;
-    }
+
 }
 

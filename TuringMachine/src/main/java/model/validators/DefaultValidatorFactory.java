@@ -1,9 +1,20 @@
 package model.validators;
 
 import model.Code;
-
+/**
+ * The DefaultValidatorFactory class implements the ValidatorFactory interface and provides
+ * a default implementation for creating validators based on the validator number.
+ */
 public class DefaultValidatorFactory implements ValidatorFactory {
 
+    /**
+     * Creates a validator based on the provided secret code, user code, and validator number.
+     *
+     * @param secretCode  The secret code used for validation.
+     * @param userCode    The user code to be validated.
+     * @param validatorNb The number associated with the validator to be created.
+     * @return A validator instance based on the provided parameters.
+     */
     @Override
     public Validator createValidator(Code secretCode, Code userCode, int validatorNb) {
         Validator validator = null;
@@ -24,6 +35,4 @@ public class DefaultValidatorFactory implements ValidatorFactory {
 
         return validator;
     }
-
-
 }

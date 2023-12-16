@@ -10,18 +10,27 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import model.validators.Validator;
-import javafx.scene.shape.Rectangle;
 
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Represents the layout for displaying and interacting with problem validators in the Turing Machine game.
+ * Extends HBox and contains graphical representations of validators with associated buttons.
+ */
 public class ValidatorsLayout extends HBox {
     private Map<Button, Boolean> buttonClickedMap;
 
+    /**
+     * Constructs a new ValidatorsLayout with graphical representations and buttons for each provided validator.
+     *
+     * @param validators An array of validators to be displayed.
+     */
     public ValidatorsLayout(Validator[] validators) {
         this.setStyle("-fx-background-color: green;");
         this.setAlignment(Pos.TOP_CENTER);
@@ -45,6 +54,13 @@ public class ValidatorsLayout extends HBox {
 
     }
 
+    /**
+     * Creates an image of a robot along with a label for the validator
+     * and adds them to the specified VBox.
+     *
+     * @param indexValidator The index of the validator.
+     * @param validatorBox   The VBox to which the robot image and label will be added.
+     */
     private void createRobotImage(int indexValidator, VBox validatorBox) {
         InputStream robotImageStream = getRobotImageStream(indexValidator);
         Label validatorLabel = createValidatorLabel(indexValidator);
@@ -53,11 +69,25 @@ public class ValidatorsLayout extends HBox {
         validatorBox.getChildren().addAll(robotButton, validatorLabel);
     }
 
+
+    /**
+     * Generates the input stream for the image of a robot based on the provided index.
+     *
+     * @param indexValidator The index of the validator.
+     * @return The input stream for the robot image.
+     */
     private InputStream getRobotImageStream(int indexValidator) {
         String robotLetter = String.valueOf((char) ('A' + indexValidator));
         return getClass().getResourceAsStream("/robot" + robotLetter + ".png");
     }
 
+
+    /**
+     * Creates a label for the validator with a specific font and text.
+     *
+     * @param indexValidator The index of the validator.
+     * @return The created label for the validator.
+     */
     private Label createValidatorLabel(int indexValidator) {
         Label validatorLabel = new Label();
         validatorLabel.setTextFill(Color.WHITE);
@@ -66,6 +96,15 @@ public class ValidatorsLayout extends HBox {
         return validatorLabel;
     }
 
+
+    /**
+     * Creates a button with a robot image, initializes its properties, and sets up event handlers.
+     *
+     * @param indexValidator   The index of the validator associated with the button.
+     * @param robotImageStream The input stream for the robot image.
+     * @param validatorLabel   The label associated with the validator.
+     * @return The created button with the robot image.
+     */
     private Button createRobotButton(int indexValidator, InputStream robotImageStream, Label validatorLabel) {
         Button robotButton = new Button();
         robotButton.setUserData(indexValidator);
@@ -74,10 +113,10 @@ public class ValidatorsLayout extends HBox {
         robotImage.setPreserveRatio(true);
         robotImage.setFitHeight(60);
         robotButton.setGraphic(robotImage);
-        robotButton.setStyle("-fx-padding: 0; -fx-margin: 0;"+
+        robotButton.setStyle("-fx-padding: 0; -fx-margin: 0;" +
                 "-fx-background-radius: 10;" +
-                        "-fx-border-radius: 10;" +
-                        "-fx-background-color: red;");
+                "-fx-border-radius: 10;" +
+                "-fx-background-color: red;");
 
         initializeButtonHandlers(robotButton, robotImage, validatorLabel);
         buttonClickedMap.put(robotButton, false);
@@ -85,6 +124,12 @@ public class ValidatorsLayout extends HBox {
         return robotButton;
     }
 
+    /**
+     * Creates an image for the validator based on the provided image path and adds it to the specified VBox.
+     *
+     * @param imagePath    The path to the image representing the validator.
+     * @param validatorBox The VBox to which the validator image will be added.
+     */
     private void createValidatorImage(String imagePath, VBox validatorBox) {
         InputStream validatorImageStream = getClass().getResourceAsStream(imagePath);
         if (validatorImageStream != null) {
@@ -104,7 +149,13 @@ public class ValidatorsLayout extends HBox {
         }
     }
 
-
+    /**
+     * Initializes event handlers for the robot button, including mouse hover effects and click actions.
+     *
+     * @param robotButton    The button associated with the robot image.
+     * @param robotImage     The ImageView representing the robot image.
+     * @param validatorLabel The label associated with the validator.
+     */
     private void initializeButtonHandlers(Button robotButton, ImageView robotImage, Label validatorLabel) {
         robotButton.setOnMouseEntered(e -> robotImage.setEffect(new ColorAdjust(0.2, 0, 0, 0)));
 
@@ -122,6 +173,9 @@ public class ValidatorsLayout extends HBox {
         });
     }
 
+    /**
+     * Resets the visual state of all robot buttons and clears the clicked status.
+     */
     private void resetButtons() {
         for (Map.Entry<Button, Boolean> entry : buttonClickedMap.entrySet()) {
             Button button = entry.getKey();
@@ -131,6 +185,11 @@ public class ValidatorsLayout extends HBox {
         }
     }
 
+    /**
+     * Retrieves the index of the clicked button among the robot buttons.
+     *
+     * @return The index of the clicked button, or {@code null} if no button is clicked.
+     */
     public Integer getIndexOfClickedButton() {
         for (Map.Entry<Button, Boolean> entry : buttonClickedMap.entrySet()) {
             if (entry.getValue()) {
@@ -142,6 +201,11 @@ public class ValidatorsLayout extends HBox {
         return null;
     }
 
+    /**
+     * Retrieves the currently clicked robot button.
+     *
+     * @return The clicked robot button, or {@code null} if no button is clicked.
+     */
     public Button getClickedButton() {
         for (Map.Entry<Button, Boolean> entry : buttonClickedMap.entrySet()) {
             if (entry.getValue()) {
@@ -151,6 +215,4 @@ public class ValidatorsLayout extends HBox {
         }
         return null;
     }
-
-
 }

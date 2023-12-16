@@ -1,6 +1,6 @@
 package model;
 
-import model.validators.*;
+import model.validators.Validator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +39,8 @@ public class Round {
         return testedValidators;
     }
 
-    public Validator  getLastValidatorTested() {
-        return testedValidators.get(testedValidators.size()-1);
+    public Validator getLastValidatorTested() {
+        return testedValidators.get(testedValidators.size() - 1);
     }
 
 
